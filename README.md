@@ -1,5 +1,5 @@
 # Teclyn
-A C#/Asp.Net production-ready Framework using CQRS and Event-Sourcing
+A multiplatform C#/Asp.Net production-ready Framework using CQRS and Event-Sourcing
 
 ## Cleaning in progress
 The Teclyn framework currently uses proprietary elements, and cannot be uploaded on Github in its current form for legal reasons.
