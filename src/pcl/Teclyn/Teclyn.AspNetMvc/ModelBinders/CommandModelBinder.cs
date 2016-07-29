@@ -28,21 +28,15 @@ namespace Teclyn.AspNetMvc.ModelBinders
                 throw new MvcCommandException($"The command {commandType} cannot be called remotely by the html/javascript side. Add the [Remote] attribute or call it from the server side.");
             }
 
-            return base.CreateModel(controllerContext, bindingContext, commandType);
+            var item = Activator.CreateInstance(commandType);
+            bindingContext.ModelMetadata = ModelMetadataProviders.Current.GetMetadataForType(() => item, commandType);
+
+            return item;
         }
 
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
-            var commandRenderer = teclyn.Get<CommandRenderer>();
-            var commandType = commandRenderer.GetCommandType(controllerContext.HttpContext);
-
-            var context = new ModelBindingContext(bindingContext);
-            var item = Activator.CreateInstance(commandType);
-
-            Func<object> modelAccessor = () => item;
-            context.ModelMetadata = new ModelMetadata(new DataAnnotationsModelMetadataProvider(), bindingContext.ModelMetadata.ContainerType, modelAccessor, item.GetType(), bindingContext.ModelName);
-
-            var model = base.BindModel(controllerContext, context);
+            var model = base.BindModel(controllerContext, bindingContext);
 
             if (model != null)
             {

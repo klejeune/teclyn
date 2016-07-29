@@ -46,8 +46,8 @@ public static class MvcHtmlExtensions
         return new MvcHtmlString(writer.ToString());
     }
 
-    public static CommandForm<TCommand> CommandForm<TCommand>(this HtmlHelper helper, string @class = null, object htmlAttributes = null) where TCommand : ICommand
+    public static CommandForm<TCommand> CommandForm<TCommand>(this HtmlHelper helper, string @class = null, object htmlAttributes = null, string returnUrl = null) where TCommand : ICommand
     {
-        return CommandRenderer.RenderCommandForm<TCommand>(helper, false, @class, htmlAttributes);
+        return CommandRenderer.RenderCommandForm<TCommand>(helper, false, @class, htmlAttributes, returnUrl);
     }
 }

@@ -88,6 +88,7 @@
     <Compile Include="Extensions\MvcHtmlExtensions.cs" />
     <Compile Include="ModelBinders\CommandModelBinder.cs" />
     <Compile Include="MvcApplicationExtensions.cs" />
+    <Compile Include="Mvc\Models\CommandModel.cs" />
     <Compile Include="Mvc\TeclynAreaRegistration.cs" />
     <Compile Include="Mvc\Controllers\CommandController.cs" />
     <Compile Include="TeclynAspNetMvcPlugin.cs" />
@@ -104,7 +105,6 @@
     <None Include="Teclyn.AspNetMvc.nuspec" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Mvc\Models\" />
     <Folder Include="Mvc\Views\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

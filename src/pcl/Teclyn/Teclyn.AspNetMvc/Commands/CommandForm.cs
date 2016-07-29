@@ -14,7 +14,7 @@ namespace Teclyn.AspNetMvc.Commands
         private TextWriter writer;
         private CommandRenderer rendererService;
 
-        public CommandForm(CommandRenderer rendererService, HtmlHelper helper, bool reload = false, string @class = "", object htmlAttributes = null)
+        public CommandForm(CommandRenderer rendererService, HtmlHelper helper, bool reload, string @class, object htmlAttributes, string returnUrl)
         {
             this.writer = helper.ViewContext.Writer;
             this.rendererService = rendererService;
@@ -24,8 +24,9 @@ namespace Teclyn.AspNetMvc.Commands
 
             writer.Write($"<form class='{classes}' method='POST' action='{urlHelper.Action("ExecutePost", "Command", new { Area = "Teclyn" })}'>");
             writer.Write($"<input type='hidden' name='{rendererService.GetCommandTypeAttributeName()}' value='{typeof(TCommand).AssemblyQualifiedName}' />");
+            writer.Write($"<input type='hidden' name='ReturnUrl' value='{returnUrl}' />");
         }
-        
+
         public void Dispose()
         {
             writer.Write("</form>");

@@ -14,7 +14,7 @@ namespace Teclyn.AspNetMvc.Commands
 {
     public class CommandRenderer
     {
-        private static readonly string commandTypeHtmlAttribute = "command-type";
+        private static readonly string commandTypeHtmlAttribute = "CommandType";
 
         [Inject]
         public IIocContainer IocContainer { get; set; }
@@ -61,8 +61,7 @@ namespace Teclyn.AspNetMvc.Commands
             return new CommandButton(writer, serializedCommand, reload, @class, htmlAttributes);
         }
 
-        public CommandForm<TCommand> RenderCommandForm<TCommand>(HtmlHelper helper, bool reload = false,
-            string @class = "", object htmlAttributes = null) where TCommand : ICommand
+        public CommandForm<TCommand> RenderCommandForm<TCommand>(HtmlHelper helper, bool reload, string @class, object htmlAttributes, string returnUrl) where TCommand : ICommand
         {
             var command = this.IocContainer.Get<TCommand>();
 
@@ -75,16 +74,15 @@ namespace Teclyn.AspNetMvc.Commands
 
             if (check.Errors.Any())
             {
-                throw new MvcCommandRenderingException($"The command {typeof(TCommand).Name} cannot be executed:\n"
-                    + string.Join("\n", check.Errors));
+                throw new MvcCommandRenderingException($"The command {typeof(TCommand).Name} cannot be executed:\n" + string.Join("\n", check.Errors));
             }
 
-            return new CommandForm<TCommand>(this, helper, reload, @class, htmlAttributes);
+            return new CommandForm<TCommand>(this, helper, reload, @class, htmlAttributes, returnUrl);
         }
 
         public string GetPropertyName(PropertyInfo propertyInfo)
         {
-            return propertyInfo.Name;
+            return "Command." + propertyInfo.Name;
         }
 
         public ICommandPropertyRenderer<TProperty> GetRenderer<TProperty>(PropertyInfo property)
