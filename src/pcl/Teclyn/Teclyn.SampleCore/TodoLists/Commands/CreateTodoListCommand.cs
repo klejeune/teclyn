@@ -1,0 +1,34 @@
+﻿using Teclyn.Core.Commands;
+using Teclyn.Core.Security.Context;
+using Teclyn.SampleCore.TodoLists.Events;
+using Teclyn.SampleCore.TodoLists.Models;
+
+namespace Teclyn.SampleCore.TodoLists.Commands
+{
+    [Remote]
+    public class CreateTodoListCommand : ICommand<ITodoList>
+    {
+        public string Name { get; set; }
+
+        public bool CheckParameters(IParameterChecker _)
+        {
+            return _.Check(nameof(this.Name), !string.IsNullOrWhiteSpace(this.Name), "Please provide a name for your new Todo List.");
+        }
+
+        public bool CheckContext(ITeclynContext context, ICommandContextChecker _)
+        {
+            return true;
+        }
+
+        public void Execute(ICommandExecutionContext context)
+        {
+            this.Result = context.GetEventService().Raise(new TodoListCreatedEvent
+            {
+                AggregateId = context.GetIdGenerator().GenerateId(),
+                Name = this.Name,
+            });
+        }
+
+        public ITodoList Result { get; private set; }
+    }
+}
