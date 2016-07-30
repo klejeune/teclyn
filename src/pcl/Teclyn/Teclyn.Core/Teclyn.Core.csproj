@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{52A303D2-281B-4C40-B374-6DACF983E1EE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Teclyn.Core</RootNamespace>
+    <AssemblyName>Teclyn.Core</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile49</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Api\AggregateInfo.cs" />
+    <Compile Include="Api\TypeAttributeInfo.cs" />
+    <Compile Include="AttributeComputer.cs" />
+    <Compile Include="Commands\CommandExecutionContext.cs" />
+    <Compile Include="Commands\CommandExecutionResult.cs" />
+    <Compile Include="Commands\CommandExtensions.cs" />
+    <Compile Include="Commands\CommandResultError.cs" />
+    <Compile Include="Commands\CommandService.cs" />
+    <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Commands\ICommandContextChecker.cs" />
+    <Compile Include="Commands\ICommandExecutionContext.cs" />
+    <Compile Include="Commands\ICommandResult.cs" />
+    <Compile Include="Commands\IParameterChecker.cs" />
+    <Compile Include="Commands\IUserFriendlyCommandResult.cs" />
+    <Compile Include="Commands\Properties\IPropertyCommand.cs" />
+    <Compile Include="Commands\Properties\PropertyCommand.cs" />
+    <Compile Include="Commands\RemoteAttribute.cs" />
+    <Compile Include="Commands\UserFriendlyCommandResult.cs" />
+    <Compile Include="Configuration\IEnvironment.cs" />
+    <Compile Include="Domains\IIndexable.cs" />
+    <Compile Include="Domains\ServiceAttribute.cs" />
+    <Compile Include="Dummies\DummyAggregate.cs" />
+    <Compile Include="Dummies\DummyCreationEvent.cs" />
+    <Compile Include="Dummies\DummyEventHandler.cs" />
+    <Compile Include="Dummies\IDummyAggregate.cs" />
+    <Compile Include="Events\EventExtensions.cs" />
+    <Compile Include="Events\EventInformation.cs" />
+    <Compile Include="Events\Handlers\EventHandlerService.cs" />
+    <Compile Include="Events\Metadata\EventHandlerMetadata.cs" />
+    <Compile Include="Events\Metadata\EventMetadata.cs" />
+    <Compile Include="Events\Handlers\EventHandlerAttribute.cs" />
+    <Compile Include="Events\Handlers\IEventHandler.cs" />
+    <Compile Include="Events\Handlers\PersistanceEventHandler.cs" />
+    <Compile Include="Events\Injection\AttributeEventInjector.cs" />
+    <Compile Include="Events\Injection\EventDateAttribute.cs" />
+    <Compile Include="Events\EventService.cs" />
+    <Compile Include="Events\Injection\EventInjector.cs" />
+    <Compile Include="Events\Injection\EventUserAttribute.cs" />
+    <Compile Include="Events\ICreationEvent.cs" />
+    <Compile Include="Events\IEventInformation.cs" />
+    <Compile Include="Events\IModificationEvent.cs" />
+    <Compile Include="Events\Injection\EventUsernameAttribute.cs" />
+    <Compile Include="Events\Injection\IEventInjector.cs" />
+    <Compile Include="Events\ISuppressionEvent.cs" />
+    <Compile Include="Events\ITeclynEvent.cs" />
+    <Compile Include="Events\Properties\IPropertyEvent.cs" />
+    <Compile Include="Ioc\IIocContainer.cs" />
+    <Compile Include="Ioc\InjectAttribute.cs" />
+    <Compile Include="ITeclynConfiguration.cs" />
+    <Compile Include="ITeclynPlugin.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Domains\AggregateAttribute.cs" />
+    <Compile Include="Domains\AggregateImplementationAttribute.cs" />
+    <Compile Include="Domains\IDisplayable.cs" />
+    <Compile Include="Domains\IAggregate.cs" />
+    <Compile Include="Security\Context\GuestTeclynUser.cs" />
+    <Compile Include="Security\Context\ITeclynContext.cs" />
+    <Compile Include="Security\Context\TechnicalUser.cs" />
+    <Compile Include="Security\Context\TeclynContext.cs" />
+    <Compile Include="Security\Context\TeclynContextLevel.cs" />
+    <Compile Include="Security\TeclynSecurityException.cs" />
+    <Compile Include="Services\UserContext.cs" />
+    <Compile Include="Security\Context\ITeclynUser.cs" />
+    <Compile Include="Storage\EventHandlers\CreationPersistenceEventHandler.cs" />
+    <Compile Include="Storage\EventHandlers\ModificationPersistenceEventHandler.cs" />
+    <Compile Include="Storage\EventHandlers\SuppressionPersistenceEventHandler.cs" />
+    <Compile Include="Storage\InMemoryRepositoryProvider.cs" />
+    <Compile Include="Storage\IRepository.cs" />
+    <Compile Include="Storage\IRepositoryProvider.cs" />
+    <Compile Include="Storage\IStorageConfiguration.cs" />
+    <Compile Include="Storage\NoSuchAggregateException.cs" />
+    <Compile Include="Storage\Repository.cs" />
+    <Compile Include="Storage\RepositoryService.cs" />
+    <Compile Include="TeclynApi.cs" />
+    <Compile Include="TeclynCorePlugin.cs" />
+    <Compile Include="TeclynException.cs" />
+    <Compile Include="Tools\Base64Serializer.cs" />
+    <Compile Include="Tools\EnumerableExtensions.cs" />
+    <Compile Include="Tools\IdGenerator.cs" />
+    <Compile Include="Tools\JsonSerializer.cs" />
+    <Compile Include="Tools\ReflectionTools.cs" />
+    <Compile Include="Services\Time.cs" />
+    <Compile Include="Tools\TypeTools.cs" />
+    <Compile Include="UserFriendlyException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Teclyn.Core.nuspec" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
