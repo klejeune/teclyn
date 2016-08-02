@@ -1,0 +1,18 @@
+﻿@model Teclyn.AspNetMvc.Models.IListModel
+
+<div class="row">
+    <div class="col-md-6 pull-left">
+        @if (!string.IsNullOrEmpty(Model.PreviousLink))
+        {
+            <a href="@Model.PreviousLink" class="button">&lt;&lt; Previous (@Model.PreviousMin-@Model.PreviousMax)</a>
+        }
+        &nbsp;
+    </div>
+    <div class="col-md-6 pull-right">
+        &nbsp;
+        @if (!string.IsNullOrEmpty(Model.NextLink))
+        {
+            <a href="@Model.NextLink" class="button">Next (@Model.NextMin-@Model.NextMax) &gt;&gt;</a>
+        }
+    </div>
+</div>
