@@ -49,6 +49,11 @@ namespace Teclyn.Core.Storage
 
         public TAggregate GetByIdOrNull(string id)
         {
+            if (id == null)
+            {
+                return null;
+            }
+
             return this.GetProvider().GetByIdOrNull(id);
         }
 
