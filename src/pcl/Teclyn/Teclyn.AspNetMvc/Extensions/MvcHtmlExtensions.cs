@@ -23,6 +23,11 @@ public static class MvcHtmlExtensions
         return System.Web.Mvc.Html.LinkExtensions.ActionLink(helper, item.Name, actionName, controllerName, new {Id = item.Id}, null);
     }
 
+    public static MvcHtmlString ActionLink(this HtmlHelper helper, IDisplayable item, [AspMvcAction]string actionName)
+    {
+        return System.Web.Mvc.Html.LinkExtensions.ActionLink(helper, item.Name, actionName, new { Id = item.Id }, null);
+    }
+
     public static CommandButton CommandButton<TCommand>(this HtmlHelper helper, Action<TCommand> builder, string @class = "", object htmlAttributes = null)
         where TCommand : ICommand
     {

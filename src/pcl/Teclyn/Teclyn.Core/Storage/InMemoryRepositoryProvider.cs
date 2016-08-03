@@ -21,12 +21,12 @@ namespace Teclyn.Core.Storage
 
         public Expression Expression
         {
-            get { return this.data.AsQueryable().Expression; }
+            get { return this.data.Values.AsQueryable().Expression; }
         }
 
         public IQueryProvider Provider
         {
-            get { return null; }
+            get { return data.Values.AsQueryable().Provider; }
         }
 
         public void Create(T item)

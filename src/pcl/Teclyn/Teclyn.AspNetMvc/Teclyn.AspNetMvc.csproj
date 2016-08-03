@@ -87,6 +87,8 @@
     <Compile Include="Commands\Renderers\StringInputCommandPropertyRenderer.cs" />
     <Compile Include="Extensions\MvcHtmlExtensions.cs" />
     <Compile Include="ModelBinders\CommandModelBinder.cs" />
+    <Compile Include="Models\IListModel.cs" />
+    <Compile Include="Models\ListModel.cs" />
     <Compile Include="MvcApplicationExtensions.cs" />
     <Compile Include="Mvc\Controllers\HomeController.cs" />
     <Compile Include="Mvc\Models\CommandModel.cs" />
