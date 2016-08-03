@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 using System.Web.Mvc;
 using Teclyn.AspNetMvc.Mvc.Models;
 using Teclyn.Core.Ioc;
@@ -24,11 +25,15 @@ namespace Teclyn.AspNetMvc.Mvc.Controllers
 
             var model = new HomeInfoModel
             {
-                Aggregates = this.RepositoryService.Aggregates,
+                Aggregates = this.RepositoryService.Aggregates.Select(agg => new AggregateInfoModel
+                {
+                    AggregateType = agg.AggregateType.ToString(),
+                    ImplementationType = agg.ImplementationType.ToString(),
+                }).ToArray(),
                 TeclynVersion = version,
             };
 
-            return View();
+            return Json(model, JsonRequestBehavior.AllowGet);
         }
     }
 }

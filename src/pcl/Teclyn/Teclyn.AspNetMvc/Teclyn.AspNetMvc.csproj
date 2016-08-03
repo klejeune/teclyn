@@ -106,7 +106,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Mvc\Views\Home\Info.cshtml" />
     <None Include="packages.config" />
     <None Include="Teclyn.AspNetMvc.nuspec" />
   </ItemGroup>

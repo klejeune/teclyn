@@ -39,7 +39,7 @@ namespace Teclyn.AspNetMvc.VirtualFileSystem
 
         public override CacheDependency GetCacheDependency(string virtualPath, IEnumerable virtualPathDependencies, DateTime utcStart)
         {
-            return null;
+            return this.IsPathVirtual(virtualPath) ? null : base.GetCacheDependency(virtualPath, virtualPathDependencies, utcStart);
         }
     }
 }
