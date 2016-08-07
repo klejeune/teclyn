@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Teclyn.Core.Domains;
+using Teclyn.Core.Ioc;
 using Teclyn.Core.Security.Context;
 
 namespace Teclyn.Core.Commands
@@ -11,11 +12,13 @@ namespace Teclyn.Core.Commands
     {
         private ITeclynContext context;
         private TeclynApi teclyn;
+        private IIocContainer iocContainer;
 
-        public CommandService(ITeclynContext context, TeclynApi teclyn)
+        public CommandService(ITeclynContext context, TeclynApi teclyn, IIocContainer iocContainer)
         {
             this.context = context;
             this.teclyn = teclyn;
+            this.iocContainer = iocContainer;
         }
 
         public ICommandResult Execute<TCommand>(TCommand command) where TCommand : ICommand
@@ -32,6 +35,8 @@ namespace Teclyn.Core.Commands
         public ICommandResult<TResult> ExecuteInternal<TCommand, TResult>(TCommand command,
             Func<TCommand, TResult> resultAccessor) where TCommand : ICommand
         {
+            this.iocContainer.Inject(command);
+
             var result = new CommandExecutionResult<TResult>(teclyn);
 
             this.CheckContextInternal(command, result);
