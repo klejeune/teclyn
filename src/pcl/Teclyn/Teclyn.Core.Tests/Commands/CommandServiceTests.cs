@@ -55,7 +55,7 @@ namespace Teclyn.Core.Tests.Commands
                 SecondParameter = second
             };
 
-            var result = command.Execute<DummyCommand, string>(this.teclyn);
+            var result = command.Execute<DummyCommand, string>(this.commandService);
 
             Assert.Equal(first + second, result.Result);
         }

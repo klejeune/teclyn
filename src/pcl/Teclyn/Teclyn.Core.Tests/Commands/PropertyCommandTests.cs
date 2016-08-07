@@ -60,6 +60,7 @@ namespace Teclyn.Core.Tests.Commands
         }
 
         private TeclynApi teclyn;
+        private CommandService commandService;
         private string aggregateId = "id";
         private DummyAggregate aggregate;
 
@@ -67,6 +68,7 @@ namespace Teclyn.Core.Tests.Commands
         public PropertyCommandTests()
         {
             this.teclyn = TeclynApi.Initialize(new TeclynTestConfiguration());
+            this.commandService = teclyn.Get<CommandService>();
 
             this.teclyn.RegisterRepository<DummyAggregate>();
 
@@ -91,7 +93,7 @@ namespace Teclyn.Core.Tests.Commands
                 NewValue = newValue
             };
 
-            var result = command.Execute(this.teclyn);
+            var result = command.Execute(this.commandService);
 
             Assert.True(result.Success);
             Assert.True(result.ContextIsValid);
@@ -114,7 +116,7 @@ namespace Teclyn.Core.Tests.Commands
 
             command.InvalidateContext();
 
-            var result = command.Execute(this.teclyn);
+            var result = command.Execute(this.commandService);
 
             Assert.False(result.Success);
             Assert.False(result.ContextIsValid);
@@ -136,7 +138,7 @@ namespace Teclyn.Core.Tests.Commands
                 NewValue = newValue
             };
             
-            var result = command.Execute(this.teclyn);
+            var result = command.Execute(this.commandService);
 
             Assert.False(result.Success);
             Assert.False(result.ParametersAreValid);

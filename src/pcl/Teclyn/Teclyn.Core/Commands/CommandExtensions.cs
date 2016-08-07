@@ -15,16 +15,16 @@ namespace Teclyn.Core.Commands
             return context.Teclyn.Get<IdGenerator>();
         }
 
-        public static ICommandResult<TResult> Execute<TCommand, TResult>(this TCommand command, TeclynApi teclynApi)
+        public static ICommandResult<TResult> Execute<TCommand, TResult>(this TCommand command, CommandService commandService)
             where TCommand : ICommand<TResult>
         {
-            return teclynApi.Get<CommandService>().Execute<TCommand, TResult>(command);
+            return commandService.Execute<TCommand, TResult>(command);
         }
 
-        public static ICommandResult Execute<TCommand>(this TCommand command, TeclynApi teclynApi)
+        public static ICommandResult Execute<TCommand>(this TCommand command, CommandService commandService)
         where TCommand : ICommand
         {
-            return teclynApi.Get<CommandService>().Execute<TCommand>(command);
+            return commandService.Execute<TCommand>(command);
         }
     }
 }
