@@ -32,3 +32,5 @@
 /src/pcl/Teclyn/Teclyn.SampleMvc/bin
 /src/pcl/Teclyn/Teclyn.SampleMvc/obj/Debug
 /src/pcl/Teclyn/.vs/config/applicationhost.config
+/src/pcl/Teclyn/Teclyn.Mongodb/bin/Debug
+/src/pcl/Teclyn/Teclyn.Mongodb/obj/Debug

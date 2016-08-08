@@ -12,7 +12,7 @@ namespace Teclyn.Core.Storage.EventHandlers
         
         public void Handle(TAggregate aggregate, IEventInformation<ISuppressionEvent<TAggregate>> @event)
         {
-            this.Repository.Delete(aggregate.Id);
+            this.Repository.Delete(aggregate);
         }
     }
 }

@@ -38,6 +38,24 @@ namespace Teclyn.Core.Events
             return aggregate;
         }
 
+        public void Raise<TAggregate>(IModificationEvent<TAggregate> @event) where TAggregate : class, IAggregate
+        {
+            var eventInformation = this.BuildEventInformation(@event);
+            var aggregate = this.repositoryService.Get<TAggregate>().GetById(@event.AggregateId);
+
+            @event.Apply(aggregate, eventInformation);
+
+            this.LaunchEventHandlers(aggregate, @event, eventInformation);
+        }
+
+        public void Raise<TAggregate>(ISuppressionEvent<TAggregate> @event) where TAggregate : class, IAggregate
+        {
+            var eventInformation = this.BuildEventInformation(@event);
+            var aggregate = this.repositoryService.Get<TAggregate>().GetById(@event.AggregateId);
+
+            this.LaunchEventHandlers(aggregate, @event, eventInformation);
+        }
+
         private IEventInformation BuildEventInformation(ITeclynEvent @event)
         {
             var eventType = @event.GetType();
@@ -59,24 +77,6 @@ namespace Teclyn.Core.Events
             eventInformation.Event = @event;
 
             return eventInformation;
-        }
-
-        public void Raise<TAggregate>(IModificationEvent<TAggregate> @event) where TAggregate : class, IAggregate
-        {
-            var eventInformation = this.BuildEventInformation(@event);
-            var aggregate = this.repositoryService.Get<TAggregate>().GetById(@event.AggregateId);
-            
-            @event.Apply(aggregate, eventInformation);
-
-            this.LaunchEventHandlers(aggregate, @event, eventInformation);
-        }
-
-        public void Raise<TAggregate>(ISuppressionEvent<TAggregate> @event) where TAggregate : class, IAggregate
-        {
-            var eventInformation = this.BuildEventInformation(@event);
-            var aggregate = this.repositoryService.Get<TAggregate>().GetById(@event.AggregateId);
-
-            this.LaunchEventHandlers(aggregate, @event, eventInformation);
         }
 
         private void LaunchEventHandlers(IAggregate aggregate, ITeclynEvent @event, IEventInformation eventInformation)

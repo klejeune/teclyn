@@ -34,9 +34,9 @@ namespace Teclyn.Core.Storage
             this.data.Add(item.Id, item);
         }
 
-        public void Delete(string id)
+        public void Delete(T item)
         {
-            this.data.Remove(id);
+            this.data.Remove(item.Id);
         }
 
         public T GetByIdOrNull(string id)

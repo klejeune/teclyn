@@ -36,7 +36,7 @@ namespace Teclyn.Core.Tests
             this.TestEnvironment = new TestEnvironment();
         }
 
-        public IRepositoryProvider<T> GetRepositoryProvider<T>() where T : class, IAggregate
+        public IRepositoryProvider<T> GetRepositoryProvider<T>(string collectionName) where T : class, IAggregate
         {
             return new InMemoryRepositoryProvider<T>();
         }

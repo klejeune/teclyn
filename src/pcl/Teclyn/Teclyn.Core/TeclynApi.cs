@@ -95,11 +95,11 @@ namespace Teclyn.Core
 
                         if (implementationTypeInfo != null)
                         {
-                            this.repositories.Register(aggregateTypeInfo.Type, implementationTypeInfo.Type);
+                            this.repositories.Register(aggregateTypeInfo.Type, implementationTypeInfo.Type, implementationTypeInfo.Type.Name);
                         }
-                        else if (implementationTypeInfo == null && aggregateTypeInfo.Type.GetTypeInfo().IsClass)
+                        else if (aggregateTypeInfo.Type.GetTypeInfo().IsClass)
                         {
-                            this.repositories.Register(aggregateTypeInfo.Type, aggregateTypeInfo.Type);
+                            this.repositories.Register(aggregateTypeInfo.Type, aggregateTypeInfo.Type, aggregateTypeInfo.Type.Name);
                         }
                         else
                         {
@@ -123,9 +123,14 @@ namespace Teclyn.Core
             attributeComputer.Compute(configuration);
         }
 
-        public void RegisterRepository<TAggregate>()
+        public void RegisterRepository<TAggregate>(string collectionName = null)
         {
-            this.repositories.Register(typeof(TAggregate), typeof(TAggregate));
+            if (string.IsNullOrWhiteSpace(collectionName))
+            {
+                collectionName = typeof(TAggregate).Name;
+            }
+
+            this.repositories.Register(typeof(TAggregate), typeof(TAggregate), collectionName);
         }
     }
 }

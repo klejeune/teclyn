@@ -28,12 +28,11 @@ namespace Teclyn.SampleMvc
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-
-            var teclyn = TeclynApi.Initialize(new TeclynWebConfiguration(StructuremapMvc.Container));
+            var configuration = new TeclynWebConfiguration(StructuremapMvc.Container).SetMongodbDatabase("TeclynSampleMVC");
+            var teclyn = TeclynApi.Initialize(configuration);
             var eventService = teclyn.Get<EventService>();
 
-            //var repo =
-            //    container.GetInstance<Teclyn.Core.Storage.IRepository<Teclyn.SampleCore.TodoLists.Models.ITodoList>>();
+            configuration.DropDatabase();
 
             eventService.Raise(new TodoListCreatedEvent
             {

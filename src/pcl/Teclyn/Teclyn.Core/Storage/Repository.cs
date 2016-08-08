@@ -13,13 +13,17 @@ namespace Teclyn.Core.Storage
         [Inject]
         public IStorageConfiguration StorageConfiguration { get; set; }
 
+        [Inject]
+        public RepositoryService RepositoryService { get; set; }
+
         private IRepositoryProvider<TAggregate> provider;
 
         private IRepositoryProvider<TAggregate> GetProvider()
         {
             if (provider == null)
             {
-                this.provider = this.StorageConfiguration.GetRepositoryProvider<TAggregate>();
+                var info = this.RepositoryService.GetInfo<TAggregate>();
+                this.provider = this.StorageConfiguration.GetRepositoryProvider<TAggregate>(info.CollectionName);
             }
 
             return this.provider;
@@ -30,9 +34,9 @@ namespace Teclyn.Core.Storage
             this.GetProvider().Create(item);
         }
 
-        public void Delete(string id)
+        public void Delete(TAggregate item)
         {
-            this.GetProvider().Delete(id);
+            this.GetProvider().Delete(item);
         }
 
         public TAggregate GetById(string id)
