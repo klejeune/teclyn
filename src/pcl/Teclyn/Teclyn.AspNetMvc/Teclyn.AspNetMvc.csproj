@@ -90,11 +90,16 @@
     <Compile Include="Models\IListModel.cs" />
     <Compile Include="Models\ListModel.cs" />
     <Compile Include="MvcApplicationExtensions.cs" />
+    <Compile Include="Mvc\Controllers\HomeController.cs" />
     <Compile Include="Mvc\Models\CommandModel.cs" />
+    <Compile Include="Mvc\Models\HomeModels.cs" />
     <Compile Include="Mvc\TeclynAreaRegistration.cs" />
     <Compile Include="Mvc\Controllers\CommandController.cs" />
     <Compile Include="TeclynAspNetMvcPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VirtualFileSystem\TeclynVirtualDirectory.cs" />
+    <Compile Include="VirtualFileSystem\TeclynVirtualFile.cs" />
+    <Compile Include="VirtualFileSystem\TeclynVirtualPathProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Teclyn.Core\Teclyn.Core.csproj">
@@ -106,9 +111,7 @@
     <None Include="packages.config" />
     <None Include="Teclyn.AspNetMvc.nuspec" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mvc\Views\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
