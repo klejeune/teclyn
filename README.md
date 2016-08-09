@@ -7,11 +7,11 @@ Teclyn is not fully useable yet.
 The first official release should happen between August and Octobre 2016. The version number will change to 1.x at this point.
 
 ## Philosophy
-Teclyn is:
+Teclyn is...
 - A toolkit: it is not a restrictive framework
 - Designed to be useable as quick as possible: one configuration class, one init instruction, and you're set)
 - Modular: use only the modules you need
-- Extensible: develop your own modules and connectors
+- Extensible: develop your own modules and connectors.
 
 ## History
 After several years designing CQRS/DDD architectures for different companies, I decided it was time to release an entirely rewritten toolkit as open source.
