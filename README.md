@@ -4,7 +4,7 @@ Teclyn is a multiplatform C#/Asp.Net production-ready toolkit using CQRS and Eve
 ## Work in progress
 Teclyn is not fully useable yet.
 
-The first official release should between in August and Octobre 2016. The version number will change to 1.x at this point.
+The first official release should happen between August and Octobre 2016. The version number will change to 1.x at this point.
 
 ## Philosophy
 Teclyn is:
