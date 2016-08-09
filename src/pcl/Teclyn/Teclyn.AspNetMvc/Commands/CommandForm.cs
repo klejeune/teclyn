@@ -22,7 +22,7 @@ namespace Teclyn.AspNetMvc.Commands
             
             var classes = string.IsNullOrWhiteSpace(@class) ? "command-form" : "command-form " + @class;
 
-            writer.Write($"<form class='{classes}' method='POST' action='{urlHelper.Action("ExecutePost", "Command", new { Area = "Teclyn" })}'>");
+            writer.Write($"<form class='{classes}' method='POST' action='{urlHelper.Action("ExecutePost", "Command", new { Area = "Teclyn" })}' data-reload='{reload}'>");
             writer.Write($"<input type='hidden' name='{rendererService.GetCommandTypeAttributeName()}' value='{typeof(TCommand).AssemblyQualifiedName}' />");
             writer.Write($"<input type='hidden' name='ReturnUrl' value='{returnUrl}' />");
         }

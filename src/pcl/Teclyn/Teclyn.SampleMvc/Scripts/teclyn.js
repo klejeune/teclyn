@@ -21,7 +21,7 @@ var teclyn = {
 
                 if (previousRequestData !== newRequestData) {
                     form.teclynRequestData = newRequestData;
-                    t.executeRemoteCommand(newRequestData, form, false);
+                    t.executeRemoteCommand(new FormData(form), form, $(form).data("reload"));
                 }
 
                 return false;

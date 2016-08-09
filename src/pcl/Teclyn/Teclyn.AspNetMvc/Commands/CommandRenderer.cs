@@ -92,7 +92,7 @@ namespace Teclyn.AspNetMvc.Commands
 
         public Type GetCommandType(HttpContextBase context)
         {
-            var commandTypeAsString = context.Request.Params[commandTypeHtmlAttribute];
+            var commandTypeAsString = context.Request.Unvalidated[commandTypeHtmlAttribute];
 
             var type = Type.GetType(commandTypeAsString);
 
