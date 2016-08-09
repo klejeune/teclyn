@@ -6,5 +6,5 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Teclyn.MongoDB")]
-[assembly: AssemblyDescription("A toolkit aimed at using MongoDB with Teclyn.")]
+[assembly: AssemblyDescription("An adapter aimed at using MongoDB with Teclyn.")]
 [assembly: AssemblyConfiguration("")]

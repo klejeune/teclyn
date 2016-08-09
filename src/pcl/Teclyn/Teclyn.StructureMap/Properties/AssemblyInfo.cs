@@ -7,5 +7,5 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Teclyn.StructureMap")]
-[assembly: AssemblyDescription("An adaptater for using the StructureMap IoC container with Teclyn.")]
+[assembly: AssemblyDescription("An adapter for using the StructureMap IoC container with Teclyn.")]
 [assembly: AssemblyConfiguration("")]
