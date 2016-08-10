@@ -90,7 +90,6 @@
     <Compile Include="Models\IListModel.cs" />
     <Compile Include="Models\ListModel.cs" />
     <Compile Include="MvcApplicationExtensions.cs" />
-    <Compile Include="Mvc\Controllers\HomeController.cs" />
     <Compile Include="Mvc\Models\CommandModel.cs" />
     <Compile Include="Mvc\Models\HomeModels.cs" />
     <Compile Include="Mvc\TeclynAreaRegistration.cs" />
