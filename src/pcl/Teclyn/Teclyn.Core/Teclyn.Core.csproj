@@ -83,6 +83,7 @@
     <Compile Include="Events\ISuppressionEvent.cs" />
     <Compile Include="Events\ITeclynEvent.cs" />
     <Compile Include="Events\Properties\IPropertyEvent.cs" />
+    <Compile Include="Ioc\BasicIocContainer.cs" />
     <Compile Include="Ioc\IIocContainer.cs" />
     <Compile Include="Ioc\InjectAttribute.cs" />
     <Compile Include="ITeclynConfiguration.cs" />

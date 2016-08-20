@@ -8,6 +8,7 @@ using Teclyn.Core.Domains;
 using Teclyn.Core.Events;
 using Teclyn.Core.Events.Handlers;
 using Teclyn.Core.Ioc;
+using Teclyn.Core.Security.Context;
 using Teclyn.Core.Storage;
 using Teclyn.Core.Storage.EventHandlers;
 
@@ -26,16 +27,16 @@ namespace Teclyn.Core
 
         private void Fill(ITeclynConfiguration configuration)
         {
-            this.iocContainer = configuration.IocContainer;
-            
             this.RegisterSpecialServices(configuration);
         }
 
         private void RegisterSpecialServices(ITeclynConfiguration configuration)
         {
             // service registration
+            this.iocContainer.Register(this.iocContainer);
             this.iocContainer.RegisterSingleton<RepositoryService>();
             this.iocContainer.Register<IEnvironment>(configuration.Environment);
+            this.iocContainer.Register<ITeclynContext, TeclynContext>();
             this.iocContainer.Register<IStorageConfiguration>(configuration.StorageConfiguration);
             this.iocContainer.RegisterSingleton<EventHandlerService>();
             configuration.RegisterServices();
@@ -54,9 +55,10 @@ namespace Teclyn.Core
 
             teclyn.Plugins = configuration.Plugins.ToList();
 
-            configuration.IocContainer.Initialize(configuration.Plugins.Select(plugin => plugin.GetType().GetTypeInfo().Assembly));
-            configuration.IocContainer.Register(configuration.IocContainer);
-            configuration.IocContainer.Register(teclyn);
+            teclyn.iocContainer = GetContainer(configuration);
+            teclyn.iocContainer.Initialize(configuration.Plugins.Select(plugin => plugin.GetType().GetTypeInfo().Assembly));
+            teclyn.iocContainer.Register(configuration.IocContainer);
+            teclyn.iocContainer.Register(teclyn);
 
             teclyn.Fill(configuration);
 
@@ -66,6 +68,18 @@ namespace Teclyn.Core
             }
 
             return teclyn;
+        }
+
+        private static IIocContainer GetContainer(ITeclynConfiguration configuration)
+        {
+            var ioc = configuration.IocContainer;
+
+            if (ioc == null)
+            {
+                ioc = new BasicIocContainer();
+            }
+
+            return ioc;
         }
 
         public T Get<T>()
