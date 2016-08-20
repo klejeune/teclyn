@@ -34,6 +34,10 @@
       <HintPath>..\packages\JetBrains.Annotations.10.1.5\lib\net\JetBrains.Annotations.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
@@ -86,6 +90,7 @@
     <Compile Include="Commands\Renderers\ICommandPropertyRenderer.cs" />
     <Compile Include="Commands\Renderers\StringInputCommandPropertyRenderer.cs" />
     <Compile Include="Extensions\MvcHtmlExtensions.cs" />
+    <Compile Include="Integration\TeclynBasicServiceLocator.cs" />
     <Compile Include="ModelBinders\CommandModelBinder.cs" />
     <Compile Include="Models\IListModel.cs" />
     <Compile Include="Models\ListModel.cs" />
@@ -107,7 +112,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Teclyn.AspNetMvc.nuspec" />
   </ItemGroup>
   <ItemGroup />
