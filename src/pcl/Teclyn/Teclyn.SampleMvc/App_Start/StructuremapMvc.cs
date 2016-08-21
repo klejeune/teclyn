@@ -16,8 +16,10 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using StructureMap;
+using Teclyn.AspNetMvc.Integration;
 using Teclyn.Core;
 using Teclyn.Core.Events;
+using Teclyn.Core.Ioc;
 using Teclyn.SampleCore.TodoLists.Events;
 using Teclyn.SampleCore.TodoLists.Models;
 using Teclyn.SampleMvc.App_Start;
@@ -57,8 +59,6 @@ namespace Teclyn.SampleMvc.App_Start {
             {
                 _.Scan(x => x.Assembly(typeof(ITodoList).Assembly));
             });
-            
-
             
             StructureMapDependencyScope = new StructureMapDependencyScope(Container);
             DependencyResolver.SetResolver(StructureMapDependencyScope);

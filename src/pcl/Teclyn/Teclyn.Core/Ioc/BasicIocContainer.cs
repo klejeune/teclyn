@@ -35,15 +35,22 @@ namespace Teclyn.Core.Ioc
         {
             Type concreteType;
 
-            if (!this.mappings.TryGetValue(type, out concreteType))
+            if (!this.mappings.TryGetValue(type, out concreteType) && !type.GetTypeInfo().IsInterface && !type.GetTypeInfo().IsAbstract)
             {
                 concreteType = type;
             }
 
-            var result = this.BuildConcrete(concreteType);
-            this.Inject(result);
+            if (concreteType != null)
+            {
+                var result = this.BuildConcrete(concreteType);
+                this.Inject(result);
 
-            return result;
+                return result;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private object BuildConcrete(Type concreteType)
