@@ -26,6 +26,7 @@ namespace Teclyn.Core.Ioc
             if (!this.instances.TryGetValue(type, out instance))
             {
                 instance = this.Build(type);
+                this.instances[type] = instance;
             }
 
             return instance;
