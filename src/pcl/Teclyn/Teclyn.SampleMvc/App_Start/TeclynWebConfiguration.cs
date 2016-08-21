@@ -5,6 +5,7 @@ using MongoDB.Driver;
 using StructureMap;
 using Teclyn.AspNetMvc;
 using Teclyn.Core;
+using Teclyn.Core.Basic;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Ioc;
 using Teclyn.Core.Security.Context;

@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Teclyn.Core.Domains;
+using Teclyn.Core.Storage;
 
-namespace Teclyn.Core.Storage
+namespace Teclyn.Core.Basic
 {
     public class InMemoryRepositoryProvider<T> : IRepositoryProvider<T> where T : class, IAggregate
     {

@@ -40,6 +40,7 @@
     <Compile Include="Api\AggregateInfo.cs" />
     <Compile Include="Api\TypeAttributeInfo.cs" />
     <Compile Include="AttributeComputer.cs" />
+    <Compile Include="Basic\BasicStorageConfiguration.cs" />
     <Compile Include="Commands\CommandExecutionContext.cs" />
     <Compile Include="Commands\CommandExecutionResult.cs" />
     <Compile Include="Commands\CommandExtensions.cs" />
@@ -82,7 +83,7 @@
     <Compile Include="Events\ISuppressionEvent.cs" />
     <Compile Include="Events\ITeclynEvent.cs" />
     <Compile Include="Events\Properties\IPropertyEvent.cs" />
-    <Compile Include="Ioc\BasicIocContainer.cs" />
+    <Compile Include="Basic\BasicIocContainer.cs" />
     <Compile Include="Ioc\IIocContainer.cs" />
     <Compile Include="Ioc\InjectAttribute.cs" />
     <Compile Include="ITeclynConfiguration.cs" />
@@ -102,7 +103,7 @@
     <Compile Include="Storage\EventHandlers\CreationPersistenceEventHandler.cs" />
     <Compile Include="Storage\EventHandlers\ModificationPersistenceEventHandler.cs" />
     <Compile Include="Storage\EventHandlers\SuppressionPersistenceEventHandler.cs" />
-    <Compile Include="Storage\InMemoryRepositoryProvider.cs" />
+    <Compile Include="Basic\InMemoryRepositoryProvider.cs" />
     <Compile Include="Storage\IRepository.cs" />
     <Compile Include="Storage\IRepositoryProvider.cs" />
     <Compile Include="Storage\IStorageConfiguration.cs" />

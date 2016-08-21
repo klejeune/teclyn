@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using StructureMap;
+using Teclyn.Core.Basic;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Ioc;
 using Teclyn.Core.Services;

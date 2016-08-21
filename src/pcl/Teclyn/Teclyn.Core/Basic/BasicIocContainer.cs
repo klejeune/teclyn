@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Teclyn.Core.Ioc;
 
-namespace Teclyn.Core.Ioc
+namespace Teclyn.Core.Basic
 {
     public class BasicIocContainer : IIocContainer
     {

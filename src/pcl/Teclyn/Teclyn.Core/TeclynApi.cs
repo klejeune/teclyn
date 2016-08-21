@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Teclyn.Core.Basic;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Events;
 using Teclyn.Core.Events.Handlers;
@@ -35,7 +36,7 @@ namespace Teclyn.Core
             this.iocContainer.Register(this.iocContainer);
             this.iocContainer.RegisterSingleton<RepositoryService>();
             this.iocContainer.Register<ITeclynContext, TeclynContext>();
-            this.iocContainer.Register<IStorageConfiguration>(configuration.StorageConfiguration);
+            this.iocContainer.Register<IStorageConfiguration>(configuration.StorageConfiguration ?? new BasicStorageConfiguration());
             this.iocContainer.RegisterSingleton<EventHandlerService>();
 
             // configuration analysis
