@@ -32,6 +32,8 @@ namespace Teclyn.SampleMvc
             new SampleCorePlugin(),
         };
 
+        public bool Debug => true;
+
         public IRepositoryProvider<T> GetRepositoryProvider<T>(string collectionName) where T : class, IAggregate
         {
             if (this.mongoDatabase != null)

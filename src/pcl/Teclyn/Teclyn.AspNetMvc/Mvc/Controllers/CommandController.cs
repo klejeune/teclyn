@@ -28,7 +28,7 @@ namespace Teclyn.AspNetMvc.Mvc.Controllers
             var result = this.CommandService.Execute(command);
             var userFriendlyResult = result.ToUserFriendly();
 
-            return Json(userFriendlyResult);
+            return this.Structured(userFriendlyResult);
         }
 
         [HttpPost]
@@ -43,8 +43,7 @@ namespace Teclyn.AspNetMvc.Mvc.Controllers
 
             return Redirect(returnUrl);
         }
-
-
+        
         public ActionResult Info()
         {
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
@@ -59,9 +58,10 @@ namespace Teclyn.AspNetMvc.Mvc.Controllers
                     ImplementationType = agg.ImplementationType.ToString(),
                 }).ToArray(),
                 TeclynVersion = version,
+                Commands = this.CommandService.GetAllInfo(),
             };
 
-            return Json(model, JsonRequestBehavior.AllowGet);
+            return this.Structured(model);
         }
     }
 }

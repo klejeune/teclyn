@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Teclyn.Core.Basic;
+using Teclyn.Core.Commands;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Events;
 using Teclyn.Core.Events.Handlers;
@@ -21,12 +22,15 @@ namespace Teclyn.Core
         private IIocContainer iocContainer;
         private RepositoryService repositories { get; set; }
 
+        public bool Debug { get; private set; }
+
         private TeclynApi()
         {
         }
 
         private void Fill(ITeclynConfiguration configuration)
         {
+            this.Debug = configuration.Debug;
             this.RegisterSpecialServices(configuration);
         }
 
@@ -38,6 +42,7 @@ namespace Teclyn.Core
             this.iocContainer.Register<ITeclynContext, TeclynContext>();
             this.iocContainer.Register<IStorageConfiguration>(configuration.StorageConfiguration ?? new BasicStorageConfiguration());
             this.iocContainer.RegisterSingleton<EventHandlerService>();
+            this.iocContainer.RegisterSingleton<CommandRepository>();
 
             // configuration analysis
             this.repositories = this.iocContainer.Get<RepositoryService>();
@@ -129,6 +134,18 @@ namespace Teclyn.Core
                     foreach (var eventHandlerType in eventHandlerTypes)
                     {
                         eventHandlerService.RegisterEventHandler(eventHandlerType.Type);
+                    }
+                });
+
+            attributeComputer.RegisterHandler(new[] {typeof(RemoteAttribute)},
+                dictionary =>
+                {
+                    var commandTypes = dictionary[typeof(RemoteAttribute)];
+                    var commandService = this.Get<CommandService>();
+
+                    foreach (var commandType in commandTypes)
+                    {
+                        commandService.RegisterCommand(commandType.Type);
                     }
                 });
 

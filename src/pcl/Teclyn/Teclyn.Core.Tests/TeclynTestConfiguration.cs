@@ -9,12 +9,12 @@ using Teclyn.StructureMap;
 
 namespace Teclyn.Core.Tests
 {
-    public class TeclynTestConfiguration : ITeclynConfiguration, IStorageConfiguration
+    public class TeclynTestConfiguration : ITeclynConfiguration
     {
         public StructureMapContainer TestIocContainer { get; }
 
         public IIocContainer IocContainer { get { return this.TestIocContainer; } }
-        public IStorageConfiguration StorageConfiguration { get { return this; } }
+        public IStorageConfiguration StorageConfiguration { get; }
 
         public IEnumerable<ITeclynPlugin> Plugins => new ITeclynPlugin[]
         {
@@ -22,15 +22,12 @@ namespace Teclyn.Core.Tests
             new TeclynStructureMapPlugin(),
             new TeclynCoreTestsPlugin(),
         };
-        
+
+        public bool Debug => false;
+
         public TeclynTestConfiguration()
         {
             this.TestIocContainer = new StructureMapContainer(new Container());
-        }
-
-        public IRepositoryProvider<T> GetRepositoryProvider<T>(string collectionName) where T : class, IAggregate
-        {
-            return new InMemoryRepositoryProvider<T>();
         }
     }
 }

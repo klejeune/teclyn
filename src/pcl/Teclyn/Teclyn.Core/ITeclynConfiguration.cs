@@ -10,5 +10,6 @@ namespace Teclyn.Core
         IIocContainer IocContainer { get; }
         IStorageConfiguration StorageConfiguration { get; }
         IEnumerable<ITeclynPlugin> Plugins { get; }
+        bool Debug { get; }
     }
 }

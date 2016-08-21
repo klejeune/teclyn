@@ -10,15 +10,17 @@ namespace Teclyn.Core.Commands
 {
     public class CommandService
     {
-        private ITeclynContext context;
-        private TeclynApi teclyn;
-        private IIocContainer iocContainer;
+        private readonly ITeclynContext context;
+        private readonly TeclynApi teclyn;
+        private readonly IIocContainer iocContainer;
+        private readonly CommandRepository commandRepository;
 
-        public CommandService(ITeclynContext context, TeclynApi teclyn, IIocContainer iocContainer)
+        public CommandService(ITeclynContext context, TeclynApi teclyn, IIocContainer iocContainer, CommandRepository commandRepository)
         {
             this.context = context;
             this.teclyn = teclyn;
             this.iocContainer = iocContainer;
+            this.commandRepository = commandRepository;
         }
 
         public ICommandResult Execute<TCommand>(TCommand command) where TCommand : ICommand
@@ -100,6 +102,26 @@ namespace Teclyn.Core.Commands
             var properties = command.GetType().GetRuntimeProperties().Where(p => p.CanRead && p.CanWrite);
 
             return properties.ToDictionary(p => p.Name, p => p.GetValue(command));
+        }
+        
+        public void RegisterCommand(Type commandType)
+        {
+            if (!typeof(ICommand).GetTypeInfo().IsAssignableFrom(commandType.GetTypeInfo()))
+            {
+                throw new TeclynException($"Unable to register type {commandType.Name}: it is not a command type. (It doesn't implement ICommand.)");
+            }
+
+            this.commandRepository.RegisterCommand(new CommandInfo(commandType.Name.ToLowerInvariant(), commandType.Name, commandType));
+        }
+
+        public CommandInfo GetInfo(Type commandType)
+        {
+            return this.commandRepository.Get(commandType.Name.ToLowerInvariant());
+        }
+
+        public IEnumerable<CommandInfo> GetAllInfo()
+        {
+            return this.commandRepository.Commands;
         }
     }
 }
