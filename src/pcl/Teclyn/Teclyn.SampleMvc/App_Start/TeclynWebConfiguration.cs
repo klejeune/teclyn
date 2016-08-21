@@ -5,7 +5,6 @@ using MongoDB.Driver;
 using StructureMap;
 using Teclyn.AspNetMvc;
 using Teclyn.Core;
-using Teclyn.Core.Configuration;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Ioc;
 using Teclyn.Core.Security.Context;
@@ -16,10 +15,9 @@ using Teclyn.StructureMap;
 
 namespace Teclyn.SampleMvc
 {
-    public class TeclynWebConfiguration : ITeclynConfiguration, IStorageConfiguration, IEnvironment
+    public class TeclynWebConfiguration : ITeclynConfiguration, IStorageConfiguration
     {
         public IIocContainer IocContainer { get; }
-        public IEnvironment Environment => this;
         public IStorageConfiguration StorageConfiguration => this;
 
         private IMongoDatabase mongoDatabase;
@@ -32,10 +30,6 @@ namespace Teclyn.SampleMvc
             new TeclynAspNetMvcPlugin(),
             new SampleCorePlugin(),
         };
-
-        public void RegisterServices()
-        {
-        }
 
         public IRepositoryProvider<T> GetRepositoryProvider<T>(string collectionName) where T : class, IAggregate
         {
@@ -61,11 +55,6 @@ namespace Teclyn.SampleMvc
             this.mongoDatabase = mongoClient.GetDatabase(databaseName);
 
             return this;
-        }
-
-        public ITeclynUser GetCurrentUser()
-        {
-            throw new System.NotImplementedException();
         }
 
         public void DropDatabase()

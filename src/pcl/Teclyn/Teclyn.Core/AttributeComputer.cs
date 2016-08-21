@@ -17,12 +17,12 @@ namespace Teclyn.Core
             this.handlers[attributes] = action;
         }
 
-        public void Compute(ITeclynConfiguration configuration)
+        public void Compute(IEnumerable<Assembly> assemblies)
         {
             var attributesToWatch = this.handlers.SelectMany(handler => handler.Key).Distinct();
 
-            var types = configuration.Plugins
-                .SelectMany(plugin => plugin.GetType().GetTypeInfo().Assembly.DefinedTypes)
+            var types = assemblies
+                .SelectMany(assembly => assembly.DefinedTypes)
                 .SelectMany(
                     type => type
                         .GetCustomAttributes(true)

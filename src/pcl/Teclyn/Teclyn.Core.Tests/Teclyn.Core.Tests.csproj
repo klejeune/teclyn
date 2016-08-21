@@ -45,7 +45,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TeclynCoreTestsPlugin.cs" />
     <Compile Include="TeclynTestConfiguration.cs" />
-    <Compile Include="TestEnvironment.cs" />
     <Compile Include="Tools\EnumerableExtensionsTests.cs" />
   </ItemGroup>
   <ItemGroup>

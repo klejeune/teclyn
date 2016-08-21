@@ -55,7 +55,6 @@
     <Compile Include="Commands\Properties\PropertyCommand.cs" />
     <Compile Include="Commands\RemoteAttribute.cs" />
     <Compile Include="Commands\UserFriendlyCommandResult.cs" />
-    <Compile Include="Configuration\IEnvironment.cs" />
     <Compile Include="Domains\IIndexable.cs" />
     <Compile Include="Domains\ServiceAttribute.cs" />
     <Compile Include="Dummies\DummyAggregate.cs" />
@@ -99,7 +98,6 @@
     <Compile Include="Security\Context\TeclynContext.cs" />
     <Compile Include="Security\Context\TeclynContextLevel.cs" />
     <Compile Include="Security\TeclynSecurityException.cs" />
-    <Compile Include="Services\UserContext.cs" />
     <Compile Include="Security\Context\ITeclynUser.cs" />
     <Compile Include="Storage\EventHandlers\CreationPersistenceEventHandler.cs" />
     <Compile Include="Storage\EventHandlers\ModificationPersistenceEventHandler.cs" />
@@ -132,6 +130,9 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Teclyn.Core.nuspec" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Configuration\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

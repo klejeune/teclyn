@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Teclyn.Core.Configuration;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Events;
 using Teclyn.Core.Events.Handlers;
@@ -35,15 +34,13 @@ namespace Teclyn.Core
             // service registration
             this.iocContainer.Register(this.iocContainer);
             this.iocContainer.RegisterSingleton<RepositoryService>();
-            this.iocContainer.Register<IEnvironment>(configuration.Environment);
             this.iocContainer.Register<ITeclynContext, TeclynContext>();
             this.iocContainer.Register<IStorageConfiguration>(configuration.StorageConfiguration);
             this.iocContainer.RegisterSingleton<EventHandlerService>();
-            configuration.RegisterServices();
 
             // configuration analysis
             this.repositories = this.iocContainer.Get<RepositoryService>();
-            this.ComputeAttributes(configuration);
+            this.ComputeAttributes(this.Plugins.Select(plugin => plugin.GetType().GetTypeInfo().Assembly));
             
             // computing based on the analyzed data
             
@@ -56,7 +53,7 @@ namespace Teclyn.Core
             teclyn.Plugins = configuration.Plugins.ToList();
 
             teclyn.iocContainer = GetContainer(configuration);
-            teclyn.iocContainer.Initialize(configuration.Plugins.Select(plugin => plugin.GetType().GetTypeInfo().Assembly));
+            teclyn.iocContainer.Initialize(teclyn.Plugins.Select(plugin => plugin.GetType().GetTypeInfo().Assembly));
             teclyn.iocContainer.Register(configuration.IocContainer);
             teclyn.iocContainer.Register(teclyn);
 
@@ -92,7 +89,7 @@ namespace Teclyn.Core
             return this.iocContainer.Get(type);
         }
 
-        private void ComputeAttributes(ITeclynConfiguration configuration)
+        private void ComputeAttributes(IEnumerable<Assembly> assemblies)
         {
             var attributeComputer = new AttributeComputer();
             attributeComputer.RegisterHandler(
@@ -134,7 +131,7 @@ namespace Teclyn.Core
                     }
                 });
 
-            attributeComputer.Compute(configuration);
+            attributeComputer.Compute(assemblies);
         }
 
         public void RegisterRepository<TAggregate>(string collectionName = null)
