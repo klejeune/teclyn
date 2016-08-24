@@ -28,8 +28,9 @@ namespace Teclyn.SampleMvc
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            var configuration = new TeclynWebConfiguration(StructuremapMvc.Container);
-            //configuration.SetMongodbDatabase("TeclynSampleMVC");
+            var configuration = new TeclynWebConfiguration();
+            //configuration.UseStructureMap(StructuremapMvc.Container);
+            //configuration.UseMongodbDatabase("TeclynSampleMVC");
             var teclyn = TeclynApi.Initialize(configuration);
             var eventService = teclyn.Get<EventService>();
 

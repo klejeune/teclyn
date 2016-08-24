@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using StructureMap.Attributes;
 using Teclyn.AspNetMvc.Models;
+using Teclyn.Core.Ioc;
 using Teclyn.Core.Storage;
 using Teclyn.SampleCore.TodoLists.Models;
 
@@ -12,7 +13,7 @@ namespace Teclyn.SampleMvc.Controllers
 {
     public class TodoListController : Controller
     {
-        [SetterProperty]
+        [Inject]
         public IRepository<ITodoList> TodoLists { get; set; }
 
         // GET: TodoList

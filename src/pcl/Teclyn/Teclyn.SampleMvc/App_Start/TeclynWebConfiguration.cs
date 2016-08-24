@@ -18,7 +18,7 @@ namespace Teclyn.SampleMvc
 {
     public class TeclynWebConfiguration : ITeclynConfiguration, IStorageConfiguration
     {
-        public IIocContainer IocContainer { get; }
+        public IIocContainer IocContainer { get; private set; }
         public IStorageConfiguration StorageConfiguration => this;
 
         private IMongoDatabase mongoDatabase;
@@ -46,16 +46,18 @@ namespace Teclyn.SampleMvc
             }
         }
 
-        public TeclynWebConfiguration(IContainer structureMapContainer)
-        {
-            this.IocContainer = new StructureMapContainer(structureMapContainer);
-        }
-
-        public TeclynWebConfiguration SetMongodbDatabase(string databaseName)
+        public TeclynWebConfiguration UseMongodbDatabase(string databaseName)
         {
             this.databaseName = databaseName;
             var mongoClient = new MongoClient(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
             this.mongoDatabase = mongoClient.GetDatabase(databaseName);
+
+            return this;
+        }
+
+        public TeclynWebConfiguration UseStructureMap(IContainer structureMapContainer)
+        {
+            this.IocContainer = new StructureMapContainer(structureMapContainer);
 
             return this;
         }
