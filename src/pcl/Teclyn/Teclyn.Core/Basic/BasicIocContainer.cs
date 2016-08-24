@@ -11,6 +11,11 @@ namespace Teclyn.Core.Basic
         private readonly IDictionary<Type, object> instances = new Dictionary<Type, object>();
         private readonly IDictionary<Type, Type> mappings = new Dictionary<Type, Type>();
 
+        private readonly IEnumerable<string> notStoredInstances = new[]
+        {
+            "System.Web.Mvc.Controller"
+        };
+
         public void Initialize(IEnumerable<Assembly> assemblies)
         {
         }
@@ -27,10 +32,19 @@ namespace Teclyn.Core.Basic
             if (!this.instances.TryGetValue(type, out instance))
             {
                 instance = this.Build(type);
-                this.instances[type] = instance;
+
+                if (this.MustStoreInstance(type))
+                {
+                    this.instances[type] = instance;
+                }
             }
 
             return instance;
+        }
+
+        private bool MustStoreInstance(Type type)
+        {
+            return !type.GetAllAncestorsAndInterfaces().Any(ancestor => notStoredInstances.Contains(ancestor.FullName));
         }
 
         private object Build(Type type)
