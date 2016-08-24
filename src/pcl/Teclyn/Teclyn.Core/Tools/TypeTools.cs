@@ -9,7 +9,7 @@ public static class TypeTools
     {
         var typeInfo = type.GetTypeInfo();
 
-        if (typeInfo.BaseType == typeof(object))
+        if (typeInfo.BaseType == typeof(object) || typeInfo.BaseType == null)
         {
             return type.AsArray();
         }
