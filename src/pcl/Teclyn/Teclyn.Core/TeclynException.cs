@@ -8,5 +8,10 @@ namespace Teclyn.Core
         {
             
         }
+
+        public TeclynException(string message, Exception innerException) : base(message, innerException)
+        {
+
+        }
     }
 }

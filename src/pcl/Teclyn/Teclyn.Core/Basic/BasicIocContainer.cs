@@ -27,19 +27,26 @@ namespace Teclyn.Core.Basic
 
         public object Get(Type type)
         {
-            object instance;
-
-            if (!this.instances.TryGetValue(type, out instance))
+            try
             {
-                instance = this.Build(type);
+                object instance;
 
-                if (this.MustStoreInstance(type))
+                if (!this.instances.TryGetValue(type, out instance))
                 {
-                    this.instances[type] = instance;
-                }
-            }
+                    instance = this.Build(type);
 
-            return instance;
+                    if (this.MustStoreInstance(type))
+                    {
+                        this.instances[type] = instance;
+                    }
+                }
+
+                return instance;
+            }
+            catch (Exception exception)
+            {
+                throw new TeclynException($"Unable to load type {type}.", exception);
+            }
         }
 
         private bool MustStoreInstance(Type type)
