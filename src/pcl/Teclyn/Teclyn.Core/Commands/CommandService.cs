@@ -33,10 +33,21 @@ namespace Teclyn.Core.Commands
             return this.ExecuteInternal(command, command1 => command1.Result);
         }
 
+        public ICommandResult Execute<TCommand>(Action<TCommand> builder) where TCommand : ICommand
+        {
+            var command = this.Create(builder);
+            return this.Execute(command);
+        }
+
+        public ICommandResult<TResult> Execute<TCommand, TResult>(Action<TCommand> builder) where TCommand : ICommand<TResult>
+        {
+            var command = this.Create(builder);
+            return this.Execute(command);
+        }
+
         public IUserFriendlyCommandResult ExecuteGeneric(IBaseCommand command)
         {
             var result = this.ExecuteInternal(command, command1 => string.Empty);
-
             return result.ToUserFriendly();
         }
 
@@ -49,7 +60,10 @@ namespace Teclyn.Core.Commands
         {
             var command = this.Create<TCommand>();
 
-            builder(command);
+            if (builder != null)
+            {
+                builder(command);
+            }
 
             return command;
         }
