@@ -49,11 +49,11 @@ namespace Teclyn.Core.Tests.Commands
             var first = "test";
             var second = 5;
 
-            var command = new DummyCommand
+            var command = this.commandService.Create<DummyCommand>(c =>
             {
-                FirstParameter = first,
-                SecondParameter = second
-            };
+                c.FirstParameter = first;
+                c.SecondParameter = second;
+            });
 
             var result = command.Execute<DummyCommand, string>(this.commandService);
 

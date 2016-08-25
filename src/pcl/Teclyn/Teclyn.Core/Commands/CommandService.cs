@@ -23,13 +23,26 @@ namespace Teclyn.Core.Commands
             this.commandRepository = commandRepository;
         }
 
-        public ICommandResult Execute<TCommand>(TCommand command) where TCommand : ICommand
+        public ICommandResult Execute(ICommand command)
         {
             return this.ExecuteInternal(command, command1 => string.Empty);
         }
 
-        public ICommandResult<TResult> Execute<TCommand, TResult>(TCommand command)
-            where TCommand : ICommand<TResult>
+        public TCommand Create<TCommand>() where TCommand : ICommand
+        {
+            return this.iocContainer.Get<TCommand>();
+        }
+
+        public TCommand Create<TCommand>(Action<TCommand> builder) where TCommand : ICommand
+        {
+            var command = this.Create<TCommand>();
+
+            builder(command);
+
+            return command;
+        }
+
+        public ICommandResult<TResult> Execute<TResult>(ICommand<TResult> command)
         {
             return this.ExecuteInternal(command, command1 => command1.Result);
         }
@@ -37,8 +50,6 @@ namespace Teclyn.Core.Commands
         public ICommandResult<TResult> ExecuteInternal<TCommand, TResult>(TCommand command,
             Func<TCommand, TResult> resultAccessor) where TCommand : ICommand
         {
-            this.iocContainer.Inject(command);
-
             var result = new CommandExecutionResult<TResult>(teclyn);
 
             this.CheckContextInternal(command, result);
