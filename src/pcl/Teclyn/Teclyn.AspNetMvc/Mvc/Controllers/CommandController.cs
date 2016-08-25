@@ -23,18 +23,17 @@ namespace Teclyn.AspNetMvc.Mvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult Execute(ICommand command)
+        public ActionResult Execute(IBaseCommand command)
         {
-            var result = this.CommandService.Execute(command);
-            var userFriendlyResult = result.ToUserFriendly();
+            var result = this.CommandService.ExecuteGeneric(command);
 
-            return this.Structured(userFriendlyResult);
+            return this.Structured(result);
         }
 
         [HttpPost]
-        public ActionResult ExecutePost(ICommand command, string returnUrl)
+        public ActionResult ExecutePost(IBaseCommand command, string returnUrl)
         {
-            this.CommandService.Execute(command);
+            this.CommandService.ExecuteGeneric(command);
             
             if (string.IsNullOrWhiteSpace(returnUrl))
             {

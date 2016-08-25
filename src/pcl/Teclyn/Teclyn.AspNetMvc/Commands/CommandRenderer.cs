@@ -31,7 +31,7 @@ namespace Teclyn.AspNetMvc.Commands
         [Inject]
         public CommandPropertyRendererFactory CommandPropertyRendererFactory { get; set; }
         
-        public CommandButton RenderCommandButton<TCommand>(TextWriter writer, Action<TCommand> builder, bool reload, string @class, IDictionary<string, object> htmlAttributes) where TCommand : ICommand
+        public CommandButton RenderCommandButton<TCommand>(TextWriter writer, Action<TCommand> builder, bool reload, string @class, IDictionary<string, object> htmlAttributes) where TCommand : IBaseCommand
         {
             var command = this.IocContainer.Get<TCommand>();
 
@@ -61,7 +61,7 @@ namespace Teclyn.AspNetMvc.Commands
             return new CommandButton(writer, serializedCommand, reload, @class, htmlAttributes);
         }
 
-        public CommandForm<TCommand> RenderCommandForm<TCommand>(HtmlHelper helper, bool reload, string @class, object htmlAttributes, string returnUrl) where TCommand : ICommand
+        public CommandForm<TCommand> RenderCommandForm<TCommand>(HtmlHelper helper, bool reload, string @class, object htmlAttributes, string returnUrl) where TCommand : IBaseCommand
         {
             var command = this.IocContainer.Get<TCommand>();
 

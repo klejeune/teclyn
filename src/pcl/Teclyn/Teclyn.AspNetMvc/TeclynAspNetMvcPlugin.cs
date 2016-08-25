@@ -32,7 +32,7 @@ namespace Teclyn.AspNetMvc
             teclyn.Get<CommandPropertyRendererFactory>().RegisterRenderer(new StringInputCommandPropertyRenderer());
 
             // MVC
-            System.Web.Mvc.ModelBinders.Binders.Add(typeof(ICommand), new CommandModelBinder(teclyn));
+            System.Web.Mvc.ModelBinders.Binders.Add(typeof(IBaseCommand), new CommandModelBinder(teclyn));
             HostingEnvironment.RegisterVirtualPathProvider(new TeclynVirtualPathProvider());
             DependencyResolver.SetResolver(teclyn.Get<TeclynBasicServiceLocator>());
         }

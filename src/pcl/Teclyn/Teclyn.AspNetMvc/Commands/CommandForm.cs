@@ -9,7 +9,7 @@ using Teclyn.Core.Tools;
 
 namespace Teclyn.AspNetMvc.Commands
 {
-    public class CommandForm<TCommand> : IDisposable where TCommand : ICommand
+    public class CommandForm<TCommand> : IDisposable where TCommand : IBaseCommand
     {
         private TextWriter writer;
         private CommandRenderer rendererService;

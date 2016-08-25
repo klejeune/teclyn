@@ -28,12 +28,24 @@ namespace Teclyn.Core.Commands
             return this.ExecuteInternal(command, command1 => string.Empty);
         }
 
-        public TCommand Create<TCommand>() where TCommand : ICommand
+        public ICommandResult<TResult> Execute<TResult>(ICommand<TResult> command)
+        {
+            return this.ExecuteInternal(command, command1 => command1.Result);
+        }
+
+        public IUserFriendlyCommandResult ExecuteGeneric(IBaseCommand command)
+        {
+            var result = this.ExecuteInternal(command, command1 => string.Empty);
+
+            return result.ToUserFriendly();
+        }
+
+        public TCommand Create<TCommand>() where TCommand : IBaseCommand
         {
             return this.iocContainer.Get<TCommand>();
         }
 
-        public TCommand Create<TCommand>(Action<TCommand> builder) where TCommand : ICommand
+        public TCommand Create<TCommand>(Action<TCommand> builder) where TCommand : IBaseCommand
         {
             var command = this.Create<TCommand>();
 
@@ -42,13 +54,8 @@ namespace Teclyn.Core.Commands
             return command;
         }
 
-        public ICommandResult<TResult> Execute<TResult>(ICommand<TResult> command)
-        {
-            return this.ExecuteInternal(command, command1 => command1.Result);
-        }
-
         public ICommandResult<TResult> ExecuteInternal<TCommand, TResult>(TCommand command,
-            Func<TCommand, TResult> resultAccessor) where TCommand : ICommand
+            Func<TCommand, TResult> resultAccessor) where TCommand : IBaseCommand
         {
             var result = new CommandExecutionResult<TResult>(teclyn);
 
@@ -69,7 +76,7 @@ namespace Teclyn.Core.Commands
             return result;
         }
 
-        public CommandExecutionResult CheckContext(ICommand command)
+        public CommandExecutionResult CheckContext(IBaseCommand command)
         {
             var result = new CommandExecutionResult(this.teclyn);
 
@@ -78,7 +85,7 @@ namespace Teclyn.Core.Commands
             return result;
         }
 
-        public CommandExecutionResult CheckContextAndParameters(ICommand command)
+        public CommandExecutionResult CheckContextAndParameters(IBaseCommand command)
         {
             var result = new CommandExecutionResult(this.teclyn);
 
@@ -88,12 +95,12 @@ namespace Teclyn.Core.Commands
             return result;
         }
 
-        private void CheckParametersInternal(ICommand command, CommandExecutionResult result)
+        private void CheckParametersInternal(IBaseCommand command, CommandExecutionResult result)
         {
             result.ParametersAreValid = command.CheckParameters(result);
         }
 
-        private void CheckContextInternal(ICommand command, CommandExecutionResult result)
+        private void CheckContextInternal(IBaseCommand command, CommandExecutionResult result)
         {
             result.ContextIsValid = command.CheckContext(context, result);
         }
@@ -108,7 +115,7 @@ namespace Teclyn.Core.Commands
             return commandType.GetTypeInfo().GetCustomAttribute<RemoteAttribute>() != null;
         }
 
-        public IDictionary<string, object> Serialize(ICommand command)
+        public IDictionary<string, object> Serialize(IBaseCommand command)
         {
             var properties = command.GetType().GetRuntimeProperties().Where(p => p.CanRead && p.CanWrite);
 
@@ -117,7 +124,7 @@ namespace Teclyn.Core.Commands
         
         public void RegisterCommand(Type commandType)
         {
-            if (!typeof(ICommand).GetTypeInfo().IsAssignableFrom(commandType.GetTypeInfo()))
+            if (!typeof(IBaseCommand).GetTypeInfo().IsAssignableFrom(commandType.GetTypeInfo()))
             {
                 throw new TeclynException($"Unable to register type {commandType.Name}: it is not a command type. (It doesn't implement ICommand.)");
             }

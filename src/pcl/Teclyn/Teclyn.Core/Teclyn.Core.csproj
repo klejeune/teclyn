@@ -48,7 +48,7 @@
     <Compile Include="Commands\CommandRepository.cs" />
     <Compile Include="Commands\CommandResultError.cs" />
     <Compile Include="Commands\CommandService.cs" />
-    <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Commands\IBaseCommand.cs" />
     <Compile Include="Commands\ICommandContextChecker.cs" />
     <Compile Include="Commands\ICommandExecutionContext.cs" />
     <Compile Include="Commands\ICommandResult.cs" />

@@ -29,7 +29,7 @@ public static class MvcHtmlExtensions
     }
 
     public static CommandButton CommandButton<TCommand>(this HtmlHelper helper, Action<TCommand> builder, string @class = "", object htmlAttributes = null)
-        where TCommand : ICommand
+        where TCommand : IBaseCommand
     {
         var attributes = HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes).SafeCast<IDictionary<string, object>>();
 
@@ -37,7 +37,7 @@ public static class MvcHtmlExtensions
     }
 
     public static MvcHtmlString CommandButton<TCommand>(this HtmlHelper helper, string label, Action<TCommand> builder, string @class = "", object htmlAttributes = null)
-        where TCommand : ICommand
+        where TCommand : IBaseCommand
     {
         var writer = new StringWriter();
 
@@ -51,7 +51,7 @@ public static class MvcHtmlExtensions
         return new MvcHtmlString(writer.ToString());
     }
 
-    public static CommandForm<TCommand> CommandForm<TCommand>(this HtmlHelper helper, bool reload = false, string @class = null, object htmlAttributes = null, string returnUrl = null) where TCommand : ICommand
+    public static CommandForm<TCommand> CommandForm<TCommand>(this HtmlHelper helper, bool reload = false, string @class = null, object htmlAttributes = null, string returnUrl = null) where TCommand : IBaseCommand
     {
         return CommandRenderer.RenderCommandForm<TCommand>(helper, reload, @class, htmlAttributes, returnUrl);
     }
