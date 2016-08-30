@@ -40,6 +40,11 @@ namespace Teclyn.Core.Basic
             this.data.Remove(item.Id);
         }
 
+        public bool Exists(string id)
+        {
+            return this.data.ContainsKey(id);
+        }
+
         public T GetByIdOrNull(string id)
         {
             return this.data.GetValueOrDefault(id);

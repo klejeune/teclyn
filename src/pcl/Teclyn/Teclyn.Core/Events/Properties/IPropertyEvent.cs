@@ -8,7 +8,7 @@ namespace Teclyn.Core.Events.Properties
         
     }
 
-    public interface IPropertyEvent<TAggregate, TProperty> : IPropertyEvent, IModificationEvent<TAggregate> where TAggregate : IAggregate
+    public interface IPropertyEvent<TAggregate, TProperty> : IPropertyEvent, IEvent<TAggregate> where TAggregate : IAggregate
     {
         TProperty OldValue { get; set; }
         TProperty NewValue { get; set; }

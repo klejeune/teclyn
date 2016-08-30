@@ -9,5 +9,6 @@ namespace Teclyn.Core.Storage
         void Create(T item);
         void Save(T item);
         void Delete(T item);
+        bool Exists(string id);
     }
 }

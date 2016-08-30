@@ -3,7 +3,7 @@ using Teclyn.SampleCore.Users.Models;
 
 namespace Teclyn.SampleCore.Users.Events
 {
-    public class UserRegisteredEvent : ICreationEvent<IUser>
+    public class UserRegisteredEvent : IEvent<IUser>
     {
         public void Apply(IUser aggregate, IEventInformation information)
         {

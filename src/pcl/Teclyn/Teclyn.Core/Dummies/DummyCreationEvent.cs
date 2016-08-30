@@ -2,7 +2,7 @@
 
 namespace Teclyn.Core.Dummies
 {
-    public class DummyCreationEvent : ICreationEvent<IDummyAggregate>
+    public class DummyCreationEvent : IEvent<IDummyAggregate>
     {
         public void Apply(IDummyAggregate aggregate, IEventInformation information)
         {

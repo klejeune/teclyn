@@ -50,5 +50,10 @@ namespace Teclyn.Mongodb
         {
             this.collection.DeleteOne(i => i.Id == item.Id);
         }
+
+        public bool Exists(string id)
+        {
+            return this.collection.AsQueryable().Any(i => i.Id == id);
+        }
     }
 }

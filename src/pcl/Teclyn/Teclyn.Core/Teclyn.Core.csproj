@@ -77,9 +77,8 @@
     <Compile Include="Events\EventService.cs" />
     <Compile Include="Events\Injection\EventInjector.cs" />
     <Compile Include="Events\Injection\EventUserAttribute.cs" />
-    <Compile Include="Events\ICreationEvent.cs" />
     <Compile Include="Events\IEventInformation.cs" />
-    <Compile Include="Events\IModificationEvent.cs" />
+    <Compile Include="Events\IEvent.cs" />
     <Compile Include="Events\Injection\EventUsernameAttribute.cs" />
     <Compile Include="Events\Injection\IEventInjector.cs" />
     <Compile Include="Events\ISuppressionEvent.cs" />
@@ -102,7 +101,6 @@
     <Compile Include="Security\Context\TeclynContextLevel.cs" />
     <Compile Include="Security\TeclynSecurityException.cs" />
     <Compile Include="Security\Context\ITeclynUser.cs" />
-    <Compile Include="Storage\EventHandlers\CreationPersistenceEventHandler.cs" />
     <Compile Include="Storage\EventHandlers\ModificationPersistenceEventHandler.cs" />
     <Compile Include="Storage\EventHandlers\SuppressionPersistenceEventHandler.cs" />
     <Compile Include="Basic\InMemoryRepositoryProvider.cs" />

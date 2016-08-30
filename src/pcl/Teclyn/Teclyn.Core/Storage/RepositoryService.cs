@@ -32,8 +32,7 @@ namespace Teclyn.Core.Storage
             this.aggregates[aggregateType] = new AggregateInfo(aggregateType, implementationType, collectionName);
 
             this.iocContainer.Register(typeof(IRepository<>).MakeGenericType(aggregateType), typeof(Repository<>).MakeGenericType(aggregateType));
-
-            this.eventHandlerService.RegisterEventHandler(typeof(CreationPersistenceEventHandler<>).MakeGenericType(aggregateType));
+            
             this.eventHandlerService.RegisterEventHandler(typeof(ModificationPersistenceEventHandler<>).MakeGenericType(aggregateType));
             this.eventHandlerService.RegisterEventHandler(typeof(SuppressionPersistenceEventHandler<>).MakeGenericType(aggregateType));
         }

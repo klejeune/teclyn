@@ -27,22 +27,15 @@ namespace Teclyn.Core.Events
             this.eventHandlerService = eventHandlerService;
         }
 
-        public TAggregate Raise<TAggregate>(ICreationEvent<TAggregate> @event) where TAggregate : IAggregate
+        public TAggregate Raise<TAggregate>(IEvent<TAggregate> @event) where TAggregate : class, IAggregate
         {
             var eventInformation = this.BuildEventInformation(@event);
-            var aggregate = this.BuildAggregate<TAggregate>();
+            var aggregate = this.repositoryService.Get<TAggregate>().GetByIdOrNull(@event.AggregateId);
 
-            @event.Apply(aggregate, eventInformation);
-
-            this.LaunchEventHandlers(aggregate, @event, eventInformation);
-
-            return aggregate;
-        }
-
-        public TAggregate Raise<TAggregate>(IModificationEvent<TAggregate> @event) where TAggregate : class, IAggregate
-        {
-            var eventInformation = this.BuildEventInformation(@event);
-            var aggregate = this.repositoryService.Get<TAggregate>().GetById(@event.AggregateId);
+            if (aggregate == null)
+            {
+                aggregate = this.BuildAggregate<TAggregate>();
+            }
 
             @event.Apply(aggregate, eventInformation);
 

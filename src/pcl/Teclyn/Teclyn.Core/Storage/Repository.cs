@@ -29,6 +29,11 @@ namespace Teclyn.Core.Storage
             return this.provider;
         }
 
+        public bool Exists(string id)
+        {
+            return this.GetProvider().Exists(id);
+        }
+
         public void Create(TAggregate item)
         {
             this.GetProvider().Create(item);

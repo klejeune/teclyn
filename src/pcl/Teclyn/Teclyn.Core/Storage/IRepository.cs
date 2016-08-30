@@ -7,6 +7,7 @@ namespace Teclyn.Core.Storage
     {
         T GetById(string id);
         T GetByIdOrNull(string id);
+        bool Exists(string id);
         void Create(T item);
         void Save(T item);
         void Delete(T item);

@@ -3,7 +3,7 @@ using Teclyn.SampleCore.Todos.Models;
 
 namespace Teclyn.SampleCore.Todos.Events
 {
-    public class TodoCreatedEvent : ICreationEvent<ITodo>
+    public class TodoCreatedEvent : IEvent<ITodo>
     {
         public string Text { get; set; }
         public string TodoListId { get; set; }
