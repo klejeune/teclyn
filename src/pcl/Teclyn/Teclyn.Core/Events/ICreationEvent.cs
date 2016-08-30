@@ -2,8 +2,8 @@
 
 namespace Teclyn.Core.Events
 {
-    public interface ICreationEvent<out TAggregate> : ITeclynEvent<TAggregate> where TAggregate : IAggregate
+    public interface ICreationEvent<TAggregate> : ITeclynEvent<TAggregate> where TAggregate : IAggregate
     {
-        TAggregate Apply(IEventInformation information);
+        void Apply(TAggregate aggregate, IEventInformation information);
     }
 }

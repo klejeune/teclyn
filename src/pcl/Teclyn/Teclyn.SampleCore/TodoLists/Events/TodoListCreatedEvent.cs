@@ -7,9 +7,9 @@ namespace Teclyn.SampleCore.TodoLists.Events
     {
         public string Name { get; set; }
 
-        public ITodoList Apply(IEventInformation information)
+        public void Apply(ITodoList aggregate, IEventInformation information)
         {
-            return new TodoList(information.Type(this));
+            aggregate.Create(information.Type(this));
         }
 
         public string AggregateId { get; set; }

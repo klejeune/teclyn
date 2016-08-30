@@ -8,10 +8,10 @@ namespace Teclyn.SampleCore.Todos.Events
         public string Text { get; set; }
         public string TodoListId { get; set; }
         public string TodoListName { get; set; }
-
-        public ITodo Apply(IEventInformation information)
+        
+        public void Apply(ITodo aggregate, IEventInformation information)
         {
-            return new Todo(information.Type(this));
+            aggregate.Create(information.Type(this));
         }
 
         public string AggregateId { get; set; }

@@ -12,11 +12,6 @@ namespace Teclyn.Core.Tests.Events
         [Aggregate]
         private class DummyAggregate : IAggregate
         {
-            public DummyAggregate(DummyCreationEvent dummyCreationEvent)
-            {
-                this.Id = dummyCreationEvent.AggregateId;
-            }
-
             public string Id { get; set; }
             public string Value { get; set; }
 
@@ -24,13 +19,18 @@ namespace Teclyn.Core.Tests.Events
             {
                 this.Value = @event.Value;
             }
+
+            public void Create(IEventInformation<DummyCreationEvent> eventInformation)
+            {
+                this.Id = eventInformation.Event.AggregateId;
+            }
         }
 
         private class DummyCreationEvent : ICreationEvent<DummyAggregate>
         {
-            public DummyAggregate Apply(IEventInformation information)
+            public void Apply(DummyAggregate aggregate, IEventInformation information)
             {
-                return new DummyAggregate(this);
+                aggregate.Create(information.Type(this));
             }
 
             public string AggregateId { get; set; }

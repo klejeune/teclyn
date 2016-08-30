@@ -1,5 +1,7 @@
 ﻿using System;
 using Teclyn.Core.Domains;
+using Teclyn.Core.Events;
+using Teclyn.SampleCore.TodoLists.Events;
 
 namespace Teclyn.SampleCore.TodoLists.Models
 {
@@ -9,5 +11,6 @@ namespace Teclyn.SampleCore.TodoLists.Models
         int Length { get; }
         DateTime CreationDate { get; }
         DateTime LastModificationDate { get; }
+        void Create(IEventInformation<TodoListCreatedEvent> eventInformation);
     }
 }

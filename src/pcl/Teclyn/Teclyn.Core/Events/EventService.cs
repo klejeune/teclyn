@@ -30,15 +30,16 @@ namespace Teclyn.Core.Events
         public TAggregate Raise<TAggregate>(ICreationEvent<TAggregate> @event) where TAggregate : IAggregate
         {
             var eventInformation = this.BuildEventInformation(@event);
+            var aggregate = this.BuildAggregate<TAggregate>();
 
-            var aggregate = @event.Apply(eventInformation);
+            @event.Apply(aggregate, eventInformation);
 
             this.LaunchEventHandlers(aggregate, @event, eventInformation);
 
             return aggregate;
         }
 
-        public void Raise<TAggregate>(IModificationEvent<TAggregate> @event) where TAggregate : class, IAggregate
+        public TAggregate Raise<TAggregate>(IModificationEvent<TAggregate> @event) where TAggregate : class, IAggregate
         {
             var eventInformation = this.BuildEventInformation(@event);
             var aggregate = this.repositoryService.Get<TAggregate>().GetById(@event.AggregateId);
@@ -46,14 +47,18 @@ namespace Teclyn.Core.Events
             @event.Apply(aggregate, eventInformation);
 
             this.LaunchEventHandlers(aggregate, @event, eventInformation);
+
+            return aggregate;
         }
 
-        public void Raise<TAggregate>(ISuppressionEvent<TAggregate> @event) where TAggregate : class, IAggregate
+        public TAggregate Raise<TAggregate>(ISuppressionEvent<TAggregate> @event) where TAggregate : class, IAggregate
         {
             var eventInformation = this.BuildEventInformation(@event);
             var aggregate = this.repositoryService.Get<TAggregate>().GetById(@event.AggregateId);
 
             this.LaunchEventHandlers(aggregate, @event, eventInformation);
+
+            return aggregate;
         }
 
         private IEventInformation BuildEventInformation(ITeclynEvent @event)
@@ -91,6 +96,15 @@ namespace Teclyn.Core.Events
             {
                 handler();
             }
+        }
+
+        private TAggregate BuildAggregate<TAggregate>() where TAggregate : IAggregate
+        {
+            var aggregateInfo = this.repositoryService.GetInfo<TAggregate>();
+
+            var imlementationType = aggregateInfo.ImplementationType;
+
+            return (TAggregate) Activator.CreateInstance(imlementationType);
         }
     }
 }

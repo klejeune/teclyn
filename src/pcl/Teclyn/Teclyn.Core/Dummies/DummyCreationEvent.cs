@@ -4,9 +4,9 @@ namespace Teclyn.Core.Dummies
 {
     public class DummyCreationEvent : ICreationEvent<IDummyAggregate>
     {
-        public IDummyAggregate Apply(IEventInformation information)
+        public void Apply(IDummyAggregate aggregate, IEventInformation information)
         {
-            return new DummyAggregate(this);
+            aggregate.Create(information.Type(this));
         }
 
         public string AggregateId { get; set; }

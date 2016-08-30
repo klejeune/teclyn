@@ -5,13 +5,13 @@ namespace Teclyn.SampleCore.Users.Events
 {
     public class UserRegisteredEvent : ICreationEvent<IUser>
     {
+        public void Apply(IUser aggregate, IEventInformation information)
+        {
+            aggregate.Create(information.Type(this));
+        }
+
         public string AggregateId { get; set; }
         public string Fullname { get; set; }
         public string Email { get; set; }
-        
-        public IUser Apply(IEventInformation information)
-        {
-           return new User(information.Type(this));
-        }
     }
 }

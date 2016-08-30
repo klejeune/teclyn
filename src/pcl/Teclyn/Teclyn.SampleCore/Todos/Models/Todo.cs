@@ -14,8 +14,7 @@ namespace Teclyn.SampleCore.Todos.Models
         public DateTime CreationDate { get; set; }
         public DateTime LastModificationDate { get; set; }
         public string Text { get; set; }
-
-        public Todo(IEventInformation<TodoCreatedEvent> eventInformation)
+        public void Create(IEventInformation<TodoCreatedEvent> eventInformation)
         {
             this.Id = eventInformation.Event.AggregateId;
             this.CreationDate = eventInformation.Date;
