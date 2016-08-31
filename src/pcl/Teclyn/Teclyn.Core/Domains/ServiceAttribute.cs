@@ -2,7 +2,7 @@
 
 namespace Teclyn.Core.Domains
 {
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface)]
     public class ServiceAttribute : Attribute
     {
         

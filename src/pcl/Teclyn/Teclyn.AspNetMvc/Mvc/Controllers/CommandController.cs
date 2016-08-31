@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using Teclyn.AspNetMvc.Mvc.Models;
 using Teclyn.Core;
 using Teclyn.Core.Commands;
+using Teclyn.Core.Errors.Models;
 using Teclyn.Core.Ioc;
 using Teclyn.Core.Storage;
 
@@ -16,6 +17,9 @@ namespace Teclyn.AspNetMvc.Mvc.Controllers
 
         [Inject]
         public RepositoryService RepositoryService { get; set; }
+
+        [Inject]
+        public IRepository<IError> ErrorRepository { get; set; }
 
         public ActionResult Index()
         {
@@ -61,6 +65,16 @@ namespace Teclyn.AspNetMvc.Mvc.Controllers
             };
 
             return this.Structured(model);
+        }
+
+        public ActionResult Errors()
+        {
+            var errors = this.ErrorRepository
+                .OrderByDescending(error => error.Date)
+                .Take(10)
+                .ToList();
+
+            return this.Structured(errors);
         }
     }
 }

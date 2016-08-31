@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Teclyn.Core.Basic;
 using Teclyn.Core.Commands;
 using Teclyn.Core.Domains;
+using Teclyn.Core.Errors;
 using Teclyn.Core.Events;
 using Teclyn.Core.Events.Handlers;
 using Teclyn.Core.Ioc;
+using Teclyn.Core.Jobs;
 using Teclyn.Core.Security.Context;
 using Teclyn.Core.Storage;
 using Teclyn.Core.Storage.EventHandlers;
@@ -69,6 +72,10 @@ namespace Teclyn.Core
             {
                 plugin.Initialize(teclyn);
             }
+
+            var threadManager = teclyn.iocContainer.Get<IBackgroundThreadManager>();
+
+            threadManager.Start();
 
             return teclyn;
         }
@@ -146,6 +153,33 @@ namespace Teclyn.Core
                     foreach (var commandType in commandTypes)
                     {
                         commandService.RegisterCommand(commandType.Type);
+                    }
+                });
+
+            attributeComputer.RegisterHandler(
+                new[] { typeof(ServiceAttribute), typeof(ServiceImplementationAttribute) },
+                dictionary =>
+                {
+                    foreach (var serviceTypeInfo in dictionary[typeof(ServiceAttribute)])
+                    {
+                        var implementationTypeInfo =
+                            dictionary[typeof(ServiceImplementationAttribute)].SingleOrDefault(
+                                implementation =>
+                                    serviceTypeInfo.Type.GetTypeInfo()
+                                        .IsAssignableFrom(implementation.Type.GetTypeInfo()));
+
+                        if (implementationTypeInfo != null)
+                        {
+                            this.iocContainer.Register(serviceTypeInfo.Type, implementationTypeInfo.Type);
+                        }
+                        else if (serviceTypeInfo.Type.GetTypeInfo().IsClass)
+                        {
+                            this.iocContainer.Register(serviceTypeInfo.Type, serviceTypeInfo.Type);
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException($"The Service {serviceTypeInfo.Type.Name} doesn't have any implementation.");
+                        }
                     }
                 });
 

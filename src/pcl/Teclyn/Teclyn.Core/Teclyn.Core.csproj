@@ -60,10 +60,16 @@
     <Compile Include="Commands\UserFriendlyCommandResult.cs" />
     <Compile Include="Domains\IIndexable.cs" />
     <Compile Include="Domains\ServiceAttribute.cs" />
+    <Compile Include="Domains\ServiceImplementationAttribute.cs" />
     <Compile Include="Dummies\DummyAggregate.cs" />
     <Compile Include="Dummies\DummyCreationEvent.cs" />
     <Compile Include="Dummies\DummyEventHandler.cs" />
     <Compile Include="Dummies\IDummyAggregate.cs" />
+    <Compile Include="Errors\Commands\LogErrorCommand.cs" />
+    <Compile Include="Errors\ErrorManager.cs" />
+    <Compile Include="Errors\Events\ErrorLoggedEvent.cs" />
+    <Compile Include="Errors\Models\Error.cs" />
+    <Compile Include="Errors\Models\IError.cs" />
     <Compile Include="Events\EventExtensions.cs" />
     <Compile Include="Events\EventInformation.cs" />
     <Compile Include="Events\Handlers\EventHandlerService.cs" />
@@ -89,6 +95,9 @@
     <Compile Include="Ioc\InjectAttribute.cs" />
     <Compile Include="ITeclynConfiguration.cs" />
     <Compile Include="ITeclynPlugin.cs" />
+    <Compile Include="Jobs\Basic\BasicBackgroundThreadManager.cs" />
+    <Compile Include="Jobs\IBackgroundThreadManager.cs" />
+    <Compile Include="Jobs\IBackgroundThreadState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Domains\AggregateAttribute.cs" />
     <Compile Include="Domains\AggregateImplementationAttribute.cs" />
@@ -126,6 +135,9 @@
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Collections.Concurrent">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.5\System.Collections.Concurrent.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
