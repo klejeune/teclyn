@@ -38,7 +38,7 @@
             @using (var form = Html.CommandForm<CreateTodoListCommand>(true, null, null, Url.Action("test", "test")))
             {
                 @form.Property(command => command.Name)
-                @form.Submit("Create")
+                @form.Submit("Create", "btn btn-primary")
             }
         </div>
         <div>

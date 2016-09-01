@@ -95,9 +95,12 @@
     <Compile Include="Ioc\InjectAttribute.cs" />
     <Compile Include="ITeclynConfiguration.cs" />
     <Compile Include="ITeclynPlugin.cs" />
+    <Compile Include="Jobs\Basic\BackgroundThread.cs" />
     <Compile Include="Jobs\Basic\BasicBackgroundThreadManager.cs" />
+    <Compile Include="Jobs\IBackgroundThread.cs" />
     <Compile Include="Jobs\IBackgroundThreadManager.cs" />
     <Compile Include="Jobs\IBackgroundThreadState.cs" />
+    <Compile Include="Jobs\ThreadState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Domains\AggregateAttribute.cs" />
     <Compile Include="Domains\AggregateImplementationAttribute.cs" />

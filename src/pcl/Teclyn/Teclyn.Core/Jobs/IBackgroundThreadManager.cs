@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Jobs;
 
@@ -9,6 +10,7 @@ namespace Teclyn.Core.Jobs
     {
         void Start();
         void Stop();
-        void Queue(Action<IBackgroundThreadState> action);
+        void Queue(string name, Action<IBackgroundThreadState> action);
+        IEnumerable<IBackgroundThread> Threads { get; }
     }
 }

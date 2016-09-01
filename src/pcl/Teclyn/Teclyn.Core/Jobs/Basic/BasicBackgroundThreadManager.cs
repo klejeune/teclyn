@@ -1,19 +1,31 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Teclyn.Core.Domains;
+using Teclyn.Core.Ioc;
+using Teclyn.Core.Services;
+using Teclyn.Core.Tools;
 
 namespace Teclyn.Core.Jobs.Basic
 {
     [ServiceImplementation]
-    public class BasicBackgroundThreadManager : IBackgroundThreadManager, IBackgroundThreadState
+    public class BasicBackgroundThreadManager : IBackgroundThreadManager
     {
-        private ConcurrentQueue<Action<IBackgroundThreadState>> queue = new ConcurrentQueue<Action<IBackgroundThreadState>>();
+        [Inject]
+        public IdGenerator IdGenerator { get; set; }
+
+        [Inject]
+        public Time Time { get; set; }
+        
+        private readonly IDictionary<string, IBackgroundThread> threads = new ConcurrentDictionary<string, IBackgroundThread>();
 
         private bool mustStop;
         private EventWaitHandle waitHandle = new EventWaitHandle(false, EventResetMode.AutoReset);
         private TimeSpan waitTimeout = TimeSpan.FromSeconds(1);
+        private const int maxRunningThreads = 10;
 
         public void Start()
         {
@@ -21,12 +33,21 @@ namespace Teclyn.Core.Jobs.Basic
             {
                 while (!mustStop)
                 {
-                    Action<IBackgroundThreadState> nextAction;
+                    this.CleanThreads();
+
                     waitHandle.Reset();
 
-                    if (queue.TryDequeue(out nextAction))
+                    var runningThreads = this.threads.Values.Where(t => t.State == ThreadState.Running).ToList();
+                    var waitingThreads = this.threads.Values.Where(t => t.State == ThreadState.Waiting).ToList();
+
+                    if (runningThreads.Count < maxRunningThreads && waitingThreads.Count > 0)
                     {
-                        nextAction.Invoke(this);
+                        var threadsToLaunch = waitingThreads.Take(maxRunningThreads - runningThreads.Count).ToList();
+
+                        foreach (var thread in threadsToLaunch)
+                        {
+                            thread.Start();
+                        }
                     }
                     else
                     {
@@ -36,15 +57,34 @@ namespace Teclyn.Core.Jobs.Basic
             });
         }
 
+        public IEnumerable<IBackgroundThread> Threads => this.threads.Values;
+
+        private void CleanThreads()
+        {
+            var threadsToClean = this.threads.Where(threadPair => threadPair.Value.State == ThreadState.Finished).ToList();
+
+            foreach (var thread in threadsToClean)
+            {
+                this.threads.Remove(thread);
+            }
+        }
+
         public void Stop()
         {
+            foreach (var thread in this.threads.Values.Where(t => t.State == ThreadState.Running))
+            {
+                thread.Stop();
+            }
+
             this.mustStop = true;
             this.waitHandle.Set();
         }
 
-        public void Queue(Action<IBackgroundThreadState> action)
+        public void Queue(string name, Action<IBackgroundThreadState> action)
         {
-            this.queue.Enqueue(action);
+            var thread = new BackgroundThread(this.Time, this.IdGenerator.GenerateId(), name, action, () => this.waitHandle.Set());
+
+            this.threads.Add(thread.Id, thread);
             this.waitHandle.Set();
         }
 
