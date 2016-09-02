@@ -77,7 +77,7 @@ namespace Teclyn.AspNetMvc.Commands
                 throw new MvcCommandRenderingException($"The command {typeof(TCommand).Name} cannot be executed:\n" + string.Join("\n", check.Errors));
             }
 
-            return new CommandForm<TCommand>(this, helper, reload, @class, htmlAttributes, returnUrl);
+            return new CommandForm<TCommand>(this, command, helper, reload, @class, htmlAttributes, returnUrl);
         }
 
         public string GetPropertyName(PropertyInfo propertyInfo)

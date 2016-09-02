@@ -50,6 +50,8 @@ namespace Teclyn.Core.Tests.Events
 
         private class DummySuppressionEvent : ISuppressionEvent<DummyAggregate>
         {
+            public void Apply(DummyAggregate aggregate, IEventInformation information) { }
+
             public string AggregateId { get; set; }
         }
 

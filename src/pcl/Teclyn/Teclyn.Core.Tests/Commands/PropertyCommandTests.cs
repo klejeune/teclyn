@@ -56,7 +56,7 @@ namespace Teclyn.Core.Tests.Commands
                 return _.Check(contextOk, "You are not allowed to execute this command.");
             }
 
-            protected override Func<DummyAggregate, string> PropertyAccessor => aggregate => aggregate.Value;
+            public override Func<DummyAggregate, string> PropertyAccessor => aggregate => aggregate.Value;
         }
 
         private TeclynApi teclyn;

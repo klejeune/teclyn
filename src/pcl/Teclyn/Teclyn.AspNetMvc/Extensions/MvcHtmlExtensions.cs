@@ -11,12 +11,14 @@ using Teclyn.AspNetMvc;
 using Teclyn.AspNetMvc.Commands;
 using Teclyn.Core;
 using Teclyn.Core.Commands;
+using Teclyn.Core.Commands.Properties;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Ioc;
 
 public static class MvcHtmlExtensions
 {
     private static CommandRenderer CommandRenderer => HttpContext.Current.Application.GetTeclyn().Get<CommandRenderer>();
+    private static CommandService CommandService => HttpContext.Current.Application.GetTeclyn().Get<CommandService>();
 
     public static MvcHtmlString ActionLink(this HtmlHelper helper, IDisplayable item, [AspMvcAction]string actionName, [AspMvcController]string controllerName)
     {
@@ -54,5 +56,21 @@ public static class MvcHtmlExtensions
     public static CommandForm<TCommand> CommandForm<TCommand>(this HtmlHelper helper, bool reload = false, string @class = null, object htmlAttributes = null, string returnUrl = null) where TCommand : IBaseCommand
     {
         return CommandRenderer.RenderCommandForm<TCommand>(helper, reload, @class, htmlAttributes, returnUrl);
+    }
+
+    public static MvcHtmlString CommandProperty<TCommand, TAggregate, TProperty>(this HtmlHelper helper, TAggregate aggregate, bool reload = false, string @class = null, object htmlAttributes = null) 
+        where TCommand : IPropertyCommand<TAggregate, TProperty>
+        where TAggregate : IAggregate
+    {
+        var writer = helper.ViewContext.Writer;
+
+        using (var form = helper.CommandForm<TCommand>(reload, @class, htmlAttributes, null))
+        {
+            writer.Write(form.Property(command => command.NewValue, form.Command.PropertyAccessor(aggregate)).ToHtmlString());
+            writer.Write(form.Hidden(command => command.AggregateId, aggregate.Id));
+            writer.Write(form.Submit("OK"));
+        }
+
+        return MvcHtmlString.Empty;
     }
 }

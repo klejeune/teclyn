@@ -22,5 +22,10 @@ namespace Teclyn.SampleCore.TodoLists.Models
             this.Length = 0;
             this.Name = eventInformation.Event.Name;
         }
+
+        public void Rename(IEventInformation<TodoListRenamedEvent> eventInformation)
+        {
+            this.Name = eventInformation.Event.NewValue;
+        }
     }
 }

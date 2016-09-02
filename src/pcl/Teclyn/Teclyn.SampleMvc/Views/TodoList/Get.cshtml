@@ -1,5 +1,11 @@
-﻿@model Teclyn.SampleCore.TodoLists.Models.ITodoList
+﻿@using Teclyn.SampleCore.TodoLists.Commands
+@using Teclyn.SampleCore.TodoLists.Models
+@model Teclyn.SampleCore.TodoLists.Models.ITodoList
 @{
     ViewBag.Title = "Index";
 
 }
+
+<div>
+    @(Html.CommandProperty<RenameTodoListCommand, ITodoList, string>(Model))
+</div>

@@ -43,6 +43,8 @@
     <Compile Include="SampleCorePlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TodoLists\Commands\CreateTodoListCommand.cs" />
+    <Compile Include="TodoLists\Commands\RenameTodoListCommand.cs" />
+    <Compile Include="TodoLists\Events\TodoListRenamedEvent.cs" />
     <Compile Include="TodoLists\Models\ITodoList.cs" />
     <Compile Include="TodoLists\Events\TodoAddedToListEvent.cs" />
     <Compile Include="TodoLists\Models\TodoList.cs" />

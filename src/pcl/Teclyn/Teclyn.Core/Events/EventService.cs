@@ -19,6 +19,12 @@ namespace Teclyn.Core.Events
         private RepositoryService repositoryService;
         private EventHandlerService eventHandlerService;
 
+        [Inject]
+        public IRepository<IEventInformation> EventInformationRepository { get; set; }
+
+        [Inject]
+        public IdGenerator IdGenerator { get; set; }
+
         public EventService(ITeclynContext teclynContext, Time time, RepositoryService repositoryService, EventHandlerService eventHandlerService)
         {
             this.teclynContext = teclynContext;
@@ -30,24 +36,15 @@ namespace Teclyn.Core.Events
         public TAggregate Raise<TAggregate>(IEvent<TAggregate> @event) where TAggregate : class, IAggregate
         {
             var eventInformation = this.BuildEventInformation(@event);
+            this.EventInformationRepository.Create(eventInformation);
             var aggregate = this.repositoryService.Get<TAggregate>().GetByIdOrNull(@event.AggregateId);
 
             if (aggregate == null)
             {
                 aggregate = this.BuildAggregate<TAggregate>();
             }
-
+            
             @event.Apply(aggregate, eventInformation);
-
-            this.LaunchEventHandlers(aggregate, @event, eventInformation);
-
-            return aggregate;
-        }
-
-        public TAggregate Raise<TAggregate>(ISuppressionEvent<TAggregate> @event) where TAggregate : class, IAggregate
-        {
-            var eventInformation = this.BuildEventInformation(@event);
-            var aggregate = this.repositoryService.Get<TAggregate>().GetById(@event.AggregateId);
 
             this.LaunchEventHandlers(aggregate, @event, eventInformation);
 
@@ -70,8 +67,10 @@ namespace Teclyn.Core.Events
         private EventInformation<TEvent> BuildTypedEventInformation<TEvent>(TEvent @event) where TEvent : ITeclynEvent
         {
             var eventInformation = new EventInformation<TEvent>();
+            eventInformation.Id = this.IdGenerator.GenerateId();
             eventInformation.User = this.teclynContext.CurrentUser;
             eventInformation.Date = this.time.Now;
+            eventInformation.EventType = @event.GetType().ToString();
             eventInformation.Event = @event;
 
             return eventInformation;

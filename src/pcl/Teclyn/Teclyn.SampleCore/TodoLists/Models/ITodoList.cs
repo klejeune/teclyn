@@ -12,5 +12,6 @@ namespace Teclyn.SampleCore.TodoLists.Models
         DateTime CreationDate { get; }
         DateTime LastModificationDate { get; }
         void Create(IEventInformation<TodoListCreatedEvent> eventInformation);
+        void Rename(IEventInformation<TodoListRenamedEvent> eventInformation);
     }
 }

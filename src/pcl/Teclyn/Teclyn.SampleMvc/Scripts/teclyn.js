@@ -19,10 +19,10 @@ var teclyn = {
                 var previousRequestData = form.teclynRequestData;
                 var newRequestData = t.serializeForm(form);
 
-                if (previousRequestData !== newRequestData) {
-                    form.teclynRequestData = newRequestData;
-                    t.executeRemoteCommand(new FormData(form), form, $(form).data("reload"));
-                }
+                //if (previousRequestData !== newRequestData) {
+                form.teclynRequestData = newRequestData;
+                t.executeRemoteCommand(new FormData(form), form, $(form).data("reload"));
+                //}
 
                 return false;
             });

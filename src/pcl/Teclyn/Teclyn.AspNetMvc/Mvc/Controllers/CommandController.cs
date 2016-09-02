@@ -5,6 +5,7 @@ using Teclyn.AspNetMvc.Mvc.Models;
 using Teclyn.Core;
 using Teclyn.Core.Commands;
 using Teclyn.Core.Errors.Models;
+using Teclyn.Core.Events;
 using Teclyn.Core.Ioc;
 using Teclyn.Core.Storage;
 
@@ -20,6 +21,9 @@ namespace Teclyn.AspNetMvc.Mvc.Controllers
 
         [Inject]
         public IRepository<IError> ErrorRepository { get; set; }
+
+        [Inject]
+        public IRepository<IEventInformation> EventInformationRepository { get; set; }
 
         public ActionResult Index()
         {
@@ -75,6 +79,16 @@ namespace Teclyn.AspNetMvc.Mvc.Controllers
                 .ToList();
 
             return this.Structured(errors);
+        }
+
+        public ActionResult Events()
+        {
+            var events = this.EventInformationRepository
+                .OrderByDescending(e => e.Date)
+                .Take(100)
+                .ToList();
+
+            return this.Structured(events);
         }
     }
 }
