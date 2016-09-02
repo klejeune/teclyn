@@ -3,7 +3,7 @@ using System.Web.Mvc;
 
 namespace Teclyn.AspNetMvc.Commands.Renderers
 {
-    public class StringInputCommandPropertyRenderer : ICommandPropertyRenderer<string>
+    public class StringRenderer : ICommandPropertyRenderer<string>
     {
         public MvcHtmlString Render(string name, PropertyInfo propertyInfo, string value, string @class)
         {
@@ -17,7 +17,7 @@ namespace Teclyn.AspNetMvc.Commands.Renderers
 
         public bool CanRender(PropertyInfo propertyInfo)
         {
-            return true;
+            return propertyInfo.PropertyType == typeof(string);
         }
     }
 }

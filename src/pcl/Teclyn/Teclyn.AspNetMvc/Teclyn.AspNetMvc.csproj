@@ -91,8 +91,12 @@
     <Compile Include="Commands\CommandRenderer.cs" />
     <Compile Include="Commands\MvcCommandException.cs" />
     <Compile Include="Commands\MvcCommandRenderingException.cs" />
+    <Compile Include="Commands\Renderers\BooleanRenderer.cs" />
+    <Compile Include="Commands\Renderers\DateTimeRenderer.cs" />
+    <Compile Include="Commands\Renderers\DoubleRenderer.cs" />
     <Compile Include="Commands\Renderers\ICommandPropertyRenderer.cs" />
-    <Compile Include="Commands\Renderers\StringInputCommandPropertyRenderer.cs" />
+    <Compile Include="Commands\Renderers\IntegerRenderer.cs" />
+    <Compile Include="Commands\Renderers\StringRenderer.cs" />
     <Compile Include="Extensions\MvcHtmlExtensions.cs" />
     <Compile Include="Integration\TeclynBasicServiceLocator.cs" />
     <Compile Include="ModelBinders\CommandModelBinder.cs" />

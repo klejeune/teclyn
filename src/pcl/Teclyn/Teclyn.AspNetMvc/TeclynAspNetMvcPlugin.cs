@@ -29,7 +29,11 @@ namespace Teclyn.AspNetMvc
             teclyn.Get<IIocContainer>().RegisterSingleton<CommandPropertyRendererFactory>();
 
             // Renderers
-            teclyn.Get<CommandPropertyRendererFactory>().RegisterRenderer(new StringInputCommandPropertyRenderer());
+            teclyn.Get<CommandPropertyRendererFactory>().RegisterRenderer(new StringRenderer());
+            teclyn.Get<CommandPropertyRendererFactory>().RegisterRenderer(new BooleanRenderer());
+            teclyn.Get<CommandPropertyRendererFactory>().RegisterRenderer(new DateTimeRenderer());
+            teclyn.Get<CommandPropertyRendererFactory>().RegisterRenderer(new DoubleRenderer());
+            teclyn.Get<CommandPropertyRendererFactory>().RegisterRenderer(new IntegerRenderer());
 
             // MVC
             System.Web.Mvc.ModelBinders.Binders.Add(typeof(IBaseCommand), new CommandModelBinder(teclyn));
