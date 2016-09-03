@@ -2,11 +2,13 @@
 using System.Linq;
 using System.Web.Mvc;
 using Teclyn.AspNetMvc.Mvc.Models;
+using Teclyn.AspNetMvc.Mvc.Security;
 using Teclyn.Core;
 using Teclyn.Core.Commands;
 using Teclyn.Core.Errors.Models;
 using Teclyn.Core.Events;
 using Teclyn.Core.Ioc;
+using Teclyn.Core.Security.Context;
 using Teclyn.Core.Storage;
 
 namespace Teclyn.AspNetMvc.Mvc.Controllers
@@ -25,11 +27,9 @@ namespace Teclyn.AspNetMvc.Mvc.Controllers
         [Inject]
         public IRepository<IEventInformation> EventInformationRepository { get; set; }
 
-        public ActionResult Index()
-        {
-            return this.Content("Index OK");
-        }
-
+        [Inject]
+        public ITeclynContext Context { get; set; }
+        
         [HttpPost]
         public ActionResult Execute(IBaseCommand command)
         {
@@ -51,6 +51,7 @@ namespace Teclyn.AspNetMvc.Mvc.Controllers
             return Redirect(returnUrl);
         }
         
+        [OnlyAdminFilter]
         public ActionResult Info()
         {
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
@@ -71,6 +72,7 @@ namespace Teclyn.AspNetMvc.Mvc.Controllers
             return this.Structured(model);
         }
 
+        [OnlyAdminFilter]
         public ActionResult Errors()
         {
             var errors = this.ErrorRepository
@@ -81,6 +83,7 @@ namespace Teclyn.AspNetMvc.Mvc.Controllers
             return this.Structured(errors);
         }
 
+        [OnlyAdminFilter]
         public ActionResult Events()
         {
             var events = this.EventInformationRepository

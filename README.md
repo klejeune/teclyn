@@ -1,11 +1,6 @@
 # Teclyn
 Teclyn is a multiplatform C#/Asp.Net production-ready toolkit using CQRS and Event-Sourcing.
 
-## Work in progress
-Teclyn is not fully useable yet.
-
-The first official release should happen between August and Octobre 2016. The version number will change to 1.x at this point.
-
 ## Philosophy
 Teclyn is...
 - A toolkit: it is not a restrictive framework
@@ -40,11 +35,8 @@ All the features have not been finalized yet, but you will soon find these:
 - Can be run on Linux through dotnetcore / Asp.Net Core
 - Native support of DBMS's :
   - MongoDB
-  - SQL Server
-  - Not persisted in-memory 
-  - Text file
+  - Not persisted in-memory
   - other DBMS's through the provided extensibility tools
 - Can be used on Asp.Net MVC websites as well as on console apps or libraries
 - Helpers allowing you to easily use Commands in the Asp.Net MVC/Javascript layer
 - Embedded Asp.Net diagnostics/monitoring tools
-- User account management

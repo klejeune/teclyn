@@ -106,6 +106,7 @@
     <Compile Include="MvcApplicationExtensions.cs" />
     <Compile Include="Mvc\Models\CommandModel.cs" />
     <Compile Include="Mvc\Models\HomeModels.cs" />
+    <Compile Include="Mvc\Security\OnlyAdminFilter.cs" />
     <Compile Include="Mvc\TeclynAreaRegistration.cs" />
     <Compile Include="Mvc\Controllers\CommandController.cs" />
     <Compile Include="TeclynAspNetMvcPlugin.cs" />
