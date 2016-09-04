@@ -2,7 +2,7 @@
 
 namespace Teclyn.Core.Events
 {
-    public interface ISuppressionEvent<TAggregate> : IEvent<TAggregate> where TAggregate : IAggregate
+    public interface ISuppressionEvent<out TAggregate> : ITeclynEvent<TAggregate> where TAggregate : IAggregate
     {
        
     }

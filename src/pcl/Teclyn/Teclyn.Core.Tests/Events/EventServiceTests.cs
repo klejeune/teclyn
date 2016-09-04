@@ -50,18 +50,15 @@ namespace Teclyn.Core.Tests.Events
 
         private class DummySuppressionEvent : ISuppressionEvent<DummyAggregate>
         {
-            public void Apply(DummyAggregate aggregate, IEventInformation information) { }
-
             public string AggregateId { get; set; }
         }
 
-        private EventService eventService;
-        private IRepository<DummyAggregate> repository;
-        private readonly TeclynApi teclyn;
+        private readonly EventService eventService;
+        private readonly IRepository<DummyAggregate> repository;
 
         public EventServiceTests()
         {
-            this.teclyn = TeclynApi.Initialize(new TeclynTestConfiguration());
+            var teclyn = TeclynApi.Initialize(new TeclynTestConfiguration());
             this.eventService = teclyn.Get<EventService>();
             this.repository = teclyn.Get<IRepository<DummyAggregate>>();
         }
