@@ -58,6 +58,8 @@
     <Compile Include="Commands\Properties\PropertyCommand.cs" />
     <Compile Include="Commands\RemoteAttribute.cs" />
     <Compile Include="Commands\UserFriendlyCommandResult.cs" />
+    <Compile Include="Domains\IAccessController.cs" />
+    <Compile Include="Domains\IFilter.cs" />
     <Compile Include="Domains\IIndexable.cs" />
     <Compile Include="Domains\ServiceAttribute.cs" />
     <Compile Include="Domains\ServiceImplementationAttribute.cs" />

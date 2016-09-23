@@ -27,9 +27,9 @@ namespace Teclyn.Core.Storage
             return this.teclyn.Get<IRepository<T>>();
         }
 
-        public void Register(Type aggregateType, Type implementationType, string collectionName)
+        public void Register(Type aggregateType, Type implementationType, string collectionName, Type accessControllerType, Type defaultFilterType)
         {
-            this.aggregates[aggregateType] = new AggregateInfo(aggregateType, implementationType, collectionName);
+            this.aggregates[aggregateType] = new AggregateInfo(aggregateType, implementationType, collectionName, accessControllerType, defaultFilterType);
 
             this.iocContainer.Register(typeof(IRepository<>).MakeGenericType(aggregateType), typeof(Repository<>).MakeGenericType(aggregateType));
             

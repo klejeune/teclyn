@@ -23,7 +23,7 @@ namespace Teclyn.Core
         public IEnumerable<ITeclynPlugin> Plugins { get; private set; }
 
         private IIocContainer iocContainer;
-        private RepositoryService repositories { get; set; }
+        private RepositoryService repositories;
 
         public bool Debug { get; private set; }
 
@@ -49,7 +49,7 @@ namespace Teclyn.Core
 
             // configuration analysis
             this.repositories = this.iocContainer.Get<RepositoryService>();
-            this.repositories.Register(typeof(IEventInformation), typeof(EventInformation<>), "Event");
+            this.repositories.Register(typeof(IEventInformation), typeof(EventInformation<>), "Event", null, null);
             this.ComputeAttributes(this.Plugins.Select(plugin => plugin.GetType().GetTypeInfo().Assembly));
             
             // computing based on the analyzed data
@@ -64,7 +64,7 @@ namespace Teclyn.Core
 
             teclyn.iocContainer = GetContainer(configuration);
             teclyn.iocContainer.Initialize(teclyn.Plugins.Select(plugin => plugin.GetType().GetTypeInfo().Assembly));
-            teclyn.iocContainer.Register(configuration.IocContainer);
+            teclyn.iocContainer.Register(teclyn.iocContainer);
             teclyn.iocContainer.Register(teclyn);
 
             teclyn.Fill(configuration);
@@ -120,11 +120,21 @@ namespace Teclyn.Core
 
                         if (implementationTypeInfo != null)
                         {
-                            this.repositories.Register(aggregateTypeInfo.Type, implementationTypeInfo.Type, implementationTypeInfo.Type.Name);
+                            this.repositories.Register(
+                                aggregateTypeInfo.Type, 
+                                implementationTypeInfo.Type,
+                                implementationTypeInfo.Type.Name,
+                                (aggregateTypeInfo.Attribute as AggregateAttribute).AccessController,
+                                (aggregateTypeInfo.Attribute as AggregateAttribute).DefaultFilter);
                         }
                         else if (aggregateTypeInfo.Type.GetTypeInfo().IsClass)
                         {
-                            this.repositories.Register(aggregateTypeInfo.Type, aggregateTypeInfo.Type, aggregateTypeInfo.Type.Name);
+                            this.repositories.Register(
+                                aggregateTypeInfo.Type, 
+                                aggregateTypeInfo.Type, 
+                                aggregateTypeInfo.Type.Name,
+                                (aggregateTypeInfo.Attribute as AggregateAttribute).AccessController,
+                                (aggregateTypeInfo.Attribute as AggregateAttribute).DefaultFilter);
                         }
                         else
                         {
@@ -185,16 +195,6 @@ namespace Teclyn.Core
                 });
 
             attributeComputer.Compute(assemblies);
-        }
-
-        public void RegisterRepository<TAggregate>(string collectionName = null)
-        {
-            if (string.IsNullOrWhiteSpace(collectionName))
-            {
-                collectionName = typeof(TAggregate).Name;
-            }
-
-            this.repositories.Register(typeof(TAggregate), typeof(TAggregate), collectionName);
         }
     }
 }

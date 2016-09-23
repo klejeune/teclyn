@@ -63,14 +63,15 @@ namespace Teclyn.Core.Tests.Commands
         private CommandService commandService;
         private string aggregateId = "id";
         private DummyAggregate aggregate;
-
+        private RepositoryService repositoryService;
 
         public PropertyCommandTests()
         {
             this.teclyn = TeclynApi.Initialize(new TeclynTestConfiguration());
+            this.repositoryService = teclyn.Get<RepositoryService>();
             this.commandService = teclyn.Get<CommandService>();
 
-            this.teclyn.RegisterRepository<DummyAggregate>();
+            this.repositoryService.Register(typeof(DummyAggregate), typeof(DummyAggregate), typeof(DummyAggregate).Name, null, null);
 
             this.aggregate = new DummyAggregate
             {
