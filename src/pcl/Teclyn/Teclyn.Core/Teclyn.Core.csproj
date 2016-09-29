@@ -66,6 +66,8 @@
     <Compile Include="Dummies\DummyAggregate.cs" />
     <Compile Include="Dummies\DummyCreationEvent.cs" />
     <Compile Include="Dummies\DummyEventHandler.cs" />
+    <Compile Include="Dummies\DummyPropertyCommand.cs" />
+    <Compile Include="Dummies\DummyPropertyEvent.cs" />
     <Compile Include="Dummies\IDummyAggregate.cs" />
     <Compile Include="Errors\Commands\LogErrorCommand.cs" />
     <Compile Include="Errors\ErrorManager.cs" />

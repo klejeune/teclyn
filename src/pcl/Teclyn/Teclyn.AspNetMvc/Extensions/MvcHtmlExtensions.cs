@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using JetBrains.Annotations;
@@ -13,7 +14,9 @@ using Teclyn.Core;
 using Teclyn.Core.Commands;
 using Teclyn.Core.Commands.Properties;
 using Teclyn.Core.Domains;
+using Teclyn.Core.Dummies;
 using Teclyn.Core.Ioc;
+using Teclyn.Core.Tools;
 
 public static class MvcHtmlExtensions
 {
@@ -72,5 +75,20 @@ public static class MvcHtmlExtensions
         }
 
         return MvcHtmlString.Empty;
+    }
+
+    public static MvcHtmlString CommandProperty<TCommand>(this HtmlHelper helper,
+        object aggregate, bool reload = false, string @class = null, object htmlAttributes = null)
+        where TCommand : IPropertyCommand
+    {
+        var typedPropertyCommandType = typeof(TCommand).GetInterfaces().Single(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IPropertyCommand<,>));
+        var aggregateType = typedPropertyCommandType.GetGenericArguments()[0];
+        var propertyType = typedPropertyCommandType.GetGenericArguments()[1];
+
+        var typedMethod = ReflectionTools.Static.Method(() => CommandProperty<DummyPropertyCommand, IDummyAggregate, string>(helper, null, false, null, null))
+            .GetGenericMethodDefinition()
+            .MakeGenericMethod(typeof(TCommand), aggregateType, propertyType);
+
+        return (MvcHtmlString) typedMethod.Invoke(null, new object[] {helper, aggregate, reload, @class, htmlAttributes});
     }
 }
