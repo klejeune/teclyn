@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Ioc;
 using Teclyn.Core.Security.Context;
@@ -23,31 +24,31 @@ namespace Teclyn.Core.Commands
             this.commandRepository = commandRepository;
         }
 
-        public ICommandResult Execute(ICommand command)
+        public async Task<ICommandResult> Execute(ICommand command)
         {
-            return this.ExecuteInternal(command, command1 => string.Empty);
+            return await this.ExecuteInternal(command, command1 => string.Empty);
         }
 
-        public ICommandResult<TResult> Execute<TResult>(ICommand<TResult> command)
+        public async Task<ICommandResult<TResult>> Execute<TResult>(ICommand<TResult> command)
         {
-            return this.ExecuteInternal(command, command1 => command1.Result);
+            return await this.ExecuteInternal(command, command1 => command1.Result);
         }
 
-        public ICommandResult Execute<TCommand>(Action<TCommand> builder) where TCommand : ICommand
+        public async Task<ICommandResult> Execute<TCommand>(Action<TCommand> builder) where TCommand : ICommand
         {
             var command = this.Create(builder);
-            return this.Execute(command);
+            return await this.Execute(command);
         }
 
-        public ICommandResult<TResult> Execute<TCommand, TResult>(Action<TCommand> builder) where TCommand : ICommand<TResult>
+        public async Task<ICommandResult<TResult>> Execute<TCommand, TResult>(Action<TCommand> builder) where TCommand : ICommand<TResult>
         {
             var command = this.Create(builder);
-            return this.Execute(command);
+            return await this.Execute(command);
         }
 
-        public IUserFriendlyCommandResult ExecuteGeneric(IBaseCommand command)
+        public async Task<IUserFriendlyCommandResult> ExecuteGeneric(IBaseCommand command)
         {
-            var result = this.ExecuteInternal(command, command1 => string.Empty);
+            var result = await this.ExecuteInternal(command, command1 => string.Empty);
             return result.ToUserFriendly();
         }
 
@@ -68,7 +69,7 @@ namespace Teclyn.Core.Commands
             return command;
         }
 
-        public ICommandResult<TResult> ExecuteInternal<TCommand, TResult>(TCommand command,
+        public async Task<ICommandResult<TResult>> ExecuteInternal<TCommand, TResult>(TCommand command,
             Func<TCommand, TResult> resultAccessor) where TCommand : IBaseCommand
         {
             var result = new CommandExecutionResult<TResult>(teclyn);
@@ -79,7 +80,7 @@ namespace Teclyn.Core.Commands
             if (!result.Errors.Any())
             {
                 // execute
-                command.Execute(result);
+                await command.Execute(result);
 
                 // get result
                 result.Result = resultAccessor(command);

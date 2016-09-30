@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Events;
 using Teclyn.Core.Events.Properties;
@@ -15,7 +16,7 @@ namespace Teclyn.Core.Commands.Properties
 
         public abstract bool CheckContext(ITeclynContext context, ICommandContextChecker _);
 
-        public abstract void Execute(ICommandExecutionContext context);
+        public abstract Task Execute(ICommandExecutionContext context);
 
         public TProperty NewValue { get; set; }
         public string AggregateId { get; set; }
@@ -27,11 +28,11 @@ namespace Teclyn.Core.Commands.Properties
         where TAggregate : class, IAggregate
         where TEvent : IPropertyEvent<TAggregate, TProperty>
     {
-        public override void Execute(ICommandExecutionContext context)
+        public override async Task Execute(ICommandExecutionContext context)
         {
             var repository = context.Teclyn.Get<IRepository<TAggregate>>();
-            var aggregate = repository.GetById(this.AggregateId);
-            var oldValue = this.PropertyAccessor(aggregate);
+            var aggregate = await repository.GetById(this.AggregateId);
+            var oldValue =  this.PropertyAccessor(aggregate);
 
             if (oldValue == null && this.NewValue != null || oldValue != null && !oldValue.Equals(NewValue))
             {
@@ -40,7 +41,7 @@ namespace Teclyn.Core.Commands.Properties
                 @event.NewValue = this.NewValue;
                 @event.AggregateId = this.AggregateId;
 
-                context.GetEventService().Raise(@event);
+                await context.GetEventService().Raise(@event);
             }
         }
     }

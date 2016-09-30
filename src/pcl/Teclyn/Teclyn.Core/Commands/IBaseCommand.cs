@@ -1,4 +1,5 @@
-﻿using Teclyn.Core.Security.Context;
+﻿using System.Threading.Tasks;
+using Teclyn.Core.Security.Context;
 
 namespace Teclyn.Core.Commands
 {
@@ -7,7 +8,7 @@ namespace Teclyn.Core.Commands
         bool CheckParameters(IParameterChecker _);
         bool CheckContext(ITeclynContext context, ICommandContextChecker _);
 
-        void Execute(ICommandExecutionContext context);
+        Task Execute(ICommandExecutionContext context);
     }
 
     public interface ICommand : IBaseCommand

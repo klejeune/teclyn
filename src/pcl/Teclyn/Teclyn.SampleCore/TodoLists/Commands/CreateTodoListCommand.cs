@@ -1,4 +1,5 @@
-﻿using Teclyn.Core.Commands;
+﻿using System.Threading.Tasks;
+using Teclyn.Core.Commands;
 using Teclyn.Core.Security.Context;
 using Teclyn.SampleCore.TodoLists.Events;
 using Teclyn.SampleCore.TodoLists.Models;
@@ -20,9 +21,9 @@ namespace Teclyn.SampleCore.TodoLists.Commands
             return true;
         }
 
-        public void Execute(ICommandExecutionContext context)
+        public async Task Execute(ICommandExecutionContext context)
         {
-            this.Result = context.GetEventService().Raise(new TodoListCreatedEvent
+            this.Result = await context.GetEventService().Raise(new TodoListCreatedEvent
             {
                 AggregateId = context.GetIdGenerator().GenerateId(),
                 Name = this.Name,

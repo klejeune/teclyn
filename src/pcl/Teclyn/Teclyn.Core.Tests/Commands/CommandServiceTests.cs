@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Teclyn.Core.Commands;
 using Teclyn.Core.Security;
 using Teclyn.Core.Security.Context;
@@ -29,9 +30,11 @@ namespace Teclyn.Core.Tests.Commands
                 return true;
             }
 
-            public void Execute(ICommandExecutionContext context)
+            public Task Execute(ICommandExecutionContext context)
             {
                 this.Result = this.FirstParameter + this.SecondParameter;
+
+                return Task.FromResult(Type.Missing);
             }
 
             public string Result { get; private set; }
@@ -44,7 +47,7 @@ namespace Teclyn.Core.Tests.Commands
         }
 
         [Fact]
-        public void ObjectIsCreated()
+        public async Task ObjectIsCreated()
         {
             var first = "test";
             var second = 5;
@@ -55,7 +58,7 @@ namespace Teclyn.Core.Tests.Commands
                 c.SecondParameter = second;
             });
 
-            var result = command.Execute(this.commandService);
+            var result = await command.Execute(this.commandService);
 
             Assert.Equal(first + second, result.Result);
         }

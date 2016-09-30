@@ -1,4 +1,5 @@
-﻿using Teclyn.Core.Domains;
+﻿using System.Threading.Tasks;
+using Teclyn.Core.Domains;
 using Teclyn.Core.Events;
 using Teclyn.Core.Events.Handlers;
 using Teclyn.Core.Ioc;
@@ -10,9 +11,9 @@ namespace Teclyn.Core.Storage.EventHandlers
         [Inject]
         public IRepository<TAggregate> Repository { get; set; }
         
-        public void Handle(TAggregate aggregate, IEventInformation<ISuppressionEvent<TAggregate>> @event)
+        public async Task Handle(TAggregate aggregate, IEventInformation<ISuppressionEvent<TAggregate>> @event)
         {
-            this.Repository.Delete(aggregate);
+            await this.Repository.Delete(aggregate);
         }
     }
 }

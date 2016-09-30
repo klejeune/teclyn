@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Ioc;
 
@@ -29,24 +30,24 @@ namespace Teclyn.Core.Storage
             return this.provider;
         }
 
-        public bool Exists(string id)
+        public async Task<bool> Exists(string id)
         {
-            return this.GetProvider().Exists(id);
+            return await this.GetProvider().Exists(id);
         }
 
-        public void Create(TAggregate item)
+        public async Task Create(TAggregate item)
         {
-            this.GetProvider().Create(item);
+            await this.GetProvider().Create(item);
         }
 
-        public void Delete(TAggregate item)
+        public async Task Delete(TAggregate item)
         {
-            this.GetProvider().Delete(item);
+            await this.GetProvider().Delete(item);
         }
 
-        public TAggregate GetById(string id)
+        public async Task<TAggregate> GetById(string id)
         {
-            var aggregate = this.GetProvider().GetByIdOrNull(id);
+            var aggregate = await this.GetProvider().GetByIdOrNull(id);
 
             if (aggregate == null)
             {
@@ -56,19 +57,19 @@ namespace Teclyn.Core.Storage
             return aggregate;
         }
 
-        public TAggregate GetByIdOrNull(string id)
+        public async Task<TAggregate> GetByIdOrNull(string id)
         {
             if (id == null)
             {
                 return null;
             }
 
-            return this.GetProvider().GetByIdOrNull(id);
+            return await this.GetProvider().GetByIdOrNull(id);
         }
 
-        public void Save(TAggregate item)
+        public async Task Save(TAggregate item)
         {
-            this.GetProvider().Save(item);
+            await this.GetProvider().Save(item);
         }
 
         public IEnumerator GetEnumerator()

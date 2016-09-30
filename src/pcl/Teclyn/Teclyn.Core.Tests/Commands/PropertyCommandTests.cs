@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Teclyn.Core.Commands;
 using Teclyn.Core.Commands.Properties;
 using Teclyn.Core.Domains;
@@ -84,7 +85,7 @@ namespace Teclyn.Core.Tests.Commands
         }
 
         [Fact]
-        public void PropertyCommandIsExecuted()
+        public async Task PropertyCommandIsExecuted()
         {
             var newValue = "newValue";
             
@@ -94,7 +95,7 @@ namespace Teclyn.Core.Tests.Commands
                 NewValue = newValue
             };
 
-            var result = command.Execute(this.commandService);
+            var result = await command.Execute(this.commandService);
 
             Assert.True(result.Success);
             Assert.True(result.ContextIsValid);
@@ -104,7 +105,7 @@ namespace Teclyn.Core.Tests.Commands
         }
 
         [Fact]
-        public void ResultWithBadContextFails()
+        public async Task ResultWithBadContextFails()
         {
             var oldValue = this.aggregate.Value;
             var newValue = oldValue + "NEVERAFFECTED";
@@ -117,7 +118,7 @@ namespace Teclyn.Core.Tests.Commands
 
             command.InvalidateContext();
 
-            var result = command.Execute(this.commandService);
+            var result = await command.Execute(this.commandService);
 
             Assert.False(result.Success);
             Assert.False(result.ContextIsValid);
@@ -128,7 +129,7 @@ namespace Teclyn.Core.Tests.Commands
         }
 
         [Fact]
-        public void ResultWithBadParameterFails()
+        public async Task ResultWithBadParameterFails()
         {
             var oldValue = this.aggregate.Value;
             var newValue = string.Empty;
@@ -139,7 +140,7 @@ namespace Teclyn.Core.Tests.Commands
                 NewValue = newValue
             };
             
-            var result = command.Execute(this.commandService);
+            var result = await command.Execute(this.commandService);
 
             Assert.False(result.Success);
             Assert.False(result.ParametersAreValid);

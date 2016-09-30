@@ -1,4 +1,5 @@
-﻿using Teclyn.Core.Events;
+﻿using System.Threading.Tasks;
+using Teclyn.Core.Events;
 using Teclyn.Core.Tools;
 
 namespace Teclyn.Core.Commands
@@ -15,14 +16,14 @@ namespace Teclyn.Core.Commands
             return context.Teclyn.Get<IdGenerator>();
         }
 
-        public static ICommandResult<TResult> Execute<TResult>(this ICommand<TResult> command, CommandService commandService)
+        public static async Task<ICommandResult<TResult>> Execute<TResult>(this ICommand<TResult> command, CommandService commandService)
         {
-            return commandService.Execute(command);
+            return await commandService.Execute(command);
         }
 
-        public static ICommandResult Execute(this ICommand command, CommandService commandService)
+        public static async Task<ICommandResult> Execute(this ICommand command, CommandService commandService)
         {
-            return commandService.Execute(command);
+            return await commandService.Execute(command);
         }
     }
 }

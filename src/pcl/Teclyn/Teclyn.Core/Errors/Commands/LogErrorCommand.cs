@@ -1,4 +1,5 @@
-﻿using Teclyn.Core.Commands;
+﻿using System.Threading.Tasks;
+using Teclyn.Core.Commands;
 using Teclyn.Core.Errors.Events;
 using Teclyn.Core.Security.Context;
 
@@ -19,9 +20,9 @@ namespace Teclyn.Core.Errors.Commands
             return true;
         }
 
-        public void Execute(ICommandExecutionContext context)
+        public async Task Execute(ICommandExecutionContext context)
         {
-            context.GetEventService().Raise(new ErrorLoggedEvent
+            await context.GetEventService().Raise(new ErrorLoggedEvent
             {
                 Message = this.Message,
                 AggregateId = context.GetIdGenerator().GenerateId(),

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Dummies;
 using Teclyn.Core.Events.Metadata;
@@ -40,7 +41,7 @@ namespace Teclyn.Core.Events.Handlers
             .GetTypeInfo()
             .ImplementedInterfaces
             .Where(@interface => @interface.IsConstructedGenericType && @interface.GetGenericTypeDefinition() == typeof(IEventHandler<>))
-            .Select(@interface => new Tuple<Type, Action<IAggregate, IEventInformation>>(@interface.GenericTypeArguments[0],
+            .Select(@interface => new Tuple<Type, Func<IAggregate, IEventInformation, Task>>(@interface.GenericTypeArguments[0],
                 (aggregate, eventInformation) =>
                 {
                     var handler = Teclyn.Get(eventHandlerType);
@@ -49,14 +50,14 @@ namespace Teclyn.Core.Events.Handlers
                                 typeof(IEventInformation<>).MakeGenericType(@interface.GenericTypeArguments[0])
                           });
 
-                    method.Invoke(handler, new object[] {eventInformation});
+                    return (Task) method.Invoke(handler, new object[] {eventInformation});
                 }));
 
             var handlerInterfacesWithAggregate = eventHandlerType
                 .GetTypeInfo()
                 .ImplementedInterfaces
                 .Where(@interface => @interface.IsConstructedGenericType && @interface.GetGenericTypeDefinition() == typeof(IEventHandler<,>))
-                .Select(@interface => new Tuple<Type, Action<IAggregate, IEventInformation>>(@interface.GenericTypeArguments[1],
+                .Select(@interface => new Tuple<Type, Func<IAggregate, IEventInformation, Task>>(@interface.GenericTypeArguments[1],
                     (aggregate, eventInformation) =>
                     {
                         var handler = Teclyn.Get(eventHandlerType);
@@ -67,7 +68,7 @@ namespace Teclyn.Core.Events.Handlers
                                 typeof(IEventInformation<>).MakeGenericType(@interface.GenericTypeArguments[1])
                             });
 
-                        method.Invoke(handler, new object[] { aggregate, eventInformation });
+                        return (Task) method.Invoke(handler, new object[] { aggregate, eventInformation });
                     }));
 
             var handledEvents = handlerInterfacesWithoutAggregate

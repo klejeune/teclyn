@@ -21,7 +21,7 @@ namespace Teclyn.SampleMvc
         //public static TeclynApi Teclyn { get; private set; }
        // public static IContainer StructureMapContainer { get; private set; }
 
-        protected void Application_Start()
+        protected async void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
@@ -29,32 +29,32 @@ namespace Teclyn.SampleMvc
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             var configuration = new TeclynWebConfiguration();
-            //configuration.UseStructureMap(StructuremapMvc.Container);
+            configuration.UseStructureMap(StructuremapMvc.Container);
             //configuration.UseMongodbDatabase("TeclynSampleMVC");
             var teclyn = TeclynApi.Initialize(configuration);
             var eventService = teclyn.Get<EventService>();
 
             configuration.DropDatabase();
 
-            eventService.Raise(new TodoListCreatedEvent
+            await eventService.Raise(new TodoListCreatedEvent
             {
                 AggregateId = "list-1",
                 Name = "First List",
             });
 
-            eventService.Raise(new TodoListCreatedEvent
+            await eventService.Raise(new TodoListCreatedEvent
             {
                 AggregateId = "list-2",
                 Name = "Second List",
             });
 
-            eventService.Raise(new TodoListCreatedEvent
+            await eventService.Raise(new TodoListCreatedEvent
             {
                 AggregateId = "list-3",
                 Name = "Third List",
             });
 
-            eventService.Raise(new TodoListCreatedEvent
+            await eventService.Raise(new TodoListCreatedEvent
             {
                 AggregateId = "list-4",
                 Name = "Fourth List",

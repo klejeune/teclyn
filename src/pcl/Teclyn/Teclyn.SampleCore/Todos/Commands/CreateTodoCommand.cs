@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using Teclyn.Core.Commands;
 using Teclyn.Core.Ioc;
 using Teclyn.Core.Security.Context;
@@ -27,11 +28,11 @@ namespace Teclyn.SampleCore.Todos.Commands
             return true;
         }
 
-        public void Execute(ICommandExecutionContext context)
+        public async Task Execute(ICommandExecutionContext context)
         {
-            var list = this.TodoLists.GetById(this.TodoListId);
+            var list = await this.TodoLists.GetById(this.TodoListId);
 
-            this.Result = context.GetEventService().Raise(new TodoCreatedEvent
+            this.Result = await context.GetEventService().Raise(new TodoCreatedEvent
             {
                 AggregateId = context.GetIdGenerator().GenerateId(),
                 Text = this.Text,

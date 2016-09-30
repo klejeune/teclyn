@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Dummies;
 using Teclyn.Core.Events.Handlers;
@@ -33,11 +34,11 @@ namespace Teclyn.Core.Events
             this.eventHandlerService = eventHandlerService;
         }
 
-        public TAggregate Raise<TAggregate>(IEvent<TAggregate> @event) where TAggregate : class, IAggregate
+        public async Task<TAggregate> Raise<TAggregate>(IEvent<TAggregate> @event) where TAggregate : class, IAggregate
         {
             var eventInformation = this.BuildEventInformation(@event);
-            this.EventInformationRepository.Create(eventInformation);
-            var aggregate = this.repositoryService.Get<TAggregate>().GetByIdOrNull(@event.AggregateId);
+            await this.EventInformationRepository.Create(eventInformation);
+            var aggregate = await this.repositoryService.Get<TAggregate>().GetByIdOrNull(@event.AggregateId);
 
             if (aggregate == null)
             {
@@ -46,17 +47,17 @@ namespace Teclyn.Core.Events
             
             @event.Apply(aggregate, eventInformation);
 
-            this.LaunchEventHandlers(aggregate, @event, eventInformation);
+            await this.LaunchEventHandlers(aggregate, @event, eventInformation);
 
             return aggregate;
         }
 
-        public TAggregate Raise<TAggregate>(ISuppressionEvent<TAggregate> @event) where TAggregate : class, IAggregate
+        public async Task<TAggregate> Raise<TAggregate>(ISuppressionEvent<TAggregate> @event) where TAggregate : class, IAggregate
         {
             var eventInformation = this.BuildEventInformation(@event);
-            var aggregate = this.repositoryService.Get<TAggregate>().GetById(@event.AggregateId);
+            var aggregate = await this.repositoryService.Get<TAggregate>().GetById(@event.AggregateId);
 
-            this.LaunchEventHandlers(aggregate, @event, eventInformation);
+            await this.LaunchEventHandlers(aggregate, @event, eventInformation);
 
             return aggregate;
         }
@@ -86,7 +87,7 @@ namespace Teclyn.Core.Events
             return eventInformation;
         }
 
-        private void LaunchEventHandlers(IAggregate aggregate, ITeclynEvent @event, IEventInformation eventInformation)
+        private async Task LaunchEventHandlers(IAggregate aggregate, ITeclynEvent @event, IEventInformation eventInformation)
         {
             var eventTypeAncestors = @event.GetType().GetAllAncestorsAndInterfaces();
 
@@ -94,10 +95,7 @@ namespace Teclyn.Core.Events
                 .SelectMany(ancestorType => this.eventHandlerService.GetEventHandlers(ancestorType))
                 .Select(handler => handler.GetHandleAction(aggregate, @event, eventInformation));
 
-            foreach (var handler in handlers)
-            {
-                handler();
-            }
+            await Task.WhenAll(handlers.Select(t => t()));
         }
 
         private TAggregate BuildAggregate<TAggregate>() where TAggregate : IAggregate

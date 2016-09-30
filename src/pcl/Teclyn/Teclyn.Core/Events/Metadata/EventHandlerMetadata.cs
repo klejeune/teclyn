@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Dummies;
 using Teclyn.Core.Events.Handlers;
@@ -16,8 +17,8 @@ namespace Teclyn.Core.Events.Metadata
         public Type EventHandlerType { get; }
         public Type EventType { get; }
 
-        private Action<IAggregate, IEventInformation> action;
-        public EventHandlerMetadata(Type eventHandlerType, Type eventType, Action<IAggregate, IEventInformation> action)
+        private Func<IAggregate, IEventInformation, Task> action;
+        public EventHandlerMetadata(Type eventHandlerType, Type eventType, Func<IAggregate, IEventInformation, Task> action)
         {
             this.EventHandlerType = eventHandlerType;
             this.EventType = eventType;
@@ -25,7 +26,7 @@ namespace Teclyn.Core.Events.Metadata
             this.action = action;
         }
 
-        public Action GetHandleAction(IAggregate aggregate, ITeclynEvent @event, IEventInformation eventInformation)
+        public Func<Task> GetHandleAction(IAggregate aggregate, ITeclynEvent @event, IEventInformation eventInformation)
         {
             return () => this.action(aggregate, eventInformation);
         }

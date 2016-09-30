@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Events;
 using Teclyn.Core.Storage;
@@ -64,11 +65,11 @@ namespace Teclyn.Core.Tests.Events
         }
 
         [Fact]
-        public void ObjectIsCreated()
+        public async void ObjectIsCreated()
         {
             var aggregateId = "myAggregateId";
 
-            var createdAggregate = this.eventService.Raise(new DummyCreationEvent
+            var createdAggregate = await this.eventService.Raise(new DummyCreationEvent
             {
                 AggregateId = aggregateId
             });
@@ -78,16 +79,16 @@ namespace Teclyn.Core.Tests.Events
         }
 
         [Fact]
-        public void ObjectIsModified()
+        public async void ObjectIsModified()
         {
             var aggregateId = "myAggregateId";
             var value = "my-value";
 
-            var createdAggregate = this.eventService.Raise(new DummyCreationEvent
+            var createdAggregate = await this.eventService.Raise(new DummyCreationEvent
             {
                 AggregateId = aggregateId
             });
-            this.eventService.Raise(new DummyModificationEvent
+            await this.eventService.Raise(new DummyModificationEvent
             {
                 AggregateId = aggregateId,
                 Value = value,
@@ -99,21 +100,20 @@ namespace Teclyn.Core.Tests.Events
         }
 
         [Fact]
-        public void ObjectIsDeleted()
+        public async void ObjectIsDeleted()
         {
             var aggregateId = "myAggregateId";
 
-            this.eventService.Raise(new DummyCreationEvent
+            await this.eventService.Raise(new DummyCreationEvent
             {
                 AggregateId = aggregateId
             });
-            this.eventService.Raise(new DummySuppressionEvent
+            await this.eventService.Raise(new DummySuppressionEvent
             {
                 AggregateId = aggregateId,
             });
 
-
-            Assert.Null(this.repository.GetByIdOrNull(aggregateId));
+            Assert.Null(await this.repository.GetByIdOrNull(aggregateId));
         }
     }
 }

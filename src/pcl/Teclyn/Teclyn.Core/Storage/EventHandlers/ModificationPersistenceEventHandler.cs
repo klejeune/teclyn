@@ -1,4 +1,6 @@
-﻿using Teclyn.Core.Domains;
+﻿using System;
+using System.Threading.Tasks;
+using Teclyn.Core.Domains;
 using Teclyn.Core.Events;
 using Teclyn.Core.Events.Handlers;
 using Teclyn.Core.Ioc;
@@ -10,15 +12,15 @@ namespace Teclyn.Core.Storage.EventHandlers
         [Inject]
         public IRepository<TAggregate> Repository { get; set; }
         
-        public void Handle(TAggregate aggregate, IEventInformation<IEvent<TAggregate>> @event)
+        public async Task Handle(TAggregate aggregate, IEventInformation<IEvent<TAggregate>> @event)
         {
-            if (this.Repository.Exists(aggregate.Id))
+            if (await this.Repository.Exists(aggregate.Id))
             {
-                this.Repository.Save(aggregate);
+                await this.Repository.Save(aggregate);
             }
             else
             {
-                this.Repository.Create(aggregate);
+                await this.Repository.Create(aggregate);
             }
         }
     }

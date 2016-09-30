@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Storage;
 
@@ -10,44 +11,36 @@ namespace Teclyn.Core.Basic
 {
     public class InMemoryRepositoryProvider<T> : IRepositoryProvider<T> where T : class, IAggregate
     {
-        private IDictionary<string, T> data = new Dictionary<string, T>();
+        private readonly IDictionary<string, T> data = new Dictionary<string, T>();
 
-        public Type ElementType
-        {
-            get
-            {
-                return typeof(T);
-            }
-        }
+        public Type ElementType => typeof(T);
 
-        public Expression Expression
-        {
-            get { return this.data.Values.AsQueryable().Expression; }
-        }
+        public Expression Expression => this.data.Values.AsQueryable().Expression;
 
-        public IQueryProvider Provider
-        {
-            get { return data.Values.AsQueryable().Provider; }
-        }
+        public IQueryProvider Provider => data.Values.AsQueryable().Provider;
 
-        public void Create(T item)
+        public Task Create(T item)
         {
             this.data.Add(item.Id, item);
+
+            return Task.FromResult(Type.Missing);
         }
 
-        public void Delete(T item)
+        public Task Delete(T item)
         {
             this.data.Remove(item.Id);
+
+            return Task.FromResult(Type.Missing);
         }
 
-        public bool Exists(string id)
+        public Task<bool> Exists(string id)
         {
-            return this.data.ContainsKey(id);
+            return Task.FromResult(this.data.ContainsKey(id));
         }
 
-        public T GetByIdOrNull(string id)
+        public Task<T> GetByIdOrNull(string id)
         {
-            return this.data.GetValueOrDefault(id);
+            return Task.FromResult(this.data.GetValueOrDefault(id));
         }
 
         public IEnumerator<T> GetEnumerator()
@@ -55,9 +48,11 @@ namespace Teclyn.Core.Basic
             return this.data.Values.GetEnumerator();
         }
 
-        public void Save(T item)
+        public Task Save(T item)
         {
             this.data[item.Id] = item;
+
+            return Task.FromResult(Type.Missing);
         }
 
         IEnumerator IEnumerable.GetEnumerator()

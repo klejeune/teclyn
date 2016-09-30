@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using StructureMap.Attributes;
@@ -17,11 +18,9 @@ namespace Teclyn.SampleMvc.Controllers
         public IRepository<ITodoList> TodoLists { get; set; }
 
         // GET: TodoList
-        public ActionResult Index(string id, int? s)
+        public async Task<ActionResult> Index(string id, int? s)
         {
-            var todoList = this.TodoLists.GetByIdOrNull(id);
-
-            var a = this.TodoLists.OrderByDescending(c => c.CreationDate);
+            var todoList = await this.TodoLists.GetByIdOrNull(id);
 
             if (todoList == null)
             {

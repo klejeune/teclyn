@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using Teclyn.AspNetMvc.Mvc.Models;
 using Teclyn.AspNetMvc.Mvc.Security;
@@ -39,9 +40,9 @@ namespace Teclyn.AspNetMvc.Mvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult ExecutePost(IBaseCommand command, string returnUrl)
+        public async Task<ActionResult> ExecutePost(IBaseCommand command, string returnUrl)
         {
-            this.CommandService.ExecuteGeneric(command);
+            await this.CommandService.ExecuteGeneric(command);
             
             if (string.IsNullOrWhiteSpace(returnUrl))
             {
