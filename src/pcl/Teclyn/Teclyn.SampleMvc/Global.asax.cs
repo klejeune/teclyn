@@ -12,6 +12,7 @@ using StructureMap.Graph.Scanning;
 using Teclyn.Core;
 using Teclyn.Core.Events;
 using Teclyn.SampleCore.TodoLists.Events;
+using Teclyn.SampleCore.Todos.Events;
 using Teclyn.SampleMvc.App_Start;
 
 namespace Teclyn.SampleMvc
@@ -58,6 +59,14 @@ namespace Teclyn.SampleMvc
             {
                 AggregateId = "list-4",
                 Name = "Fourth List",
+            });
+
+            await eventService.Raise(new TodoCreatedEvent
+            {
+                AggregateId = "todo-10",
+                TodoListName = "First List",
+                TodoListId = "list-1",
+                Text = "Test"
             });
         }
     }

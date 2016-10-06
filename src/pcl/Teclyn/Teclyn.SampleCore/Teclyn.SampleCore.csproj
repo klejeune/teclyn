@@ -50,6 +50,8 @@
     <Compile Include="TodoLists\Models\TodoList.cs" />
     <Compile Include="TodoLists\Events\TodoListCreatedEvent.cs" />
     <Compile Include="Todos\Commands\CreateTodoCommand.cs" />
+    <Compile Include="Todos\Commands\UpdateTodoTextCommand.cs" />
+    <Compile Include="Todos\Events\TodoTextUpdatedEvent.cs" />
     <Compile Include="Todos\Models\ITodo.cs" />
     <Compile Include="Todos\Models\ITodoTodoList.cs" />
     <Compile Include="Todos\Models\Todo.cs" />

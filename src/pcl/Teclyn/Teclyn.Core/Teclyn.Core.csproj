@@ -57,6 +57,7 @@
     <Compile Include="Commands\Properties\IPropertyCommand.cs" />
     <Compile Include="Commands\Properties\PropertyCommand.cs" />
     <Compile Include="Commands\RemoteAttribute.cs" />
+    <Compile Include="Commands\Semantics\RichTextAttribute.cs" />
     <Compile Include="Commands\UserFriendlyCommandResult.cs" />
     <Compile Include="Domains\IAccessController.cs" />
     <Compile Include="Domains\IFilter.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Events\ITeclynEvent.cs" />
     <Compile Include="Events\Properties\IPropertyEvent.cs" />
     <Compile Include="Basic\BasicIocContainer.cs" />
+    <Compile Include="Events\Properties\PropertyEvent.cs" />
     <Compile Include="Ioc\IIocContainer.cs" />
     <Compile Include="Ioc\InjectAttribute.cs" />
     <Compile Include="ITeclynConfiguration.cs" />

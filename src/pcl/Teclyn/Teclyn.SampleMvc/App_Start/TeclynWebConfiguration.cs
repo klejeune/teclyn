@@ -30,6 +30,7 @@ namespace Teclyn.SampleMvc
             new TeclynStructureMapPlugin(),
             new TeclynAspNetMvcPlugin(),
             new SampleCorePlugin(),
+            new SampleWebPlugin(), 
         };
 
         public bool Debug => true;

@@ -18,7 +18,7 @@ namespace Teclyn.Core.Commands.Properties
 
         public abstract Task Execute(ICommandExecutionContext context);
 
-        public TProperty NewValue { get; set; }
+        public virtual TProperty NewValue { get; set; }
         public string AggregateId { get; set; }
 
         public abstract Func<TAggregate, TProperty> PropertyAccessor { get; }

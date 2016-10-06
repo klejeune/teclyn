@@ -1,11 +1,18 @@
 ﻿@using Teclyn.SampleCore.TodoLists.Commands
 @using Teclyn.SampleCore.TodoLists.Models
-@model Teclyn.SampleCore.TodoLists.Models.ITodoList
+@model Teclyn.SampleMvc.Models.TodoListModel
 @{
     ViewBag.Title = "Index";
 
 }
 
 <div>
-    @(Html.CommandProperty<RenameTodoListCommand>(Model))
+    @(Html.CommandProperty<RenameTodoListCommand>(Model.TodoList))
 </div>
+
+@foreach (var todo in Model.Todos)
+{
+    <div>
+        <h3><a href="@Url.Action("Index", "Todo", new {Id = todo.Id})">@todo.Name</a></h3>
+    </div>
+}

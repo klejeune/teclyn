@@ -23,15 +23,20 @@ namespace Teclyn.AspNetMvc.Commands
                 this.RenderableType = renderableType;
                 this.Renderer = renderer;
             }
+
+            public override string ToString()
+            {
+                return this.RenderableType.Name + " - " + this.Renderer.GetType().Name;
+            }
         }
 
-        private List<RendererInformation> renderers = new List<RendererInformation>();
+        private readonly LinkedList<RendererInformation> renderers = new LinkedList<RendererInformation>();
 
         public void RegisterRenderer<TProperty>(ICommandPropertyRenderer<TProperty> renderer)
         {
             var info = new RendererInformation(typeof(TProperty), renderer);
 
-            this.renderers.Add(info);
+            this.renderers.AddFirst(info);
         }
 
         public ICommandPropertyRenderer<TProperty> GetRenderer<TProperty>(PropertyInfo property)

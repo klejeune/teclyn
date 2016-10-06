@@ -20,12 +20,17 @@ namespace Teclyn.SampleCore.Todos.Models
             this.CreationDate = eventInformation.Date;
             this.LastModificationDate = eventInformation.Date;
             this.Text = eventInformation.Event.Text;
-            this.Name = eventInformation.Event.Text.Substring(0, 64);
+            this.Name = eventInformation.Event.Text?.Substring(0, Math.Min(eventInformation.Event.Text.Length, 64)) ?? string.Empty;
             this.TodoList = new TodoTodoList
             {
                 Id = eventInformation.Event.TodoListId,
                 Name = eventInformation.Event.TodoListName,
             };
+        }
+
+        public void UpdateText(IEventInformation<TodoTextUpdatedEvent> eventInformation)
+        {
+            this.Text = eventInformation.Event.NewValue;
         }
     }
 }
