@@ -12,6 +12,7 @@ using Teclyn.Core.Events;
 using Teclyn.Core.Events.Handlers;
 using Teclyn.Core.Ioc;
 using Teclyn.Core.Jobs;
+using Teclyn.Core.Metadata;
 using Teclyn.Core.Security.Context;
 using Teclyn.Core.Storage;
 using Teclyn.Core.Storage.EventHandlers;
@@ -45,15 +46,15 @@ namespace Teclyn.Core
             this.iocContainer.Register<ITeclynContext, TeclynContext>();
             this.iocContainer.Register<IStorageConfiguration>(configuration.StorageConfiguration ?? new BasicStorageConfiguration());
             this.iocContainer.RegisterSingleton<EventHandlerService>();
-            this.iocContainer.RegisterSingleton<CommandRepository>();
+            this.iocContainer.RegisterSingleton<MetadataRepository>();
 
             // configuration analysis
             this.repositories = this.iocContainer.Get<RepositoryService>();
             this.repositories.Register(typeof(IEventInformation), typeof(EventInformation<>), "Event", null, null);
             this.ComputeAttributes(this.Plugins.Select(plugin => plugin.GetType().GetTypeInfo().Assembly));
-            
+
             // computing based on the analyzed data
-            
+
         }
 
         public static TeclynApi Initialize(ITeclynConfiguration configuration)
@@ -107,89 +108,126 @@ namespace Teclyn.Core
         {
             var attributeComputer = new AttributeComputer();
             attributeComputer.RegisterHandler(
-                new[] {typeof(AggregateAttribute), typeof(AggregateImplementationAttribute)},
+                new Predicate<Type>[]
+                {
+                    type => type.GetTypeInfo().GetCustomAttributes<AggregateAttribute>().Any(),
+                    type => type.GetTypeInfo().GetCustomAttributes<AggregateImplementationAttribute>().Any()
+                },
                 dictionary =>
                 {
-                    foreach (var aggregateTypeInfo in dictionary[typeof(AggregateAttribute)])
+                    var aggregateAttributeTypes = dictionary.ElementAt(0).Value;
+                    var aggregateImplementationAttributeTypes = dictionary.ElementAt(1).Value;
+
+                    foreach (var aggregateTypeInfo in aggregateAttributeTypes)
                     {
                         var implementationTypeInfo =
-                            dictionary[typeof(AggregateImplementationAttribute)].SingleOrDefault(
+                            aggregateImplementationAttributeTypes.SingleOrDefault(
                                 implementation =>
-                                    aggregateTypeInfo.Type.GetTypeInfo()
-                                        .IsAssignableFrom(implementation.Type.GetTypeInfo()));
+                                    aggregateTypeInfo.GetTypeInfo()
+                                        .IsAssignableFrom(implementation.GetTypeInfo()));
+
+                        var attribute = aggregateTypeInfo.GetTypeInfo().GetCustomAttribute<AggregateAttribute>();
 
                         if (implementationTypeInfo != null)
                         {
                             this.repositories.Register(
-                                aggregateTypeInfo.Type, 
-                                implementationTypeInfo.Type,
-                                implementationTypeInfo.Type.Name,
-                                (aggregateTypeInfo.Attribute as AggregateAttribute).AccessController,
-                                (aggregateTypeInfo.Attribute as AggregateAttribute).DefaultFilter);
+                                aggregateTypeInfo,
+                                implementationTypeInfo,
+                                implementationTypeInfo.Name,
+                                attribute.AccessController,
+                                attribute.DefaultFilter);
                         }
-                        else if (aggregateTypeInfo.Type.GetTypeInfo().IsClass)
+                        else if (aggregateTypeInfo.GetTypeInfo().IsClass)
                         {
                             this.repositories.Register(
-                                aggregateTypeInfo.Type, 
-                                aggregateTypeInfo.Type, 
-                                aggregateTypeInfo.Type.Name,
-                                (aggregateTypeInfo.Attribute as AggregateAttribute).AccessController,
-                                (aggregateTypeInfo.Attribute as AggregateAttribute).DefaultFilter);
+                                aggregateTypeInfo,
+                                aggregateTypeInfo,
+                                aggregateTypeInfo.Name,
+                                attribute.AccessController,
+                                attribute.DefaultFilter);
                         }
                         else
                         {
-                            throw new InvalidOperationException($"The Aggregate {aggregateTypeInfo.Type.Name} doesn't have any implementation.");
+                            throw new InvalidOperationException($"The Aggregate {aggregateTypeInfo.Name} doesn't have any implementation.");
                         }
                     }
                 });
 
-            attributeComputer.RegisterHandler(new[] {typeof(EventHandlerAttribute)},
+            attributeComputer.RegisterHandler(new Predicate<Type>[]
+            {
+                type => type.GetTypeInfo().GetCustomAttribute<EventHandlerAttribute>() != null
+            },
                 dictionary =>
                 {
-                    var eventHandlerTypes = dictionary[typeof(EventHandlerAttribute)];
+                    var eventHandlerTypes = dictionary.ElementAt(0).Value;
                     var eventHandlerService = this.Get<EventHandlerService>();
 
                     foreach (var eventHandlerType in eventHandlerTypes)
                     {
-                        eventHandlerService.RegisterEventHandler(eventHandlerType.Type);
+                        eventHandlerService.RegisterEventHandler(eventHandlerType);
                     }
                 });
 
-            attributeComputer.RegisterHandler(new[] {typeof(RemoteAttribute)},
+            attributeComputer.RegisterHandler(new Predicate<Type>[]
+            {
+                type => typeof(ICommand).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()) && !type.GetTypeInfo().IsAbstract && !type.GetTypeInfo().IsInterface
+            },
                 dictionary =>
                 {
-                    var commandTypes = dictionary[typeof(RemoteAttribute)];
+                    var commandTypes = dictionary.ElementAt(0).Value;
                     var commandService = this.Get<CommandService>();
 
                     foreach (var commandType in commandTypes)
                     {
-                        commandService.RegisterCommand(commandType.Type);
+                        commandService.RegisterCommand(commandType);
+                    }
+                });
+
+            attributeComputer.RegisterHandler(new Predicate<Type>[]
+            {
+                type => typeof(ITeclynEvent).GetTypeInfo().IsAssignableFrom(type.GetTypeInfo()) && !type.GetTypeInfo().IsAbstract && !type.GetTypeInfo().IsInterface
+            },
+                dictionary =>
+                {
+                    var commandTypes = dictionary.ElementAt(0).Value;
+                    var eventService = this.Get<EventService>();
+
+                    foreach (var commandType in commandTypes)
+                    {
+                        eventService.RegisterEvent(commandType);
                     }
                 });
 
             attributeComputer.RegisterHandler(
-                new[] { typeof(ServiceAttribute), typeof(ServiceImplementationAttribute) },
+                new Predicate<Type>[]
+                {
+                     type => type.GetTypeInfo().GetCustomAttribute<ServiceAttribute>() != null,
+                      type => type.GetTypeInfo().GetCustomAttribute<ServiceImplementationAttribute>() != null,
+                },
                 dictionary =>
                 {
-                    foreach (var serviceTypeInfo in dictionary[typeof(ServiceAttribute)])
+                    var serviceAttributeTypes = dictionary.ElementAt(0).Value;
+                    var serviceImplementationAttributeTypes = dictionary.ElementAt(1).Value;
+
+                    foreach (var serviceTypeInfo in serviceAttributeTypes)
                     {
                         var implementationTypeInfo =
-                            dictionary[typeof(ServiceImplementationAttribute)].SingleOrDefault(
+                            serviceImplementationAttributeTypes.SingleOrDefault(
                                 implementation =>
-                                    serviceTypeInfo.Type.GetTypeInfo()
-                                        .IsAssignableFrom(implementation.Type.GetTypeInfo()));
+                                    serviceTypeInfo.GetTypeInfo()
+                                        .IsAssignableFrom(implementation.GetTypeInfo()));
 
                         if (implementationTypeInfo != null)
                         {
-                            this.iocContainer.Register(serviceTypeInfo.Type, implementationTypeInfo.Type);
+                            this.iocContainer.Register(serviceTypeInfo, implementationTypeInfo);
                         }
-                        else if (serviceTypeInfo.Type.GetTypeInfo().IsClass)
+                        else if (serviceTypeInfo.GetTypeInfo().IsClass)
                         {
-                            this.iocContainer.Register(serviceTypeInfo.Type, serviceTypeInfo.Type);
+                            this.iocContainer.Register(serviceTypeInfo, serviceTypeInfo);
                         }
                         else
                         {
-                            throw new InvalidOperationException($"The Service {serviceTypeInfo.Type.Name} doesn't have any implementation.");
+                            throw new InvalidOperationException($"The Service {serviceTypeInfo.Name} doesn't have any implementation.");
                         }
                     }
                 });

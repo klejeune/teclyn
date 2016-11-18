@@ -5,10 +5,12 @@ using System.Web.Mvc;
 using Teclyn.AspNetMvc.Mvc.Models;
 using Teclyn.AspNetMvc.Mvc.Security;
 using Teclyn.Core;
+using Teclyn.Core.AutoAnalysis;
 using Teclyn.Core.Commands;
 using Teclyn.Core.Errors.Models;
 using Teclyn.Core.Events;
 using Teclyn.Core.Ioc;
+using Teclyn.Core.Metadata;
 using Teclyn.Core.Security.Context;
 using Teclyn.Core.Storage;
 
@@ -18,6 +20,9 @@ namespace Teclyn.AspNetMvc.Mvc.Controllers
     {
         [Inject]
         public CommandService CommandService { get; set; }
+
+        [Inject]
+        public MetadataRepository MetadataRepository { get; set; }
 
         [Inject]
         public RepositoryService RepositoryService { get; set; }
@@ -30,11 +35,14 @@ namespace Teclyn.AspNetMvc.Mvc.Controllers
 
         [Inject]
         public ITeclynContext Context { get; set; }
+
+        [Inject]
+        public AutoAnalyzer AutoAnalyzer { get; set; }
         
         [HttpPost]
-        public ActionResult Execute(IBaseCommand command)
+        public async Task<ActionResult> Execute(IBaseCommand command)
         {
-            var result = this.CommandService.ExecuteGeneric(command);
+            var result = await this.CommandService.ExecuteGeneric(command);
 
             return this.Structured(result);
         }
@@ -52,7 +60,7 @@ namespace Teclyn.AspNetMvc.Mvc.Controllers
             return Redirect(returnUrl);
         }
         
-        [OnlyAdminFilter]
+        //[OnlyAdminFilter]
         public ActionResult Info()
         {
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
@@ -67,10 +75,32 @@ namespace Teclyn.AspNetMvc.Mvc.Controllers
                     ImplementationType = agg.ImplementationType.ToString(),
                 }).ToArray(),
                 TeclynVersion = version,
-                Commands = this.CommandService.GetAllInfo(),
+                Commands = this.MetadataRepository.Commands,
+                Events = this.MetadataRepository.Events,
             };
 
             return this.Structured(model);
+        }
+
+        public ActionResult Info2()
+        {
+            System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
+            var fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            string version = fvi.FileVersion;
+
+            var model = new HomeInfoModel
+            {
+                Aggregates = this.RepositoryService.Aggregates.Select(agg => new AggregateInfoModel
+                {
+                    AggregateType = agg.AggregateType.ToString(),
+                    ImplementationType = agg.ImplementationType.ToString(),
+                }).ToArray(),
+                TeclynVersion = version,
+                Commands = this.MetadataRepository.Commands,
+                Events = this.MetadataRepository.Events,
+            };
+
+            return this.View(model);
         }
 
         [OnlyAdminFilter]
@@ -93,6 +123,14 @@ namespace Teclyn.AspNetMvc.Mvc.Controllers
                 .ToList();
 
             return this.Structured(events);
+        }
+
+        //[OnlyAdminFilter]
+        public ActionResult Analyze()
+        {
+            var report = this.AutoAnalyzer.Analyze();
+
+            return this.Structured(report);
         }
     }
 }

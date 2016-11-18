@@ -5,6 +5,7 @@ using Teclyn.Core.Domains;
 using Teclyn.Core.Dummies;
 using Teclyn.Core.Events.Handlers;
 using Teclyn.Core.Ioc;
+using Teclyn.Core.Metadata;
 using Teclyn.Core.Security;
 using Teclyn.Core.Security.Context;
 using Teclyn.Core.Services;
@@ -19,6 +20,7 @@ namespace Teclyn.Core.Events
         private Time time;
         private RepositoryService repositoryService;
         private EventHandlerService eventHandlerService;
+        private MetadataRepository metadataRepository;
 
         [Inject]
         public IRepository<IEventInformation> EventInformationRepository { get; set; }
@@ -26,12 +28,13 @@ namespace Teclyn.Core.Events
         [Inject]
         public IdGenerator IdGenerator { get; set; }
 
-        public EventService(ITeclynContext teclynContext, Time time, RepositoryService repositoryService, EventHandlerService eventHandlerService)
+        public EventService(ITeclynContext teclynContext, Time time, RepositoryService repositoryService, EventHandlerService eventHandlerService, MetadataRepository metadataRepository)
         {
             this.teclynContext = teclynContext;
             this.time = time;
             this.repositoryService = repositoryService;
             this.eventHandlerService = eventHandlerService;
+            this.metadataRepository = metadataRepository;
         }
 
         public async Task<TAggregate> Raise<TAggregate>(IEvent<TAggregate> @event) where TAggregate : class, IAggregate
@@ -105,6 +108,11 @@ namespace Teclyn.Core.Events
             var imlementationType = aggregateInfo.ImplementationType;
 
             return (TAggregate) Activator.CreateInstance(imlementationType);
+        }
+
+        public void RegisterEvent(Type eventType)
+        {
+            this.metadataRepository.RegisterEvent(new EventInfo(eventType.Name.ToLowerInvariant(), eventType.Name, eventType));
         }
     }
 }

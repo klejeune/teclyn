@@ -40,12 +40,17 @@
     <Compile Include="Api\AggregateInfo.cs" />
     <Compile Include="Api\TypeAttributeInfo.cs" />
     <Compile Include="AttributeComputer.cs" />
+    <Compile Include="AutoAnalysis\AggregateReport.cs" />
+    <Compile Include="AutoAnalysis\AutoAnalysisReport.cs" />
+    <Compile Include="AutoAnalysis\AutoAnalyzer.cs" />
+    <Compile Include="AutoAnalysis\CommandReport.cs" />
+    <Compile Include="AutoAnalysis\EventHandlerReport.cs" />
+    <Compile Include="AutoAnalysis\EventReport.cs" />
     <Compile Include="Basic\BasicStorageConfiguration.cs" />
     <Compile Include="Commands\CommandExecutionContext.cs" />
     <Compile Include="Commands\CommandExecutionResult.cs" />
     <Compile Include="Commands\CommandExtensions.cs" />
     <Compile Include="Commands\CommandInfo.cs" />
-    <Compile Include="Commands\CommandRepository.cs" />
     <Compile Include="Commands\CommandResultError.cs" />
     <Compile Include="Commands\CommandService.cs" />
     <Compile Include="Commands\IBaseCommand.cs" />
@@ -107,6 +112,8 @@
     <Compile Include="Jobs\IBackgroundThreadManager.cs" />
     <Compile Include="Jobs\IBackgroundThreadState.cs" />
     <Compile Include="Jobs\ThreadState.cs" />
+    <Compile Include="Metadata\EventInfo.cs" />
+    <Compile Include="Metadata\MetadataRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Domains\AggregateAttribute.cs" />
     <Compile Include="Domains\AggregateImplementationAttribute.cs" />

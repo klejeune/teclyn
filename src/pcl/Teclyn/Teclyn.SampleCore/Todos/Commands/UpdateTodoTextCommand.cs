@@ -15,7 +15,7 @@ namespace Teclyn.SampleCore.Todos.Commands
         {
             return true;
         }
-
+            
         public override bool CheckContext(ITeclynContext context, ICommandContextChecker _)
         {
             return true;

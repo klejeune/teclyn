@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Ioc;
+using Teclyn.Core.Metadata;
 using Teclyn.Core.Security.Context;
 
 namespace Teclyn.Core.Commands
@@ -14,14 +15,14 @@ namespace Teclyn.Core.Commands
         private readonly ITeclynContext context;
         private readonly TeclynApi teclyn;
         private readonly IIocContainer iocContainer;
-        private readonly CommandRepository commandRepository;
+        private readonly MetadataRepository metadataRepository;
 
-        public CommandService(ITeclynContext context, TeclynApi teclyn, IIocContainer iocContainer, CommandRepository commandRepository)
+        public CommandService(ITeclynContext context, TeclynApi teclyn, IIocContainer iocContainer, MetadataRepository metadataRepository)
         {
             this.context = context;
             this.teclyn = teclyn;
             this.iocContainer = iocContainer;
-            this.commandRepository = commandRepository;
+            this.metadataRepository = metadataRepository;
         }
 
         public async Task<ICommandResult> Execute(ICommand command)
@@ -144,17 +145,7 @@ namespace Teclyn.Core.Commands
                 throw new TeclynException($"Unable to register type {commandType.Name}: it is not a command type. (It doesn't implement ICommand.)");
             }
 
-            this.commandRepository.RegisterCommand(new CommandInfo(commandType.Name.ToLowerInvariant(), commandType.Name, commandType));
-        }
-
-        public CommandInfo GetInfo(Type commandType)
-        {
-            return this.commandRepository.Get(commandType.Name.ToLowerInvariant());
-        }
-
-        public IEnumerable<CommandInfo> GetAllInfo()
-        {
-            return this.commandRepository.Commands;
+            this.metadataRepository.RegisterCommand(new CommandInfo(commandType.Name.ToLowerInvariant(), commandType.Name, commandType));
         }
     }
 }

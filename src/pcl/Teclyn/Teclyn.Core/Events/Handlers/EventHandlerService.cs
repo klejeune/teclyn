@@ -32,9 +32,11 @@ namespace Teclyn.Core.Events.Handlers
             }
         }
 
-        private readonly MethodInfo oneParameterHandleMethod = ReflectionTools.Instance<IEventHandler<DummyCreationEvent>>.Method(handler => handler.Handle(null));
-        private readonly MethodInfo twoParameterHandleMethod = ReflectionTools.Instance<IEventHandler<IDummyAggregate, DummyCreationEvent>>.Method(handler => handler.Handle(null, null));
-
+        public IReadOnlyDictionary<Type, IEnumerable<Metadata.EventHandlerMetadata>> GetEventHandlers()
+        {
+            return this.handlersMetaData.ToDictionary(pair => pair.Key, pair => pair.Value.SafeCast<IEnumerable<Metadata.EventHandlerMetadata>>());
+        }
+        
         public void RegisterEventHandler(Type eventHandlerType)
         {
             var handlerInterfacesWithoutAggregate = eventHandlerType

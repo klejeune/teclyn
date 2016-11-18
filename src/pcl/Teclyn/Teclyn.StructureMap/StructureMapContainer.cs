@@ -48,6 +48,7 @@ namespace Teclyn.StructureMap
         public object Get(Type type)
         {
             return container.GetInstance(type);
+            //return container.TryGetInstance(type);
         }
 
         public void Register<TPublicType, TImplementation>() where TImplementation : TPublicType

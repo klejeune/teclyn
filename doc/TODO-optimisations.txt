@@ -1,0 +1,18 @@
+- lister toutes les commandes
+- lister tous les événements
+- afficher les commandes et les événements
+- mesurer le temps d'exécution d'une commande (+ stockage)
+- mesurer le temps d'exécution des handlers d'un événement (+ stockage)
+- afficher les statistiques d'utilisation des commandes et des événements
+- définir le temps d'exécution max d'un événement
+- définir le temps d'exécution max d'une commande
+- créer un dashboard d'alertes avec les temps d'exécution dépassés
+
+- proposer une option de performances des handlers d'un event (exécution immédiate / dans un worker)
+- définir une fonction de notation des performances par rapport aux temps max définis
+- réaliser un algo simple de réglage des optimisations
+- réaliser un réseau neuronal réglant automatiquement les optimisations
+
+
+- proposer les options de performance au niveau handler, pas uniquement événement
+- proposer une option de dénormalisation des données pour les perfs de lecture

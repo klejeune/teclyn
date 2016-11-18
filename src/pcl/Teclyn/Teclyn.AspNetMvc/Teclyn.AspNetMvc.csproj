@@ -122,6 +122,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Mvc\Views\Command\Info2.cshtml" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
