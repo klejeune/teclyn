@@ -1,7 +1,7 @@
-﻿@model Teclyn.AspNetMvc.Mvc.Models.HomeInfoModel
-
+﻿@inherits System.Web.Mvc.WebViewPage<Teclyn.AspNetMvc.Mvc.Models.HomeInfoModel>
+@*@model Teclyn.AspNetMvc.Mvc.Models.HomeInfoModel*@
 @{
-    Layout = null;
+    //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <!DOCTYPE html>
@@ -12,7 +12,7 @@
 </head>
 <body>
 <div>
-      
+      @Model.GetType().Name
 </div>
 </body>
 </html>

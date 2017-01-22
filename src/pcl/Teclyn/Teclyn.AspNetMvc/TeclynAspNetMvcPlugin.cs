@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Hosting;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
@@ -39,6 +40,10 @@ namespace Teclyn.AspNetMvc
             System.Web.Mvc.ModelBinders.Binders.Add(typeof(IBaseCommand), new CommandModelBinder(teclyn));
             HostingEnvironment.RegisterVirtualPathProvider(new TeclynVirtualPathProvider());
             DependencyResolver.SetResolver(teclyn.Get<TeclynBasicServiceLocator>());
+
+            var module = new VirtualFileSystemHttpModule();
+            //module.Init(HttpContext.Current.ApplicationInstance);
+            HttpApplication.RegisterModule(typeof(VirtualFileSystemHttpModule));
         }
     }
 }

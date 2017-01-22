@@ -114,6 +114,8 @@
     <Compile Include="VirtualFileSystem\TeclynVirtualDirectory.cs" />
     <Compile Include="VirtualFileSystem\TeclynVirtualFile.cs" />
     <Compile Include="VirtualFileSystem\TeclynVirtualPathProvider.cs" />
+    <Compile Include="VirtualFileSystem\VirtualFileSystemHttpHandler.cs" />
+    <Compile Include="VirtualFileSystem\VirtualFileSystemHttpModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Teclyn.Core\Teclyn.Core.csproj">
@@ -122,7 +124,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Mvc\Views\Command\Info2.cshtml" />
+    <EmbeddedResource Include="Mvc\Views\Command\Info2.cshtml" />
+    <EmbeddedResource Include="Mvc\Views\Web.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Content Include="Mvc\vendor\bootstrap\bootstrap.min.css" />
+    <Content Include="Mvc\vendor\bootstrap\bootstrap.min.js" />
+    <Content Include="Mvc\Views\_ViewStart.cshtml" />
+    <Content Include="Mvc\Views\Shared\_Layout.cshtml" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>

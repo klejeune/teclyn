@@ -40,3 +40,6 @@ All the features have not been finalized yet, but you will soon find these:
 - Can be used on Asp.Net MVC websites as well as on console apps or libraries
 - Helpers allowing you to easily use Commands in the Asp.Net MVC/Javascript layer
 - Embedded Asp.Net diagnostics/monitoring tools
+
+## Why "Teclyn"?
+"Teclyn" means "Tool" in Welsh.

@@ -1,5 +1,5 @@
-- lister toutes les commandes
-- lister tous les événements
++ lister toutes les commandes
++ lister tous les événements
 - afficher les commandes et les événements
 - mesurer le temps d'exécution d'une commande (+ stockage)
 - mesurer le temps d'exécution des handlers d'un événement (+ stockage)
