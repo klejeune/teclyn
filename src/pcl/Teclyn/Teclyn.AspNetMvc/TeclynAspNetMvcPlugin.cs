@@ -41,9 +41,9 @@ namespace Teclyn.AspNetMvc
             HostingEnvironment.RegisterVirtualPathProvider(new TeclynVirtualPathProvider());
             DependencyResolver.SetResolver(teclyn.Get<TeclynBasicServiceLocator>());
 
-            var module = new VirtualFileSystemHttpModule();
+            //var module = new VirtualFileSystemHttpModule();
             //module.Init(HttpContext.Current.ApplicationInstance);
-            HttpApplication.RegisterModule(typeof(VirtualFileSystemHttpModule));
+            //HttpApplication.RegisterModule(typeof(VirtualFileSystemHttpModule));
         }
     }
 }
