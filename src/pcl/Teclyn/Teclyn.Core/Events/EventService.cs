@@ -112,7 +112,7 @@ namespace Teclyn.Core.Events
 
         public void RegisterEvent(Type eventType)
         {
-            this.metadataRepository.RegisterEvent(new EventInfo(eventType.Name.ToLowerInvariant(), eventType.Name, eventType));
+            this.metadataRepository.RegisterEvent(new EventInfo(eventType.FullName, eventType.Name, eventType));
         }
     }
 }
