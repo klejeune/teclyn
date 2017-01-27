@@ -59,7 +59,7 @@ namespace Teclyn.Core.Tests.Events
 
         public EventServiceTests()
         {
-            var teclyn = TeclynApi.Initialize(new TeclynTestConfiguration());
+            var teclyn = new TeclynApi(new TeclynTestConfiguration());
             this.eventService = teclyn.Get<EventService>();
             this.repository = teclyn.Get<IRepository<DummyAggregate>>();
         }

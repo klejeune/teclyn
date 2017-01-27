@@ -42,7 +42,7 @@ namespace Teclyn.Core.Tests.Commands
 
         public CommandServiceTests()
         {
-            this.teclyn = TeclynApi.Initialize(new TeclynTestConfiguration());
+            this.teclyn = new TeclynApi(new TeclynTestConfiguration());
             this.commandService = teclyn.Get<CommandService>();
         }
 

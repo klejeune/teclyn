@@ -68,7 +68,7 @@ namespace Teclyn.Core.Tests.Commands
 
         public PropertyCommandTests()
         {
-            this.teclyn = TeclynApi.Initialize(new TeclynTestConfiguration());
+            this.teclyn = new TeclynApi(new TeclynTestConfiguration());
             this.repositoryService = teclyn.Get<RepositoryService>();
             this.commandService = teclyn.Get<CommandService>();
 

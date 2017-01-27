@@ -137,6 +137,7 @@
     <Compile Include="Storage\RepositoryService.cs" />
     <Compile Include="TeclynApi.cs" />
     <Compile Include="TeclynCorePlugin.cs" />
+    <Compile Include="TeclynDefaultConfiguration.cs" />
     <Compile Include="TeclynException.cs" />
     <Compile Include="Tools\Base64Serializer.cs" />
     <Compile Include="Tools\EnumerableExtensions.cs" />

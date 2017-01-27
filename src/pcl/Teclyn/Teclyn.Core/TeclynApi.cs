@@ -21,15 +21,38 @@ namespace Teclyn.Core
 {
     public class TeclynApi
     {
-        public IEnumerable<ITeclynPlugin> Plugins { get; private set; }
+        public IEnumerable<ITeclynPlugin> Plugins { get; }
+        public IEnumerable<Assembly> ScannedAssemblies { get; }
 
-        private IIocContainer iocContainer;
+        private readonly IIocContainer iocContainer;
         private RepositoryService repositories;
 
         public bool Debug { get; private set; }
 
-        private TeclynApi()
+        public TeclynApi() : this(new TeclynDefaultConfiguration())
         {
+        }
+
+        public TeclynApi(ITeclynConfiguration configuration)
+        {
+            this.Plugins = configuration.Plugins.ToList();
+            this.ScannedAssemblies = this.Plugins.Select(plugin => plugin.GetType().GetTypeInfo().Assembly).ToList();
+
+            this.iocContainer = GetContainer(configuration);
+            this.iocContainer.Initialize(this.ScannedAssemblies);
+            this.iocContainer.Register(this.iocContainer);
+            this.iocContainer.Register(this);
+
+            this.Fill(configuration);
+
+            foreach (var plugin in this.Plugins)
+            {
+                plugin.Initialize(this);
+            }
+
+            var threadManager = this.iocContainer.Get<IBackgroundThreadManager>();
+
+            threadManager.Start();
         }
 
         private void Fill(ITeclynConfiguration configuration)
@@ -51,35 +74,10 @@ namespace Teclyn.Core
             // configuration analysis
             this.repositories = this.iocContainer.Get<RepositoryService>();
             this.repositories.Register(typeof(IEventInformation), typeof(EventInformation<>), "Event", null, null);
-            this.ComputeAttributes(this.Plugins.Select(plugin => plugin.GetType().GetTypeInfo().Assembly));
+            this.ComputeAttributes(this.ScannedAssemblies);
 
             // computing based on the analyzed data
 
-        }
-
-        public static TeclynApi Initialize(ITeclynConfiguration configuration)
-        {
-            TeclynApi teclyn = new TeclynApi();
-
-            teclyn.Plugins = configuration.Plugins.ToList();
-
-            teclyn.iocContainer = GetContainer(configuration);
-            teclyn.iocContainer.Initialize(teclyn.Plugins.Select(plugin => plugin.GetType().GetTypeInfo().Assembly));
-            teclyn.iocContainer.Register(teclyn.iocContainer);
-            teclyn.iocContainer.Register(teclyn);
-
-            teclyn.Fill(configuration);
-
-            foreach (var plugin in teclyn.Plugins)
-            {
-                plugin.Initialize(teclyn);
-            }
-
-            var threadManager = teclyn.iocContainer.Get<IBackgroundThreadManager>();
-
-            threadManager.Start();
-
-            return teclyn;
         }
 
         private static IIocContainer GetContainer(ITeclynConfiguration configuration)
