@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Teclyn.Core.Basic;
 using Teclyn.Core.Commands;
 using Teclyn.Core.Domains;
-using Teclyn.Core.Errors;
 using Teclyn.Core.Events;
 using Teclyn.Core.Events.Handlers;
 using Teclyn.Core.Ioc;
@@ -15,7 +12,6 @@ using Teclyn.Core.Jobs;
 using Teclyn.Core.Metadata;
 using Teclyn.Core.Security.Context;
 using Teclyn.Core.Storage;
-using Teclyn.Core.Storage.EventHandlers;
 
 namespace Teclyn.Core
 {
@@ -36,7 +32,7 @@ namespace Teclyn.Core
         public TeclynApi(ITeclynConfiguration configuration, params Assembly[] assemblies)
         {
             this.Plugins = configuration.Plugins.ToList();
-            this.ScannedAssemblies = assemblies.ToList().Union(this.Plugins.Select(plugin => plugin.GetType().GetTypeInfo().Assembly).ToList());
+            this.ScannedAssemblies = assemblies.Union(this.Plugins.Select(plugin => plugin.GetType().GetTypeInfo().Assembly).ToList());
 
             this.iocContainer = GetContainer(configuration);
             this.iocContainer.Initialize(this.ScannedAssemblies);
@@ -50,9 +46,7 @@ namespace Teclyn.Core
                 plugin.Initialize(this);
             }
 
-            var threadManager = this.iocContainer.Get<IBackgroundThreadManager>();
-
-            threadManager.Start();
+            this.iocContainer.Get<IBackgroundThreadManager>()?.Start();
         }
 
         private void Fill(ITeclynConfiguration configuration)
