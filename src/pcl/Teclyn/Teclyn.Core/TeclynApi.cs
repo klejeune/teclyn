@@ -28,15 +28,15 @@ namespace Teclyn.Core
         private RepositoryService repositories;
 
         public bool Debug { get; private set; }
-
-        public TeclynApi() : this(new TeclynDefaultConfiguration())
+        
+        public TeclynApi(params Assembly[] assemblies) : this(new TeclynDefaultConfiguration(), assemblies)
         {
         }
 
-        public TeclynApi(ITeclynConfiguration configuration)
+        public TeclynApi(ITeclynConfiguration configuration, params Assembly[] assemblies)
         {
             this.Plugins = configuration.Plugins.ToList();
-            this.ScannedAssemblies = this.Plugins.Select(plugin => plugin.GetType().GetTypeInfo().Assembly).ToList();
+            this.ScannedAssemblies = assemblies.ToList().Union(this.Plugins.Select(plugin => plugin.GetType().GetTypeInfo().Assembly).ToList());
 
             this.iocContainer = GetContainer(configuration);
             this.iocContainer.Initialize(this.ScannedAssemblies);
