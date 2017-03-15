@@ -126,6 +126,7 @@
     <Compile Include="Security\Context\TeclynContextLevel.cs" />
     <Compile Include="Security\TeclynSecurityException.cs" />
     <Compile Include="Security\Context\ITeclynUser.cs" />
+    <Compile Include="Services\ITimeService.cs" />
     <Compile Include="Storage\EventHandlers\ModificationPersistenceEventHandler.cs" />
     <Compile Include="Storage\EventHandlers\SuppressionPersistenceEventHandler.cs" />
     <Compile Include="Basic\InMemoryRepositoryProvider.cs" />
@@ -144,7 +145,7 @@
     <Compile Include="Tools\IdGenerator.cs" />
     <Compile Include="Tools\JsonSerializer.cs" />
     <Compile Include="Tools\ReflectionTools.cs" />
-    <Compile Include="Services\Time.cs" />
+    <Compile Include="Services\TimeService.cs" />
     <Compile Include="Tools\TypeTools.cs" />
     <Compile Include="UserFriendlyException.cs" />
   </ItemGroup>

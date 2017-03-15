@@ -15,7 +15,7 @@ namespace Teclyn.Core.Jobs.Basic
         {
             if (this.StartDate.HasValue)
             {
-                return this.time.Now - this.StartDate.Value;
+                return this.timeService.Now() - this.StartDate.Value;
             }
             else
             {
@@ -28,27 +28,27 @@ namespace Teclyn.Core.Jobs.Basic
 
         private readonly Action<IBackgroundThreadState> action;
         private readonly Action onFinished;
-        private readonly Time time;
+        private readonly ITimeService timeService;
         
-        public BackgroundThread(Time time, string id, string name, Action<IBackgroundThreadState> action, Action onFinished)
+        public BackgroundThread(ITimeService timeService, string id, string name, Action<IBackgroundThreadState> action, Action onFinished)
         {
-            this.time = time;
+            this.timeService = timeService;
             this.Id = id;
             this.Name = name;
             this.action = action;
             this.onFinished = onFinished;
-            this.CreationDate = this.time.Now;
+            this.CreationDate = this.timeService.Now();
         }
 
         public void Start()
         {
             Task.Run(() =>
             {
-                this.StartDate = this.time.Now;
+                this.StartDate = this.timeService.Now();
                 this.State = ThreadState.Running;
                 action(this);
                 this.State = ThreadState.Finished;
-                this.EndDate = this.time.Now;
+                this.EndDate = this.timeService.Now();
                 this.onFinished();
             });
         }

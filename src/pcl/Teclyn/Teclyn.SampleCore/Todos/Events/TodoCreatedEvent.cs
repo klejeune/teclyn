@@ -1,4 +1,5 @@
-﻿using Teclyn.Core.Events;
+﻿using System;
+using Teclyn.Core.Events;
 using Teclyn.SampleCore.Todos.Models;
 
 namespace Teclyn.SampleCore.Todos.Events
@@ -8,10 +9,11 @@ namespace Teclyn.SampleCore.Todos.Events
         public string Text { get; set; }
         public string TodoListId { get; set; }
         public string TodoListName { get; set; }
-        
-        public void Apply(ITodo aggregate, IEventInformation information)
+        public DateTime Date { get; set; }
+
+        public void Apply(ITodo aggregate)
         {
-            aggregate.Create(information.Type(this));
+            aggregate.Create(this);
         }
 
         public string AggregateId { get; set; }

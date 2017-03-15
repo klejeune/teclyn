@@ -7,14 +7,14 @@ namespace Teclyn.Core.Dummies
         public string Id { get; set; }
         public string Property { get; set; }
 
-        public void Create(IEventInformation<DummyCreationEvent> eventInformation)
+        public void Create(DummyCreationEvent eventInformation)
         {
-            this.Id = eventInformation.Event.AggregateId;
+            this.Id = eventInformation.AggregateId;
         }
 
-        public void Update(IEventInformation<DummyPropertyEvent> eventInformation)
+        public void Update(DummyPropertyEvent eventInformation)
         {
-            this.Property = eventInformation.Event.NewValue;
+            this.Property = eventInformation.NewValue;
         }
     }
 }

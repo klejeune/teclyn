@@ -17,7 +17,7 @@ namespace Teclyn.Core.Events
     public class EventService
     {
         private ITeclynContext teclynContext;
-        private Time time;
+        private TimeService timeService;
         private RepositoryService repositoryService;
         private EventHandlerService eventHandlerService;
         private MetadataRepository metadataRepository;
@@ -28,10 +28,10 @@ namespace Teclyn.Core.Events
         [Inject]
         public IdGenerator IdGenerator { get; set; }
 
-        public EventService(ITeclynContext teclynContext, Time time, RepositoryService repositoryService, EventHandlerService eventHandlerService, MetadataRepository metadataRepository)
+        public EventService(ITeclynContext teclynContext, TimeService timeService, RepositoryService repositoryService, EventHandlerService eventHandlerService, MetadataRepository metadataRepository)
         {
             this.teclynContext = teclynContext;
-            this.time = time;
+            this.timeService = timeService;
             this.repositoryService = repositoryService;
             this.eventHandlerService = eventHandlerService;
             this.metadataRepository = metadataRepository;
@@ -48,7 +48,7 @@ namespace Teclyn.Core.Events
                 aggregate = this.BuildAggregate<TAggregate>();
             }
             
-            @event.Apply(aggregate, eventInformation);
+            @event.Apply(aggregate);
 
             await this.LaunchEventHandlers(aggregate, @event, eventInformation);
 
@@ -83,7 +83,7 @@ namespace Teclyn.Core.Events
             var eventInformation = new EventInformation<TEvent>();
             eventInformation.Id = this.IdGenerator.GenerateId();
             eventInformation.User = this.teclynContext.CurrentUser;
-            eventInformation.Date = this.time.Now;
+            eventInformation.Date = this.timeService.Now();
             eventInformation.EventType = @event.GetType().ToString();
             eventInformation.Event = @event;
 

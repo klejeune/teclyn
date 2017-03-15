@@ -14,23 +14,24 @@ namespace Teclyn.SampleCore.Todos.Models
         public DateTime CreationDate { get; set; }
         public DateTime LastModificationDate { get; set; }
         public string Text { get; set; }
-        public void Create(IEventInformation<TodoCreatedEvent> eventInformation)
+
+        public void Create(TodoCreatedEvent eventInformation)
         {
-            this.Id = eventInformation.Event.AggregateId;
+            this.Id = eventInformation.AggregateId;
             this.CreationDate = eventInformation.Date;
             this.LastModificationDate = eventInformation.Date;
-            this.Text = eventInformation.Event.Text;
-            this.Name = eventInformation.Event.Text?.Substring(0, Math.Min(eventInformation.Event.Text.Length, 64)) ?? string.Empty;
+            this.Text = eventInformation.Text;
+            this.Name = eventInformation.Text?.Substring(0, Math.Min(eventInformation.Text.Length, 64)) ?? string.Empty;
             this.TodoList = new TodoTodoList
             {
-                Id = eventInformation.Event.TodoListId,
-                Name = eventInformation.Event.TodoListName,
+                Id = eventInformation.TodoListId,
+                Name = eventInformation.TodoListName,
             };
         }
 
-        public void UpdateText(IEventInformation<TodoTextUpdatedEvent> eventInformation)
+        public void UpdateText(TodoTextUpdatedEvent eventInformation)
         {
-            this.Text = eventInformation.Event.NewValue;
+            this.Text = eventInformation.NewValue;
         }
     }
 }

@@ -6,9 +6,9 @@ namespace Teclyn.SampleCore.TodoLists.Events
 {
     public class TodoListRenamedEvent : IPropertyEvent<ITodoList, string>
     {
-        public void Apply(ITodoList aggregate, IEventInformation information)
+        public void Apply(ITodoList aggregate)
         {
-            aggregate.Rename(information.Type(this));
+            aggregate.Rename(this);
         }
 
         public string AggregateId { get; set; }

@@ -18,7 +18,7 @@ namespace Teclyn.Core.Jobs.Basic
         public IdGenerator IdGenerator { get; set; }
 
         [Inject]
-        public Time Time { get; set; }
+        public TimeService TimeService { get; set; }
         
         private readonly IDictionary<string, IBackgroundThread> threads = new ConcurrentDictionary<string, IBackgroundThread>();
 
@@ -82,7 +82,7 @@ namespace Teclyn.Core.Jobs.Basic
 
         public void Queue(string name, Action<IBackgroundThreadState> action)
         {
-            var thread = new BackgroundThread(this.Time, this.IdGenerator.GenerateId(), name, action, () => this.waitHandle.Set());
+            var thread = new BackgroundThread(this.TimeService, this.IdGenerator.GenerateId(), name, action, () => this.waitHandle.Set());
 
             this.threads.Add(thread.Id, thread);
             this.waitHandle.Set();

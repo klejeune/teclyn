@@ -12,12 +12,13 @@ namespace Teclyn.SampleCore.Users.Models
         public string Name { get; set; }
         public string Email { get; set; }
         public DateTime RegistrationDate { get; set; }
-        public void Create(IEventInformation<UserRegisteredEvent> eventInformation)
+
+        public void Create(UserRegisteredEvent @event)
         {
-            this.Id = eventInformation.Event.AggregateId;
-            this.Name = eventInformation.Event.Fullname;
-            this.Email = eventInformation.Event.Email;
-            this.RegistrationDate = eventInformation.Date;
+            this.Id = @event.AggregateId;
+            this.Name = @event.Fullname;
+            this.Email = @event.Email;
+            this.RegistrationDate = @event.Date;
         }
     }
 }

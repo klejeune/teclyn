@@ -14,18 +14,18 @@ namespace Teclyn.SampleCore.TodoLists.Models
         public DateTime CreationDate { get; set; }
         public DateTime LastModificationDate { get; set; }
 
-        public void Create(IEventInformation<TodoListCreatedEvent> eventInformation)
+        public void Create(TodoListCreatedEvent eventInformation)
         {
-            this.Id = eventInformation.Event.AggregateId;
+            this.Id = eventInformation.AggregateId;
             this.CreationDate = eventInformation.Date;
             this.LastModificationDate = eventInformation.Date;
             this.Length = 0;
-            this.Name = eventInformation.Event.Name;
+            this.Name = eventInformation.Name;
         }
 
-        public void Rename(IEventInformation<TodoListRenamedEvent> eventInformation)
+        public void Rename(TodoListRenamedEvent eventInformation)
         {
-            this.Name = eventInformation.Event.NewValue;
+            this.Name = eventInformation.NewValue;
         }
     }
 }

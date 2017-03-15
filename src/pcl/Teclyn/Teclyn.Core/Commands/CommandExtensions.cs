@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Teclyn.Core.Events;
+using Teclyn.Core.Services;
 using Teclyn.Core.Tools;
 
 namespace Teclyn.Core.Commands
@@ -9,6 +10,11 @@ namespace Teclyn.Core.Commands
         public static EventService GetEventService(this ICommandExecutionContext context)
         {
             return context.Teclyn.Get<EventService>();
+        }
+
+        public static ITimeService GetTimeService(this ICommandExecutionContext context)
+        {
+            return context.Teclyn.Get<ITimeService>();
         }
 
         public static IdGenerator GetIdGenerator(this ICommandExecutionContext context)

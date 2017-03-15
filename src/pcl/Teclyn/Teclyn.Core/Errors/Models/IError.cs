@@ -10,6 +10,6 @@ namespace Teclyn.Core.Errors.Models
     {
         DateTime Date { get; }
         string Description { get; }
-        void Create(IEventInformation<ErrorLoggedEvent> type);
+        void Create(ErrorLoggedEvent @event);
     }
 }

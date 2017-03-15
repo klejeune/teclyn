@@ -7,9 +7,9 @@ namespace Teclyn.SampleCore.Todos.Events
 {
     public class TodoTextUpdatedEvent : PropertyEvent<ITodo, string>
     {
-        public override void Apply(ITodo aggregate, IEventInformation information)
+        public override void Apply(ITodo aggregate)
         {
-            aggregate.UpdateText(information.Type(this));
+            aggregate.UpdateText(this);
         }
     }
 }

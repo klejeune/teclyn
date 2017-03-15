@@ -6,7 +6,7 @@ namespace Teclyn.Core.Dummies
     public interface IDummyAggregate : IAggregate
     {
         string Property { get; }
-        void Create(IEventInformation<DummyCreationEvent> eventInformation);
-        void Update(IEventInformation<DummyPropertyEvent> eventInformation);
+        void Create(DummyCreationEvent eventInformation);
+        void Update(DummyPropertyEvent eventInformation);
     }
 }

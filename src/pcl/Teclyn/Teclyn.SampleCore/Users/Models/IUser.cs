@@ -10,6 +10,6 @@ namespace Teclyn.SampleCore.Users.Models
     {
         string Email { get; }
         DateTime RegistrationDate { get; }
-        void Create(IEventInformation<UserRegisteredEvent> eventInformation);
+        void Create(UserRegisteredEvent @event);
     }
 }

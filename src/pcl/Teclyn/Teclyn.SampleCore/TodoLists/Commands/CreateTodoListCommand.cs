@@ -27,6 +27,7 @@ namespace Teclyn.SampleCore.TodoLists.Commands
             {
                 AggregateId = context.GetIdGenerator().GenerateId(),
                 Name = this.Name,
+                Date = context.GetTimeService().Now(),
             });
         }
 

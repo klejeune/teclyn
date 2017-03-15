@@ -11,12 +11,12 @@ namespace Teclyn.Core.Errors.Models
         public string Id { get; set; }
         public DateTime Date { get; set; }
         public string Description { get; set; }
-        public void Create(IEventInformation<ErrorLoggedEvent> type)
+        public void Create(ErrorLoggedEvent @event)
         {
-            this.Id = type.Event.AggregateId;
-            this.Name = type.Event.Message;
-            this.Description = type.Event.Description;
-            this.Date = type.Date;
+            this.Id = @event.AggregateId;
+            this.Name = @event.Message;
+            this.Description = @event.Description;
+            this.Date = @event.Date;
         }
 
         public string Name { get; set; }

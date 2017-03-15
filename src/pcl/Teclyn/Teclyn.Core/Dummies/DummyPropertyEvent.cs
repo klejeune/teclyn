@@ -5,9 +5,9 @@ namespace Teclyn.Core.Dummies
 {
     public class DummyPropertyEvent : IPropertyEvent<IDummyAggregate, string>
     {
-        public void Apply(IDummyAggregate aggregate, IEventInformation information)
+        public void Apply(IDummyAggregate aggregate)
         {
-            aggregate.Update(information.Type(this));
+            aggregate.Update(this);
         }
 
         public string AggregateId { get; set; }

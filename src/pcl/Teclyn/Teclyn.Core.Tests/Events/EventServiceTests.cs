@@ -21,17 +21,17 @@ namespace Teclyn.Core.Tests.Events
                 this.Value = @event.Value;
             }
 
-            public void Create(IEventInformation<DummyCreationEvent> eventInformation)
+            public void Create(DummyCreationEvent eventInformation)
             {
-                this.Id = eventInformation.Event.AggregateId;
+                this.Id = eventInformation.AggregateId;
             }
         }
 
         private class DummyCreationEvent : IEvent<DummyAggregate>
         {
-            public void Apply(DummyAggregate aggregate, IEventInformation information)
+            public void Apply(DummyAggregate aggregate)
             {
-                aggregate.Create(information.Type(this));
+                aggregate.Create(this);
             }
 
             public string AggregateId { get; set; }
@@ -41,7 +41,7 @@ namespace Teclyn.Core.Tests.Events
         {
             public string Value { get; set; }
 
-            public void Apply(DummyAggregate aggregate, IEventInformation information)
+            public void Apply(DummyAggregate aggregate)
             {
                 aggregate.Modify(this);
             }

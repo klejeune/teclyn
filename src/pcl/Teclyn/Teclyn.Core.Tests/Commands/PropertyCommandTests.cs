@@ -28,7 +28,7 @@ namespace Teclyn.Core.Tests.Commands
 
         public class DummyValueUpdatedEvent : IPropertyEvent<DummyAggregate, string>
         {
-            public void Apply(DummyAggregate aggregate, IEventInformation information)
+            public void Apply(DummyAggregate aggregate)
             {
                 aggregate.UpdateValue(this);
             }

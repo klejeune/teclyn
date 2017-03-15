@@ -1,4 +1,5 @@
-﻿using Teclyn.Core.Errors.Models;
+﻿using System;
+using Teclyn.Core.Errors.Models;
 using Teclyn.Core.Events;
 
 namespace Teclyn.Core.Errors.Events
@@ -7,10 +8,11 @@ namespace Teclyn.Core.Errors.Events
     {
         public string Message { get; set; }
         public string Description { get; set; }
+        public DateTime Date { get; set; }
 
-        public void Apply(IError aggregate, IEventInformation information)
+        public void Apply(IError aggregate)
         {
-            aggregate.Create(information.Type(this));
+            aggregate.Create(this);
         }
 
         public string AggregateId { get; set; }

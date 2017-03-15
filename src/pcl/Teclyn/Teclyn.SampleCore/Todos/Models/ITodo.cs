@@ -12,7 +12,7 @@ namespace Teclyn.SampleCore.Todos.Models
         DateTime CreationDate { get; }
         DateTime LastModificationDate { get; }
         string Text { get; }
-        void Create(IEventInformation<TodoCreatedEvent> eventInformation);
-        void UpdateText(IEventInformation<TodoTextUpdatedEvent> eventInformation);
+        void Create(TodoCreatedEvent eventInformation);
+        void UpdateText(TodoTextUpdatedEvent eventInformation);
     }
 }
