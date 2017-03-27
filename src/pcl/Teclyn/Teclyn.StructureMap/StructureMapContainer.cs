@@ -33,22 +33,28 @@ namespace Teclyn.StructureMap
 
                     x.WithDefaultConventions();
 
-                   
+
                 });
-                
+
                 _.ForSingletonOf<EventHandlerService>();
             });
         }
 
         public T Get<T>()
         {
-            return container.GetInstance<T>();
+            return (T)this.Get(typeof(T));
         }
 
         public object Get(Type type)
         {
-            return container.GetInstance(type);
-            //return container.TryGetInstance(type);
+            try
+            {
+                return container.GetInstance(type);
+            }
+            catch (StructureMapConfigurationException)
+            {
+                return null;
+            }
         }
 
         public void Register<TPublicType, TImplementation>() where TImplementation : TPublicType
