@@ -6,7 +6,6 @@ using Teclyn.SampleCore.TodoLists.Models;
 
 namespace Teclyn.SampleCore.TodoLists.Commands
 {
-    [Remote]
     public class CreateTodoListCommand : ICommand<ITodoList>
     {
         public string Name { get; set; }

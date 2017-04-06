@@ -120,17 +120,7 @@ namespace Teclyn.Core.Commands
         {
             result.ContextIsValid = command.CheckContext(context, result);
         }
-
-        public bool IsRemote<TCommand>()
-        {
-            return IsRemote(typeof(TCommand));
-        }
-
-        public bool IsRemote(Type commandType)
-        {
-            return commandType.GetTypeInfo().GetCustomAttribute<RemoteAttribute>() != null;
-        }
-
+        
         public IDictionary<string, object> Serialize(IBaseCommand command)
         {
             var properties = command.GetType().GetRuntimeProperties().Where(p => p.CanRead && p.CanWrite);

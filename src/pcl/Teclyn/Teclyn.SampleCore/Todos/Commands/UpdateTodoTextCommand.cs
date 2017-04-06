@@ -8,7 +8,6 @@ using Teclyn.SampleCore.Todos.Models;
 
 namespace Teclyn.SampleCore.Todos.Commands
 {
-    [Remote]
     public class UpdateTodoTextCommand : PropertyCommand<ITodo, TodoTextUpdatedEvent, string>
     {
         public override bool CheckParameters(IParameterChecker _)
@@ -18,7 +17,7 @@ namespace Teclyn.SampleCore.Todos.Commands
             
         public override bool CheckContext(ITeclynContext context, ICommandContextChecker _)
         {
-            return true;
+            return _.Check(this.NewValue != null, "error");
         }
 
         public override Func<ITodo, string> PropertyAccessor => todo => todo.Text;

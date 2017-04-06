@@ -10,11 +10,11 @@ namespace Teclyn.Core.Events.Handlers
 
     public interface IEventHandler<in TEvent> : IEventHandler where TEvent : ITeclynEvent
     {
-        Task Handle(IEventInformation<TEvent> @event);
+        Task Handle(TEvent @event);
     }
 
     public interface IEventHandler<in TAggregate, in TEvent> : IEventHandler where TAggregate : class, IAggregate where TEvent : ITeclynEvent<TAggregate>
     {
-        Task Handle(TAggregate aggregate, IEventInformation<TEvent> @event);
+        Task Handle(TAggregate aggregate, TEvent @event);
     }
 }

@@ -12,7 +12,7 @@ namespace Teclyn.Core.Storage.EventHandlers
         [Inject]
         public IRepository<TAggregate> Repository { get; set; }
         
-        public async Task Handle(TAggregate aggregate, IEventInformation<IEvent<TAggregate>> @event)
+        public async Task Handle(TAggregate aggregate, IEvent<TAggregate> @event)
         {
             if (await this.Repository.Exists(aggregate.Id))
             {

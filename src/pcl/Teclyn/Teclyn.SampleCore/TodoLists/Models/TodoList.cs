@@ -27,5 +27,10 @@ namespace Teclyn.SampleCore.TodoLists.Models
         {
             this.Name = eventInformation.NewValue;
         }
+
+        public void AddTodo(TodoAddedToListEvent todoAddedToListEvent)
+        {
+            this.Length++;
+        }
     }
 }

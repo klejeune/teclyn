@@ -61,7 +61,6 @@
     <Compile Include="Commands\IUserFriendlyCommandResult.cs" />
     <Compile Include="Commands\Properties\IPropertyCommand.cs" />
     <Compile Include="Commands\Properties\PropertyCommand.cs" />
-    <Compile Include="Commands\RemoteAttribute.cs" />
     <Compile Include="Commands\Semantics\RichTextAttribute.cs" />
     <Compile Include="Commands\UserFriendlyCommandResult.cs" />
     <Compile Include="Domains\IAccessController.cs" />
@@ -164,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configuration\" />
+    <Folder Include="Queries\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

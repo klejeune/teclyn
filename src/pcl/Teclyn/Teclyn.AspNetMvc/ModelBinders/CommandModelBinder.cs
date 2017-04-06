@@ -22,12 +22,7 @@ namespace Teclyn.AspNetMvc.ModelBinders
             var commandRenderer = teclyn.Get<CommandRenderer>();
             var commandService = teclyn.Get<CommandService>();
             var commandType = commandRenderer.GetCommandType(controllerContext.HttpContext);
-
-            if (!commandService.IsRemote(commandType))
-            {
-                throw new MvcCommandException($"The command {commandType} cannot be called remotely by the html/javascript side. Add the [Remote] attribute or call it from the server side.");
-            }
-
+            
             var item = Activator.CreateInstance(commandType);
             bindingContext.ModelMetadata = ModelMetadataProviders.Current.GetMetadataForType(() => item, commandType);
 

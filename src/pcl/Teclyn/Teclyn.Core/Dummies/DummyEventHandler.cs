@@ -7,7 +7,7 @@ namespace Teclyn.Core.Dummies
 {
     public class DummyEventHandler : IEventHandler<IDummyAggregate, DummyCreationEvent>
     {
-        public Task Handle(IDummyAggregate aggregate, IEventInformation<DummyCreationEvent> @event)
+        public Task Handle(IDummyAggregate aggregate, DummyCreationEvent @event)
         {
             throw new NotImplementedException();
         }

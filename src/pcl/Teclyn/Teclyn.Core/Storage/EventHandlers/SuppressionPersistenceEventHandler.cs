@@ -11,7 +11,7 @@ namespace Teclyn.Core.Storage.EventHandlers
         [Inject]
         public IRepository<TAggregate> Repository { get; set; }
         
-        public async Task Handle(TAggregate aggregate, IEventInformation<ISuppressionEvent<TAggregate>> @event)
+        public async Task Handle(TAggregate aggregate, ISuppressionEvent<TAggregate> @event)
         {
             await this.Repository.Delete(aggregate);
         }

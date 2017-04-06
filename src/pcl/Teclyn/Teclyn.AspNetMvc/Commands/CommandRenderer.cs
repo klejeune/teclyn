@@ -35,11 +35,6 @@ namespace Teclyn.AspNetMvc.Commands
         {
             var command = this.IocContainer.Get<TCommand>();
 
-            if (!this.CommandService.IsRemote<TCommand>())
-            {
-                throw new MvcCommandRenderingException($"The command {typeof(TCommand).Name} cannot be called remotely by the html/javascript side. Add the [Remote] attribute or call it from the server side.");
-            }
-
             if (builder != null)
             {
                 builder(command);
@@ -65,11 +60,7 @@ namespace Teclyn.AspNetMvc.Commands
         {
             var command = this.IocContainer.Get<TCommand>();
 
-            if (!this.CommandService.IsRemote<TCommand>())
-            {
-                throw new MvcCommandRenderingException($"The command {typeof(TCommand).Name} cannot be called remotely by the html/javascript side. Add the [Remote] attribute or call it from the server side.");
-            }
-            
+       
             var check = this.CommandService.CheckContext(command);
 
             if (check.Errors.Any())
