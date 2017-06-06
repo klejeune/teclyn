@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Teclyn.Core.Commands;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Storage;
 
@@ -38,9 +39,9 @@ namespace Teclyn.Core.Basic
             return Task.FromResult(this.data.ContainsKey(id));
         }
 
-        public Task<T> GetByIdOrNull(string id)
+        public Task<T> GetByIdOrNull(Id<T> id)
         {
-            return Task.FromResult(this.data.GetValueOrDefault(id));
+            return Task.FromResult(this.data.GetValueOrDefault(id.Value));
         }
 
         public IEnumerator<T> GetEnumerator()

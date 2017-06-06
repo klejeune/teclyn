@@ -167,11 +167,11 @@ namespace Teclyn.Core
                 dictionary =>
                 {
                     var commandTypes = dictionary.ElementAt(0).Value;
-                    var commandService = this.Get<CommandService>();
+                    var metadataRepository = this.Get<MetadataRepository>();
 
                     foreach (var commandType in commandTypes)
                     {
-                        commandService.RegisterCommand(commandType);
+                        metadataRepository.RegisterCommand(commandType);
                     }
                 });
 

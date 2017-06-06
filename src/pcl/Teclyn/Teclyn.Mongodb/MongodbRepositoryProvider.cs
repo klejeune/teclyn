@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using Teclyn.Core.Commands;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Storage;
 
@@ -32,9 +33,10 @@ namespace Teclyn.Mongodb
         public Type ElementType => typeof(T);
         public Expression Expression => this.collection.AsQueryable().Expression;
         public IQueryProvider Provider => this.collection.AsQueryable().Provider;
-        public Task<T> GetByIdOrNull(string id)
+        public Task<T> GetByIdOrNull(Id<T> id)
         {
-            return Task.FromResult(this.collection.AsQueryable().FirstOrDefault(i => i.Id == id));
+            var stringId = id.Value;
+            return Task.FromResult(this.collection.AsQueryable().FirstOrDefault(i => i.Id == stringId));
         }
 
         public Task Create(T item)

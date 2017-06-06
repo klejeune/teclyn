@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Teclyn.Core.Commands;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Dummies;
 using Teclyn.Core.Events.Handlers;
@@ -50,7 +51,7 @@ namespace Teclyn.Core.Events
             
             @event.Apply(aggregate);
 
-            await this.LaunchEventHandlers(aggregate, @event, eventInformation);
+            await this.LaunchEventHandlers(aggregate, @event);
 
             return aggregate;
         }
@@ -58,9 +59,10 @@ namespace Teclyn.Core.Events
         public async Task<TAggregate> Raise<TAggregate>(ISuppressionEvent<TAggregate> @event) where TAggregate : class, IAggregate
         {
             var eventInformation = this.BuildEventInformation(@event);
+            await this.EventInformationRepository.Create(eventInformation);
             var aggregate = await this.repositoryService.Get<TAggregate>().GetById(@event.AggregateId);
 
-            await this.LaunchEventHandlers(aggregate, @event, eventInformation);
+            await this.LaunchEventHandlers(aggregate, @event);
 
             return aggregate;
         }
@@ -90,13 +92,13 @@ namespace Teclyn.Core.Events
             return eventInformation;
         }
 
-        private async Task LaunchEventHandlers(IAggregate aggregate, ITeclynEvent @event, IEventInformation eventInformation)
+        private async Task LaunchEventHandlers(IAggregate aggregate, ITeclynEvent @event)
         {
             var eventTypeAncestors = @event.GetType().GetAllAncestorsAndInterfaces();
 
             var handlers = eventTypeAncestors
                 .SelectMany(ancestorType => this.eventHandlerService.GetEventHandlers(ancestorType))
-                .Select(handler => handler.GetHandleAction(aggregate, @event, eventInformation));
+                .Select(handler => handler.GetHandleAction(aggregate, @event));
 
             await Task.WhenAll(handlers.Select(t => t()));
         }
@@ -110,6 +112,10 @@ namespace Teclyn.Core.Events
             return (TAggregate) Activator.CreateInstance(imlementationType);
         }
 
+        /// <summary>
+        /// TODO Move to MetadataRepository
+        /// </summary>
+        /// <param name="eventType"></param>
         public void RegisterEvent(Type eventType)
         {
             this.metadataRepository.RegisterEvent(new EventInfo(eventType.FullName, eventType.Name, eventType));

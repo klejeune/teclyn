@@ -17,7 +17,7 @@ namespace Teclyn.SampleMvc.Controllers
         [Inject]
         public IRepository<ITodoList> TodoLists { get; set; }
 
-        public HomeController(/*IRepository<ITodoList> repository*/)
+        public HomeController(IRepository<ITodoList> repository)
         {
             //this.TodoLists = repository;
         }

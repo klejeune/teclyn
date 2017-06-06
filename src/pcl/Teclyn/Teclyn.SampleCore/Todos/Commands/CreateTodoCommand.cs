@@ -13,7 +13,7 @@ namespace Teclyn.SampleCore.Todos.Commands
     public class CreateTodoCommand : ICommand<ITodo>
     {
         public string Text { get; set; }
-        public string TodoListId { get; set; }
+        public Id<ITodoList> TodoListId { get; set; }
 
         [Inject]
         private IRepository<ITodoList> TodoLists { get; set; }

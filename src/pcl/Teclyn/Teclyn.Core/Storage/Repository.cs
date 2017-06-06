@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Teclyn.Core.Commands;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Ioc;
 
@@ -45,7 +46,7 @@ namespace Teclyn.Core.Storage
             await this.GetProvider().Delete(item);
         }
 
-        public async Task<TAggregate> GetById(string id)
+        public async Task<TAggregate> GetById(Id<TAggregate> id)
         {
             var aggregate = await this.GetProvider().GetByIdOrNull(id);
 
@@ -57,7 +58,7 @@ namespace Teclyn.Core.Storage
             return aggregate;
         }
 
-        public async Task<TAggregate> GetByIdOrNull(string id)
+        public async Task<TAggregate> GetByIdOrNull(Id<TAggregate> id)
         {
             if (id == null)
             {

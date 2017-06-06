@@ -46,7 +46,7 @@ namespace Teclyn.AspNetMvc.Mvc.Controllers
 
             return this.Structured(result);
         }
-
+        
         [HttpPost]
         public async Task<ActionResult> ExecutePost(IBaseCommand command, string returnUrl)
         {

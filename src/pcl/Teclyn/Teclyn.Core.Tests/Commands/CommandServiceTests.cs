@@ -52,11 +52,10 @@ namespace Teclyn.Core.Tests.Commands
             var first = "test";
             var second = 5;
 
-            var command = this.commandService.Create<DummyCommand>(c =>
-            {
-                c.FirstParameter = first;
-                c.SecondParameter = second;
-            });
+            var command = new DummyCommand {
+                FirstParameter = first,
+                SecondParameter = second,
+            };
 
             var result = await command.Execute(this.commandService);
 

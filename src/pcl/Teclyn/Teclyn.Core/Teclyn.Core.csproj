@@ -57,6 +57,7 @@
     <Compile Include="Commands\ICommandContextChecker.cs" />
     <Compile Include="Commands\ICommandExecutionContext.cs" />
     <Compile Include="Commands\ICommandResult.cs" />
+    <Compile Include="Commands\Id.cs" />
     <Compile Include="Commands\IParameterChecker.cs" />
     <Compile Include="Commands\IUserFriendlyCommandResult.cs" />
     <Compile Include="Commands\Properties\IPropertyCommand.cs" />
@@ -118,6 +119,15 @@
     <Compile Include="Domains\AggregateImplementationAttribute.cs" />
     <Compile Include="Domains\IDisplayable.cs" />
     <Compile Include="Domains\IAggregate.cs" />
+    <Compile Include="Queries\IQuery.cs" />
+    <Compile Include="Queries\IQueryContextChecker.cs" />
+    <Compile Include="Queries\IQueryExecutionContext.cs" />
+    <Compile Include="Queries\IQueryResult.cs" />
+    <Compile Include="Queries\IUserFriendlyQueryResult.cs" />
+    <Compile Include="Queries\QueryExecutionResult.cs" />
+    <Compile Include="Queries\QueryResultError.cs" />
+    <Compile Include="Queries\QueryService.cs" />
+    <Compile Include="Queries\UserFriendlyQueryResult.cs" />
     <Compile Include="Security\Context\GuestTeclynUser.cs" />
     <Compile Include="Security\Context\ITeclynContext.cs" />
     <Compile Include="Security\Context\TechnicalUser.cs" />
@@ -163,7 +173,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Configuration\" />
-    <Folder Include="Queries\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

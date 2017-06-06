@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using Teclyn.Core.Commands;
 
 namespace Teclyn.Core.Metadata
@@ -10,6 +12,16 @@ namespace Teclyn.Core.Metadata
 
         public IEnumerable<CommandInfo> Commands => this.commands.Values;
         public IEnumerable<EventInfo> Events => this.events.Values;
+
+        public void RegisterCommand(Type commandType)
+        {
+            if (!typeof(IBaseCommand).GetTypeInfo().IsAssignableFrom(commandType.GetTypeInfo()))
+            {
+                throw new TeclynException($"Unable to register type {commandType.Name}: it is not a command type. (It doesn't implement ICommand.)");
+            }
+
+            this.RegisterCommand(new CommandInfo(commandType.Name.ToLowerInvariant(), commandType.Name, commandType));
+        }
 
         public void RegisterCommand(CommandInfo commandInfo)
         {

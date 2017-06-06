@@ -120,22 +120,12 @@ namespace Teclyn.Core.Commands
         {
             result.ContextIsValid = command.CheckContext(context, result);
         }
-        
+
         public IDictionary<string, object> Serialize(IBaseCommand command)
         {
             var properties = command.GetType().GetRuntimeProperties().Where(p => p.CanRead && p.CanWrite);
 
             return properties.ToDictionary(p => p.Name, p => p.GetValue(command));
-        }
-        
-        public void RegisterCommand(Type commandType)
-        {
-            if (!typeof(IBaseCommand).GetTypeInfo().IsAssignableFrom(commandType.GetTypeInfo()))
-            {
-                throw new TeclynException($"Unable to register type {commandType.Name}: it is not a command type. (It doesn't implement ICommand.)");
-            }
-
-            this.metadataRepository.RegisterCommand(new CommandInfo(commandType.Name.ToLowerInvariant(), commandType.Name, commandType));
         }
     }
 }

@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Teclyn.Core.Commands;
 
-namespace Teclyn.Core.Commands
+namespace Teclyn.Core.Queries
 {
-    public class CommandExecutionResult : ICommandContextChecker, IParameterChecker, ICommandExecutionContext
+    public class QueryExecutionResult: IQueryContextChecker, IParameterChecker, IQueryExecutionContext
     {
-        private readonly List<CommandResultError> errors = new List<CommandResultError>();
+        private readonly List<QueryResultError> errors = new List<QueryResultError>();
 
-        public IEnumerable<CommandResultError> Errors => this.errors;
+        public IEnumerable<QueryResultError> Errors => this.errors;
 
         public bool ContextIsValid { get; set; }
         public bool ParametersAreValid { get; set; }
@@ -17,7 +18,7 @@ namespace Teclyn.Core.Commands
 
         public TeclynApi Teclyn { get; }
 
-        public CommandExecutionResult(TeclynApi teclyn)
+        public QueryExecutionResult(TeclynApi teclyn)
         {
             this.Teclyn = teclyn;
         }
@@ -36,7 +37,7 @@ namespace Teclyn.Core.Commands
         {
             if (!expression)
             {
-                this.errors.Add(new CommandResultError(message, property));
+                this.errors.Add(new QueryResultError(message, property));
             }
 
             return expression;
@@ -44,7 +45,7 @@ namespace Teclyn.Core.Commands
 
         private string GetFieldName<TProperty>(Expression<Func<TProperty>> property)
         {
-            return ((MemberExpression) ((LambdaExpression) property).Body).Member.Name;
+            return ((MemberExpression)((LambdaExpression)property).Body).Member.Name;
         }
 
         public void SetSuccess()
@@ -58,17 +59,17 @@ namespace Teclyn.Core.Commands
         }
     }
 
-    public class CommandExecutionResult<TResult> : CommandExecutionResult, ICommandResult<TResult>
+    public class QueryExecutionResult<TResult> : QueryExecutionResult, IQueryResult<TResult>
     {
         public TResult Result { get; set; }
 
-        public CommandExecutionResult(TeclynApi teclyn) : base(teclyn)
+        public QueryExecutionResult(TeclynApi teclyn) : base(teclyn)
         {
         }
 
-        public IUserFriendlyCommandResult ToUserFriendly()
+        public IUserFriendlyQueryResult ToUserFriendly()
         {
-            return new UserFriendlyCommandResult<TResult>(this);
+            return new UserFriendlyQueryResult<TResult>(this);
         }
     }
 }

@@ -30,6 +30,7 @@ namespace Teclyn.AspNetMvc
             teclyn.Get<IIocContainer>().RegisterSingleton<CommandPropertyRendererFactory>();
 
             // Renderers
+            teclyn.Get<CommandPropertyRendererFactory>().RegisterRenderer(new IdRenderer());
             teclyn.Get<CommandPropertyRendererFactory>().RegisterRenderer(new StringRenderer());
             teclyn.Get<CommandPropertyRendererFactory>().RegisterRenderer(new BooleanRenderer());
             teclyn.Get<CommandPropertyRendererFactory>().RegisterRenderer(new DateTimeRenderer());
@@ -38,6 +39,7 @@ namespace Teclyn.AspNetMvc
 
             // MVC
             System.Web.Mvc.ModelBinders.Binders.Add(typeof(IBaseCommand), new CommandModelBinder(teclyn));
+            System.Web.Mvc.ModelBinders.Binders.Add(typeof(string), new IdModelBinder());
             HostingEnvironment.RegisterVirtualPathProvider(new TeclynVirtualPathProvider());
             DependencyResolver.SetResolver(teclyn.Get<TeclynBasicServiceLocator>());
 

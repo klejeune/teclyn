@@ -19,7 +19,7 @@ namespace Teclyn.Core.Commands.Properties
         public abstract Task Execute(ICommandExecutionContext context);
 
         public virtual TProperty NewValue { get; set; }
-        public string AggregateId { get; set; }
+        public Id<TAggregate> AggregateId { get; set; }
 
         public abstract Func<TAggregate, TProperty> PropertyAccessor { get; }
     }
@@ -39,7 +39,7 @@ namespace Teclyn.Core.Commands.Properties
                 var @event = Activator.CreateInstance<TEvent>();
                 @event.OldValue = oldValue;
                 @event.NewValue = this.NewValue;
-                @event.AggregateId = this.AggregateId;
+                @event.AggregateId = this.AggregateId.Value;
 
                 await context.GetEventService().Raise(@event);
             }

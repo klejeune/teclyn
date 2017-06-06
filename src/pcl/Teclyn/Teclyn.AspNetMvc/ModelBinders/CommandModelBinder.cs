@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Linq;
 using System.Web.Mvc;
 using System.Windows.Input;
 using Teclyn.AspNetMvc.Commands;
@@ -27,6 +29,25 @@ namespace Teclyn.AspNetMvc.ModelBinders
             bindingContext.ModelMetadata = ModelMetadataProviders.Current.GetMetadataForType(() => item, commandType);
 
             return item;
+        }
+
+        protected override void BindProperty(ControllerContext controllerContext, ModelBindingContext bindingContext,
+            PropertyDescriptor propertyDescriptor)
+        {
+            //if (propertyDescriptor.PropertyType.IsGenericType &&
+            //    propertyDescriptor.PropertyType.GetGenericTypeDefinition() == typeof(Id<>))
+            //{
+            //    var idType = propertyDescriptor.PropertyType.GetGenericArguments().Single();
+            //    var value = controllerContext.HttpContext.Request.Form[propertyDescriptor.Name];
+
+            //    var id = Id.From(idType, value);
+
+            //    propertyDescriptor.SetValue(bindingContext.Model, id);
+            //}
+            //else
+            {
+                base.BindProperty(controllerContext, bindingContext, propertyDescriptor);
+            }
         }
 
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
