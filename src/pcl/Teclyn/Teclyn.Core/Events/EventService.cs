@@ -15,13 +15,12 @@ using Teclyn.Core.Tools;
 
 namespace Teclyn.Core.Events
 {
-    public class EventService
+    public class EventService : IEventService
     {
-        private ITeclynContext teclynContext;
-        private TimeService timeService;
-        private RepositoryService repositoryService;
-        private EventHandlerService eventHandlerService;
-        private MetadataRepository metadataRepository;
+        private readonly ITeclynContext teclynContext;
+        private readonly TimeService timeService;
+        private readonly RepositoryService repositoryService;
+        private readonly EventHandlerService eventHandlerService;
 
         [Inject]
         public IRepository<IEventInformation> EventInformationRepository { get; set; }
@@ -29,13 +28,12 @@ namespace Teclyn.Core.Events
         [Inject]
         public IdGenerator IdGenerator { get; set; }
 
-        public EventService(ITeclynContext teclynContext, TimeService timeService, RepositoryService repositoryService, EventHandlerService eventHandlerService, MetadataRepository metadataRepository)
+        public EventService(ITeclynContext teclynContext, TimeService timeService, RepositoryService repositoryService, EventHandlerService eventHandlerService)
         {
             this.teclynContext = teclynContext;
             this.timeService = timeService;
             this.repositoryService = repositoryService;
             this.eventHandlerService = eventHandlerService;
-            this.metadataRepository = metadataRepository;
         }
 
         public async Task<TAggregate> Raise<TAggregate>(IEvent<TAggregate> @event) where TAggregate : class, IAggregate
@@ -110,15 +108,6 @@ namespace Teclyn.Core.Events
             var imlementationType = aggregateInfo.ImplementationType;
 
             return (TAggregate) Activator.CreateInstance(imlementationType);
-        }
-
-        /// <summary>
-        /// TODO Move to MetadataRepository
-        /// </summary>
-        /// <param name="eventType"></param>
-        public void RegisterEvent(Type eventType)
-        {
-            this.metadataRepository.RegisterEvent(new EventInfo(eventType.FullName, eventType.Name, eventType));
         }
     }
 }

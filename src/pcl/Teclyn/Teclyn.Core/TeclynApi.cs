@@ -182,11 +182,11 @@ namespace Teclyn.Core
                 dictionary =>
                 {
                     var commandTypes = dictionary.ElementAt(0).Value;
-                    var eventService = this.Get<EventService>();
+                    var metadataRepository = this.Get<MetadataRepository>();
 
-                    foreach (var commandType in commandTypes)
+                    foreach (var eventType in commandTypes)
                     {
-                        eventService.RegisterEvent(commandType);
+                        metadataRepository.RegisterEvent(new Metadata.EventInfo(eventType.FullName, eventType.Name, eventType));
                     }
                 });
 

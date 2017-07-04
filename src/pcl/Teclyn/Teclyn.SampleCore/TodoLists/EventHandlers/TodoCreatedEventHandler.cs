@@ -12,7 +12,7 @@ namespace Teclyn.SampleCore.TodoLists.EventHandlers
     public class TodoCreatedEventHandler : IEventHandler<TodoCreatedEvent>
     {
         [Inject]
-        private EventService EventService { get; set; }
+        private IEventService EventService { get; set; }
 
         public async Task Handle(TodoCreatedEvent @event)
         {

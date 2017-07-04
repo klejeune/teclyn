@@ -54,13 +54,13 @@ namespace Teclyn.Core.Tests.Events
             public string AggregateId { get; set; }
         }
 
-        private readonly EventService eventService;
+        private readonly IEventService eventService;
         private readonly IRepository<DummyAggregate> repository;
 
         public EventServiceTests()
         {
             var teclyn = new TeclynApi(new TeclynTestConfiguration());
-            this.eventService = teclyn.Get<EventService>();
+            this.eventService = teclyn.Get<IEventService>();
             this.repository = teclyn.Get<IRepository<DummyAggregate>>();
         }
 

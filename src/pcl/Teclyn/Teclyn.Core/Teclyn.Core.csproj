@@ -83,6 +83,7 @@
     <Compile Include="Events\EventExtensions.cs" />
     <Compile Include="Events\EventInformation.cs" />
     <Compile Include="Events\Handlers\EventHandlerService.cs" />
+    <Compile Include="Events\IEventService.cs" />
     <Compile Include="Events\Metadata\EventHandlerMetadata.cs" />
     <Compile Include="Events\Metadata\EventMetadata.cs" />
     <Compile Include="Events\Handlers\EventHandlerAttribute.cs" />

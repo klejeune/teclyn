@@ -7,9 +7,9 @@ namespace Teclyn.Core.Commands
 {
     public static class CommandExtensions
     {
-        public static EventService GetEventService(this ICommandExecutionContext context)
+        public static IEventService GetEventService(this ICommandExecutionContext context)
         {
-            return context.Teclyn.Get<EventService>();
+            return context.Teclyn.Get<IEventService>();
         }
 
         public static ITimeService GetTimeService(this ICommandExecutionContext context)
