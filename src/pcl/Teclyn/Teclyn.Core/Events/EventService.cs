@@ -15,6 +15,7 @@ using Teclyn.Core.Tools;
 
 namespace Teclyn.Core.Events
 {
+    [ServiceImplementation]
     public class EventService : IEventService
     {
         private readonly ITeclynContext teclynContext;
