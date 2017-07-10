@@ -6,10 +6,22 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Teclyn.Core.Commands;
 using Teclyn.Core.Domains;
+using Teclyn.Core.Dummies;
 using Teclyn.Core.Ioc;
+using Teclyn.Core.Tools;
 
 namespace Teclyn.Core.Storage
 {
+    public class Rep
+    {
+        public static IRepositoryProvider<TInterface> GetProviderGenerics<TInterface, TImplementation>(IStorageConfiguration storageConfiguration, string collectionName)
+            where TInterface : class, IAggregate
+            where TImplementation : TInterface
+        {
+            return storageConfiguration.GetRepositoryProvider<TInterface, TImplementation>(collectionName);
+        }
+    }
+
     public class Repository<TAggregate> : IRepository<TAggregate> where TAggregate : class, IAggregate
     {
         [Inject]
@@ -25,10 +37,25 @@ namespace Teclyn.Core.Storage
             if (provider == null)
             {
                 var info = this.RepositoryService.GetInfo<TAggregate>();
-                this.provider = this.StorageConfiguration.GetRepositoryProvider<TAggregate>(info.CollectionName);
+
+                var method =
+                    ReflectionTools.Static.Method(
+                        () => Rep.GetProviderGenerics<IDummyAggregate, DummyAggregate>(null, null))
+                        .GetGenericMethodDefinition();
+
+                this.provider = (IRepositoryProvider<TAggregate>)
+                    method.MakeGenericMethod(info.AggregateType, info.ImplementationType)
+                    .Invoke(null, new object[] { this.StorageConfiguration, info.CollectionName });
             }
 
             return this.provider;
+        }
+
+        private static IRepositoryProvider<TInterface> GetProviderGenerics<TInterface, TImplementation>(IStorageConfiguration storageConfiguration, string collectionName)
+            where TInterface : class, IAggregate
+            where TImplementation : TInterface
+        {
+            return storageConfiguration.GetRepositoryProvider<TInterface, TImplementation>(collectionName);
         }
 
         public async Task<bool> Exists(string id)

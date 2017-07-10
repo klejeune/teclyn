@@ -5,9 +5,11 @@ namespace Teclyn.Core.Basic
 {
     public class BasicStorageConfiguration : IStorageConfiguration
     {
-        public IRepositoryProvider<T> GetRepositoryProvider<T>(string collectionName) where T : class, IAggregate
+        public IRepositoryProvider<TInterface> GetRepositoryProvider<TInterface, TImplementation>(string collectionName) 
+            where TInterface : class, IAggregate
+            where TImplementation : TInterface
         {
-            return new InMemoryRepositoryProvider<T>();
+            return new InMemoryRepositoryProvider<TInterface>();
         }
     }
 }

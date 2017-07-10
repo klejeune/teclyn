@@ -35,15 +35,17 @@ namespace Teclyn.SampleMvc
 
         public bool Debug => true;
 
-        public IRepositoryProvider<T> GetRepositoryProvider<T>(string collectionName) where T : class, IAggregate
+        public IRepositoryProvider<TInterface> GetRepositoryProvider<TInterface, TImplementation>(string collectionName) 
+            where TInterface : class, IAggregate
+            where TImplementation : TInterface
         {
             if (this.mongoDatabase != null)
             {
-                return new MongodbRepositoryProvider<T>(this.mongoDatabase, collectionName);
+                return new MongodbRepositoryProvider<TInterface, TImplementation>(this.mongoDatabase, collectionName);
             }
             else
             {
-                return new InMemoryRepositoryProvider<T>();
+                return new InMemoryRepositoryProvider<TInterface>();
             }
         }
 

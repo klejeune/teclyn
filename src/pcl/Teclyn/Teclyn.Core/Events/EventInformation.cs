@@ -3,9 +3,9 @@ using Teclyn.Core.Security.Context;
 
 namespace Teclyn.Core.Events
 {
-    public class EventInformation<TEvent> : IEventInformation<TEvent> where TEvent : ITeclynEvent
+    public class EventInformation : IEventInformation
     {
-        public TEvent Event { get; set; }
+        public ITeclynEvent Event { get; set; }
         public DateTime Date { get; set; }
         public ITeclynUser User { get; set; }
         public string EventType { get; set; }

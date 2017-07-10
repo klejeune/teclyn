@@ -4,6 +4,8 @@ namespace Teclyn.Core.Storage
 {
     public interface IStorageConfiguration
     {
-        IRepositoryProvider<T> GetRepositoryProvider<T>(string collectionName) where T : class, IAggregate;
+        IRepositoryProvider<TInterface> GetRepositoryProvider<TInterface, TImplementation>(string collectionName) 
+            where TInterface : class, IAggregate
+            where TImplementation : TInterface;
     }
 }

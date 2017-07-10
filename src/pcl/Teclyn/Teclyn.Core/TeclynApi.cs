@@ -67,7 +67,7 @@ namespace Teclyn.Core
 
             // configuration analysis
             this.repositories = this.iocContainer.Get<RepositoryService>();
-            this.repositories.Register(typeof(IEventInformation), typeof(EventInformation<>), "Event", null, null);
+            this.repositories.Register(typeof(IEventInformation), typeof(EventInformation), "Event", null, null);
             this.ComputeAttributes(this.ScannedAssemblies);
 
             // computing based on the analyzed data

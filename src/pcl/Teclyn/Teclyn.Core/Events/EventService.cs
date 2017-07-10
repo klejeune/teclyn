@@ -68,20 +68,7 @@ namespace Teclyn.Core.Events
 
         private IEventInformation BuildEventInformation(ITeclynEvent @event)
         {
-            var eventType = @event.GetType();
-            var buildTypedEventInformationMethod = ReflectionTools.Instance<EventService>
-                .Method(eventService => eventService.BuildTypedEventInformation<DummyCreationEvent>(null))
-                .GetGenericMethodDefinition()
-                .MakeGenericMethod(eventType);
-
-            var result = buildTypedEventInformationMethod.Invoke(this, new object[] {@event});
-
-            return (IEventInformation) result;
-        }
-
-        private EventInformation<TEvent> BuildTypedEventInformation<TEvent>(TEvent @event) where TEvent : ITeclynEvent
-        {
-            var eventInformation = new EventInformation<TEvent>();
+            var eventInformation = new EventInformation();
             eventInformation.Id = this.IdGenerator.GenerateId();
             eventInformation.User = this.teclynContext.CurrentUser;
             eventInformation.Date = this.timeService.Now();

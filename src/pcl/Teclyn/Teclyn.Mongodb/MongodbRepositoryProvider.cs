@@ -11,49 +11,52 @@ using Teclyn.Core.Storage;
 
 namespace Teclyn.Mongodb
 {
-    public class MongodbRepositoryProvider<T> : IRepositoryProvider<T> where T : class, IAggregate
+    public class MongodbRepositoryProvider<TInterface, TImplementation> : IRepositoryProvider<TInterface> 
+        where TInterface : class, IAggregate
+        where TImplementation : TInterface
     {
-        private IMongoCollection<T> collection;
+        private IMongoCollection<TImplementation> collection;
 
         public MongodbRepositoryProvider(IMongoDatabase database, string collectionName)
         {
-            this.collection = database.GetCollection<T>(collectionName);
+            this.collection = database.GetCollection<TImplementation>(collectionName);
         }
 
-        public IEnumerator<T> GetEnumerator()
+        public IEnumerator<TInterface> GetEnumerator()
         {
-            return this.collection.AsQueryable().GetEnumerator();
+            return this.collection.AsQueryable().GetEnumerator().Cast<TInterface, TImplementation>();
         }
-
+        
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
 
-        public Type ElementType => typeof(T);
+        public Type ElementType => typeof(TInterface);
         public Expression Expression => this.collection.AsQueryable().Expression;
         public IQueryProvider Provider => this.collection.AsQueryable().Provider;
-        public Task<T> GetByIdOrNull(Id<T> id)
+        public Task<TInterface> GetByIdOrNull(Id<TInterface> id)
         {
             var stringId = id.Value;
-            return Task.FromResult(this.collection.AsQueryable().FirstOrDefault(i => i.Id == stringId));
+            return Task.FromResult(this.collection.AsQueryable().FirstOrDefault(i => i.Id == stringId).SafeCast<TInterface>());
         }
 
-        public Task Create(T item)
+        public Task Create(TInterface item)
         {
-            this.collection.InsertOne(item);
+            this.collection.InsertOne((TImplementation) item);
 
             return Task.FromResult(Type.Missing);
         }
 
-        public Task Save(T item)
+        public Task Save(TInterface item)
         {
-            this.collection.ReplaceOne(i => i.Id == item.Id, item);
+            var typedItem = (TImplementation) item;
+            this.collection.ReplaceOne(i => i.Id == item.Id, typedItem);
 
             return Task.FromResult(Type.Missing);
         }
 
-        public Task Delete(T item)
+        public Task Delete(TInterface item)
         {
             this.collection.DeleteOne(i => i.Id == item.Id);
 

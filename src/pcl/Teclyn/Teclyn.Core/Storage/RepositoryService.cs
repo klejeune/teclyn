@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using Teclyn.Core.Api;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Events.Handlers;
@@ -29,6 +30,11 @@ namespace Teclyn.Core.Storage
 
         public void Register(Type aggregateType, Type implementationType, string collectionName, Type accessControllerType, Type defaultFilterType)
         {
+            if (!aggregateType.GetTypeInfo().IsAssignableFrom(implementationType.GetTypeInfo()))
+            {
+                throw new InvalidOperationException($"The implementation type {implementationType.Name} does not implement the interface type {aggregateType.Name}");
+            }
+
             this.aggregates[aggregateType] = new AggregateInfo(aggregateType, implementationType, collectionName, accessControllerType, defaultFilterType);
 
             this.iocContainer.Register(typeof(IRepository<>).MakeGenericType(aggregateType), typeof(Repository<>).MakeGenericType(aggregateType));

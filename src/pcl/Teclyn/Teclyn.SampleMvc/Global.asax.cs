@@ -31,7 +31,7 @@ namespace Teclyn.SampleMvc
 
             var configuration = new TeclynWebConfiguration();
             configuration.UseStructureMap(StructuremapMvc.Container);
-            //configuration.UseMongodbDatabase("TeclynSampleMVC");
+            configuration.UseMongodbDatabase("TeclynSampleMVC");
             var teclyn = new TeclynApi(configuration);
             var eventService = teclyn.Get<IEventService>();
 
