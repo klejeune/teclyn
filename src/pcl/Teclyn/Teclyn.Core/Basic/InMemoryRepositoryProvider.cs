@@ -12,46 +12,46 @@ namespace Teclyn.Core.Basic
 {
     public class InMemoryRepositoryProvider<T> : IRepositoryProvider<T> where T : class, IAggregate
     {
-        private readonly IDictionary<string, T> data = new Dictionary<string, T>();
+        private static readonly IDictionary<string, T> data = new Dictionary<string, T>();
 
         public Type ElementType => typeof(T);
 
-        public Expression Expression => this.data.Values.AsQueryable().Expression;
+        public Expression Expression => data.Values.AsQueryable().Expression;
 
         public IQueryProvider Provider => data.Values.AsQueryable().Provider;
 
         public Task Create(T item)
         {
-            this.data.Add(item.Id, item);
+            data.Add(item.Id, item);
 
             return Task.FromResult(Type.Missing);
         }
 
         public Task Delete(T item)
         {
-            this.data.Remove(item.Id);
+            data.Remove(item.Id);
 
             return Task.FromResult(Type.Missing);
         }
 
         public Task<bool> Exists(string id)
         {
-            return Task.FromResult(this.data.ContainsKey(id));
+            return Task.FromResult(data.ContainsKey(id));
         }
 
         public Task<T> GetByIdOrNull(Id<T> id)
         {
-            return Task.FromResult(this.data.GetValueOrDefault(id.Value));
+            return Task.FromResult(data.GetValueOrDefault(id.Value));
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            return this.data.Values.GetEnumerator();
+            return data.Values.GetEnumerator();
         }
 
         public Task Save(T item)
         {
-            this.data[item.Id] = item;
+            data[item.Id] = item;
 
             return Task.FromResult(Type.Missing);
         }

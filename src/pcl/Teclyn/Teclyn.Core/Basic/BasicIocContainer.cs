@@ -114,6 +114,14 @@ namespace Teclyn.Core.Basic
             this.Register<TPublicType, TPublicType>();
         }
 
+        public void RegisterSingleton<TPublicType, TImplementation>()
+            where TPublicType : class
+            where TImplementation : class, TPublicType
+        {
+            var implementation = (TImplementation)this.BuildConcrete(typeof(TImplementation));
+            this.Register<TPublicType>(implementation);
+        }
+
         public void Register<TPublicType>(TPublicType @object)
         {
             this.instances[typeof(TPublicType)] = @object;

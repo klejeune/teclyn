@@ -11,12 +11,16 @@ using Teclyn.Core.Tools;
 
 namespace Teclyn.Core.Events.Handlers
 {
-    public class EventHandlerService
+    [ServiceImplementation]
+    public class EventHandlerService : IEventHandlerService
     {
         [Inject]
         public TeclynApi Teclyn { get; set; }
 
-        private readonly IDictionary<Type, List<Metadata.EventHandlerMetadata>> handlersMetaData = new Dictionary<Type, List<EventHandlerMetadata>>();
+        /// <summary>
+        /// TODO remove static, and make this a singleton
+        /// </summary>
+        private static readonly IDictionary<Type, List<Metadata.EventHandlerMetadata>> handlersMetaData = new Dictionary<Type, List<EventHandlerMetadata>>();
        
         public IEnumerable<EventHandlerMetadata> GetEventHandlers(Type eventType)
         {
@@ -34,7 +38,7 @@ namespace Teclyn.Core.Events.Handlers
 
         public IReadOnlyDictionary<Type, IEnumerable<Metadata.EventHandlerMetadata>> GetEventHandlers()
         {
-            return this.handlersMetaData.ToDictionary(pair => pair.Key, pair => pair.Value.SafeCast<IEnumerable<Metadata.EventHandlerMetadata>>());
+            return handlersMetaData.ToDictionary(pair => pair.Key, pair => pair.Value.SafeCast<IEnumerable<Metadata.EventHandlerMetadata>>());
         }
         
         public void RegisterEventHandler(Type eventHandlerType)
@@ -85,7 +89,7 @@ namespace Teclyn.Core.Events.Handlers
                 if (list == null)
                 {
                     list = new List<EventHandlerMetadata>();
-                    this.handlersMetaData[eventHandlerInfo.EventType] = list;
+                    handlersMetaData[eventHandlerInfo.EventType] = list;
                 }
 
                 list.Add(eventHandlerInfo);

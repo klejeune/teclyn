@@ -14,9 +14,9 @@ namespace Teclyn.Core.Storage
         private TeclynApi teclyn;
         private IDictionary<Type, AggregateInfo> aggregates = new Dictionary<Type, AggregateInfo>();
         private IIocContainer iocContainer;
-        private EventHandlerService eventHandlerService;
+        private IEventHandlerService eventHandlerService;
 
-        public RepositoryService(TeclynApi teclyn, IIocContainer iocContainer, EventHandlerService eventHandlerService)
+        public RepositoryService(TeclynApi teclyn, IIocContainer iocContainer, IEventHandlerService eventHandlerService)
         {
             this.teclyn = teclyn;
             this.iocContainer = iocContainer;

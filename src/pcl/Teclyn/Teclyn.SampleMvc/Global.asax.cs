@@ -19,9 +19,6 @@ namespace Teclyn.SampleMvc
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        //public static TeclynApi Teclyn { get; private set; }
-       // public static IContainer StructureMapContainer { get; private set; }
-
         protected async void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -31,7 +28,7 @@ namespace Teclyn.SampleMvc
 
             var configuration = new TeclynWebConfiguration();
             configuration.UseStructureMap(StructuremapMvc.Container);
-            configuration.UseMongodbDatabase("TeclynSampleMVC");
+            //configuration.UseMongodbDatabase("TeclynSampleMVC");
             var teclyn = new TeclynApi(configuration);
             var eventService = teclyn.Get<IEventService>();
 

@@ -21,7 +21,7 @@ namespace Teclyn.Core.AutoAnalysis
         public TeclynApi Teclyn { get; set; }
 
         [Inject]
-        public EventHandlerService EventHandlerService { get; set; }
+        public IEventHandlerService EventHandlerService { get; set; }
 
         private TypeInfo commandType = typeof(ICommand).GetTypeInfo();
         private TypeInfo eventType = typeof(ITeclynEvent).GetTypeInfo();

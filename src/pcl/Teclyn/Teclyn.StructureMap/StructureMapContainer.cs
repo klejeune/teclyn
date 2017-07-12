@@ -36,7 +36,7 @@ namespace Teclyn.StructureMap
 
                 });
 
-                _.ForSingletonOf<EventHandlerService>();
+                //_.ForSingletonOf<IEventHandlerService>();
             });
         }
 
@@ -65,6 +65,13 @@ namespace Teclyn.StructureMap
         public void Register<TPublicType>() where TPublicType : class
         {
             container.Configure(_ => _.For<TPublicType>().Use<TPublicType>());
+        }
+
+        public void RegisterSingleton<TPublicType, TImplementation>() 
+            where TPublicType : class
+            where TImplementation : class, TPublicType
+        {
+            container.Configure(_ => _.For<TPublicType>().Use<TImplementation>().Singleton());
         }
 
         public void RegisterSingleton<TPublicType>() where TPublicType : class

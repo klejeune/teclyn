@@ -21,7 +21,7 @@ namespace Teclyn.Core.Events
         private readonly ITeclynContext teclynContext;
         private readonly TimeService timeService;
         private readonly RepositoryService repositoryService;
-        private readonly EventHandlerService eventHandlerService;
+        private readonly IEventHandlerService eventHandlerService;
 
         [Inject]
         public IRepository<IEventInformation> EventInformationRepository { get; set; }
@@ -29,7 +29,7 @@ namespace Teclyn.Core.Events
         [Inject]
         public IdGenerator IdGenerator { get; set; }
 
-        public EventService(ITeclynContext teclynContext, TimeService timeService, RepositoryService repositoryService, EventHandlerService eventHandlerService)
+        public EventService(ITeclynContext teclynContext, TimeService timeService, RepositoryService repositoryService, IEventHandlerService eventHandlerService)
         {
             this.teclynContext = teclynContext;
             this.timeService = timeService;

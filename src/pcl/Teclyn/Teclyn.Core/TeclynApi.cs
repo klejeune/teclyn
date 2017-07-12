@@ -62,7 +62,7 @@ namespace Teclyn.Core
             this.iocContainer.RegisterSingleton<RepositoryService>();
             this.iocContainer.Register<ITeclynContext, TeclynContext>();
             this.iocContainer.Register<IStorageConfiguration>(configuration.StorageConfiguration ?? new BasicStorageConfiguration());
-            this.iocContainer.RegisterSingleton<EventHandlerService>();
+            this.iocContainer.RegisterSingleton<IEventHandlerService, EventHandlerService>();
             this.iocContainer.RegisterSingleton<MetadataRepository>();
 
             // configuration analysis
@@ -152,7 +152,7 @@ namespace Teclyn.Core
                 dictionary =>
                 {
                     var eventHandlerTypes = dictionary.ElementAt(0).Value;
-                    var eventHandlerService = this.Get<EventHandlerService>();
+                    var eventHandlerService = this.Get<IEventHandlerService>();
 
                     foreach (var eventHandlerType in eventHandlerTypes)
                     {
