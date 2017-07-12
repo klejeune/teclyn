@@ -27,7 +27,7 @@ namespace Teclyn.SampleMvc
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             var configuration = new TeclynWebConfiguration();
-            configuration.UseStructureMap(StructuremapMvc.Container);
+            //configuration.UseStructureMap(StructuremapMvc.Container);
             //configuration.UseMongodbDatabase("TeclynSampleMVC");
             var teclyn = new TeclynApi(configuration);
             var eventService = teclyn.Get<IEventService>();

@@ -27,7 +27,7 @@ namespace Teclyn.Core.Tests
 
         public TeclynTestConfiguration()
         {
-            this.TestIocContainer = new StructureMapContainer(new Container());
+            //this.TestIocContainer = new StructureMapContainer(new Container());
         }
     }
 }

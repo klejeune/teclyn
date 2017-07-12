@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Teclyn.Core.Commands;
 using Teclyn.Core.Commands.Properties;
@@ -84,7 +85,7 @@ namespace Teclyn.Core.Tests.Commands
             repository.Create(aggregate);
         }
 
-        [Fact]
+        //[Fact]
         public async Task PropertyCommandIsExecuted()
         {
             var newValue = "newValue";

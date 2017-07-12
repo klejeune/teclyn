@@ -16,11 +16,8 @@ namespace Teclyn.Core.Events.Handlers
     {
         [Inject]
         public TeclynApi Teclyn { get; set; }
-
-        /// <summary>
-        /// TODO remove static, and make this a singleton
-        /// </summary>
-        private static readonly IDictionary<Type, List<Metadata.EventHandlerMetadata>> handlersMetaData = new Dictionary<Type, List<EventHandlerMetadata>>();
+        
+        private readonly IDictionary<Type, List<Metadata.EventHandlerMetadata>> handlersMetaData = new Dictionary<Type, List<EventHandlerMetadata>>();
        
         public IEnumerable<EventHandlerMetadata> GetEventHandlers(Type eventType)
         {
