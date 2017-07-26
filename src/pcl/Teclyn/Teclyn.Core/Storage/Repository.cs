@@ -75,6 +75,12 @@ namespace Teclyn.Core.Storage
 
         public async Task<TAggregate> GetById(Id<TAggregate> id)
         {
+
+            if (id == null)
+            {
+                throw new TeclynException("The id parameter is null. Please provide an id.");
+            }
+
             var aggregate = await this.GetProvider().GetByIdOrNull(id);
 
             if (aggregate == null)
