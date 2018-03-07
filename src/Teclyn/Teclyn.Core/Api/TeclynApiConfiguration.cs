@@ -6,7 +6,7 @@
 
         public TeclynApiConfiguration()
         {
-            this.CommandEndpointPrefix = "command";
+            this.CommandEndpointPrefix = "teclyn";
         }
     }
 }

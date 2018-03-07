@@ -1,66 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 using Teclyn.Core.Api;
-using Teclyn.Core.Commands;
 using Teclyn.Core.Dummies;
 using Teclyn.Core.Queries;
 using Teclyn.Core.Tools;
 
 namespace Teclyn.AspNetCore.Server.Handlers
 {
-    public class TeclynExecutionHandler
+    public class QueryRequestHandler : IRequestHandler
     {
         private readonly ITeclynApi _teclyn;
-        private readonly CommandService _commandService;
         private readonly QueryService _queryService;
         private readonly AspNetCoreTranslater _translater;
 
-        public TeclynExecutionHandler(ITeclynApi teclyn, CommandService commandService, QueryService queryService, AspNetCoreTranslater translater)
+        public QueryRequestHandler(ITeclynApi teclyn, QueryService queryService, AspNetCoreTranslater translater)
         {
             this._teclyn = teclyn;
-            this._commandService = commandService;
             this._queryService = queryService;
             this._translater = translater;
         }
 
-        public IRouter GetRouter(RouteBuilder builder)
+        public string GetTemplate()
         {
-            builder.MapPost(
-                this._teclyn.Configuration.CommandEndpointPrefix + "/{domain}/{command}",
-                this.GetCommandRequestDelegate());
-
-            builder.MapGet(
-                this._teclyn.Configuration.CommandEndpointPrefix + "/{domain}/{query}",
-                this.GetQueryRequestDelegate());
-
-            return builder.Build();
+            return this._teclyn.Configuration.CommandEndpointPrefix + "/{domain}/{query}";
         }
 
-        private RequestDelegate GetCommandRequestDelegate()
-        {
-            return async context =>
-            {
-                var domainId = this._translater.ImportDomainId(context.GetRouteValue("domain").ToString());
-                var commandId = this._translater.ImportCommandId(context.GetRouteValue("command").ToString());
-                var commandInfo = this._teclyn.GetCommand(domainId, commandId);
-
-                if (commandInfo != null)
-                {
-                    await this.ExecuteCommand(commandInfo, context);
-                }
-            };
-        }
-
-        private RequestDelegate GetQueryRequestDelegate()
+        public RequestDelegate GetRequestDelegate()
         {
             return async context =>
             {
@@ -70,13 +42,18 @@ namespace Teclyn.AspNetCore.Server.Handlers
                 var queryInfo = this._teclyn.GetQuery(domainId, queryId);
 
                 var method = ReflectionTools
-                    .Instance<TeclynExecutionHandler>
+                    .Instance<QueryRequestHandler>
                     .Method(_ => _.ExecuteQuery<DummyQuery, DummyQueryResult>(null, null, null))
                     .GetGenericMethodDefinition()
                     .MakeGenericMethod(queryInfo.QueryType, queryInfo.ResultType);
 
-                await (Task) method.Invoke(this, new object[] {domainInfo, queryInfo, context});
+                await (Task)method.Invoke(this, new object[] { domainInfo, queryInfo, context });
             };
+        }
+
+        public string GetVerb()
+        {
+            return "GET";
         }
 
         private async Task ExecuteQuery<TQuery, TResult>(DomainInfo domainInfo, QueryInfo queryInfo, HttpContext context) where TQuery : IQuery<TResult>
@@ -87,7 +64,7 @@ namespace Teclyn.AspNetCore.Server.Handlers
                 var json = JsonConvert.SerializeObject(result.GetResult());
 
                 var headers = this.GetMetadataLinkHeaders(domainInfo, queryInfo, context, result.Metadata);
-                
+
                 foreach (var header in headers)
                 {
                     context.Response.Headers.Add(header.Key, header.Value);
@@ -95,11 +72,11 @@ namespace Teclyn.AspNetCore.Server.Handlers
 
                 context.Response.ContentType = "application/json";
 
-                await context.Response.WriteAsync(json);
+                await context.Response.WriteAsync(json, context.RequestAborted);
             }
         }
 
-        private IDictionary<string, StringValues> GetMetadataLinkHeaders<TQuery, TResult>(DomainInfo domainInfo, QueryInfo queryInfo, HttpContext context, QueryResultMetadata<TQuery, TResult> metadata) 
+        private IDictionary<string, StringValues> GetMetadataLinkHeaders<TQuery, TResult>(DomainInfo domainInfo, QueryInfo queryInfo, HttpContext context, QueryResultMetadata<TQuery, TResult> metadata)
             where TQuery : IQuery<TResult>
         {
             var headers = new Dictionary<string, StringValues>();
@@ -133,7 +110,7 @@ namespace Teclyn.AspNetCore.Server.Handlers
             var baseUri = new Uri($"{context.Request.Scheme}://{context.Request.Host}/{context.Request.PathBase}");
             baseUri = new Uri(baseUri, this._translater.ExportDomainId(domainInfo) + "/");
             baseUri = new Uri(baseUri, this._translater.ExportQueryId(queryInfo) + "/");
-            
+
             var url = baseUri + "?" + string.Join("&",
                           this.SerializeQuery<TQuery, TResult>(query).Select(_ => $"{_.Key}={_.Value}"));
 
@@ -146,24 +123,6 @@ namespace Teclyn.AspNetCore.Server.Handlers
                 .GetProperties()
                 .ToDictionary(p => p.Name, p => p.GetValue(query).ToString());
         }
-        
-        private string GetRequestBody(HttpContext context)
-        {
-            Stream req = context.Request.Body;
-            string body = new StreamReader(req).ReadToEnd();
-
-            return body;
-        }
-
-        private async Task ExecuteCommand(CommandInfo commandInfo, HttpContext context)
-        {
-            var commandType = commandInfo.CommandType;
-            var requestBody = this.GetRequestBody(context);
-
-            var command = (ICommand)JsonConvert.DeserializeObject(requestBody, commandType);
-
-            await this._commandService.Execute(command);
-        }
 
         private async Task<IQueryResult<TQuery, TResult>> ExecuteQuery<TQuery, TResult>(HttpContext context) where TQuery : IQuery<TResult>
         {
@@ -171,10 +130,10 @@ namespace Teclyn.AspNetCore.Server.Handlers
 
             return await this._queryService.Execute<TQuery, TResult>(query);
         }
-        
+
         private TQuery ExtractQuery<TQuery, TResult>(HttpContext context)
         {
-            var query = (TQuery) Activator.CreateInstance(typeof(TQuery));
+            var query = (TQuery)Activator.CreateInstance(typeof(TQuery));
 
             var properties = typeof(TQuery).GetProperties(
                 BindingFlags.SetField | BindingFlags.GetField | BindingFlags.Instance | BindingFlags.Public);

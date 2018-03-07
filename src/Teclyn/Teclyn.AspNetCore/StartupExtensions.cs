@@ -21,14 +21,18 @@ namespace Teclyn.AspNetCore
         public static void AddTeclynAspNetCore(this IMvcBuilder mvcBuilder)
         {
             mvcBuilder.AddApplicationPart(typeof(StartupExtensions).Assembly);
-            mvcBuilder.Services.AddTransient<TeclynExecutionHandler>();
-            mvcBuilder.Services.AddTransient<AspNetCoreTranslater>();
+            mvcBuilder.Services
+                .AddTransient<TeclynDispatchHandler>()
+                .AddTransient<AspNetCoreTranslater>()
+                .AddTransient<ConfigurationRequestHandler>()
+                .AddTransient<CommandRequestHandler>()
+                .AddTransient<QueryRequestHandler>();
         }
 
         public static void UseTeclyn(this IApplicationBuilder app)
         {
             var router = app.ApplicationServices
-                .GetService<TeclynExecutionHandler>()
+                .GetService<TeclynDispatchHandler>()
                 .GetRouter(new RouteBuilder(app));
             
             app.UseRouter(router);

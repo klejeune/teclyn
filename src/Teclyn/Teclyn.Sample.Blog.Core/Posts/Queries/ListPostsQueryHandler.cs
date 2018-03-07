@@ -19,7 +19,7 @@ namespace Teclyn.Sample.Blog.Core.Posts.Queries
             this._posts = posts;
         }
 
-        public Task<bool> CheckContext(ListPosts query, ITeclynContext context,IQueryContextChecker result)
+        public Task<bool> CheckContext(ListPosts query, ITeclynContext context, IQueryContextChecker result)
         {
             return Task.FromResult(true);
         }
@@ -31,15 +31,25 @@ namespace Teclyn.Sample.Blog.Core.Posts.Queries
 
         public Task<IEnumerable<IPost>> Execute(ListPosts query, IQueryExecutionContext<ListPosts, IEnumerable<IPost>> context)
         {
+            if (!query.Page.HasValue || query.Page <= 0)
+            {
+                query.Page = 1;
+            }
+
+            if (!query.PerPage.HasValue || query.PerPage <= 0)
+            {
+                query.PerPage = 10;
+            }
+
             context.Metadata.SetPagination(
-                this._posts.LongCount(), 
-                query.Page,
-                query.PerPage, 
-                page => new ListPosts { Page = page, PerPage = query.PerPage });
-            
+                 this._posts.LongCount(),
+                 query.Page.Value,
+                 query.PerPage.Value,
+                 page => new ListPosts { Page = page, PerPage = query.PerPage });
+
             return Task.FromResult(this._posts.OrderByDescending(p => p.PublicationDate)
-                .Skip(query.PerPage * (query.Page - 1))
-                .Take(query.Page).AsEnumerable());
+                .Skip(query.PerPage.Value * (query.Page.Value - 1))
+                .Take(query.Page.Value).AsEnumerable());
         }
     }
 }

@@ -21,6 +21,8 @@ namespace Teclyn.AspNetCore.Swagger
 
         public void Apply(SwaggerDocument swaggerDoc, DocumentFilterContext context)
         {
+            this.AddConfiguration(swaggerDoc, context);
+
             foreach (var domain in this._teclyn.Domains)
             {
                 this.AddDomain(swaggerDoc, context, domain);
@@ -83,6 +85,25 @@ namespace Teclyn.AspNetCore.Swagger
                     Responses = new Dictionary<string, Response>
                     {
                         { "200", new Response{Description = "Success", Schema = this.GetSchema(context, query.ResultType)} }
+                    }
+                }
+            });
+        }
+
+        private void AddConfiguration(SwaggerDocument swaggerDoc, DocumentFilterContext context)
+        {
+            swaggerDoc.Paths.Add($"/{this._teclyn.Configuration.CommandEndpointPrefix}/.well-known/teclyn-configuration", new PathItem
+            {
+                Get = new Operation()
+                {
+                    Tags = "Configuration".AsArray().ToList(),
+                    Consumes = new List<string>
+                    {
+                        "application/json",
+                    },
+                    Responses = new Dictionary<string, Response>
+                    {
+                        { "200", new Response{Description = "Success", Schema = this.GetSchema(context, typeof(ITeclynApi))} }
                     }
                 }
             });
