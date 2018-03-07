@@ -1,0 +1,12 @@
+﻿@using Teclyn.SampleCore.Todos.Commands
+@model Teclyn.SampleCore.Todos.Models.ITodo
+
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<h2>@Model.Name</h2>
+
+<div>
+    @(Html.CommandProperty<UpdateTodoTextCommand>(Model))
+</div>

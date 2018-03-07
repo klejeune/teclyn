@@ -1,0 +1,22 @@
+﻿@model Teclyn.AspNetMvc.Models.ListModel<Teclyn.SampleCore.TodoLists.Models.ITodoList>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@Html.Partial("ListNavigation", Model)
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Length</th>
+    </tr>
+    @foreach (var todoList in Model.Entities)
+    {
+        <tr>
+            <td>@Html.ActionLink(todoList, "Index")</td>
+            <td>@todoList.Length</td>
+        </tr>
+    }
+</table>
+@Html.Partial("ListNavigation", Model)

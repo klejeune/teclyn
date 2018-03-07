@@ -1,0 +1,49 @@
+﻿@using Teclyn.SampleCore.TodoLists.Commands
+@using Teclyn.SampleCore.TodoLists.Models
+@model Teclyn.SampleMvc.Models.HomeModel
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>TECLYN</h1>
+    <p class="lead">TECLYN is a toolkit aimed at building well architectured, business driven, scalable software. It uses concepts taken from CQRS, Domain Driven Design (DDD) and Event Sourcing.</p>
+    <p><a href="https://github.com/klejeune/teclyn" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>
+
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Getting started</h2>
+        <p>
+            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
+            enables a clean separation of concerns and gives you full control over markup
+            for enjoyable, agile development.
+        </p>
+        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Todo Lists</h2>
+        <ul>
+            @foreach (var list in Model.TodoLists)
+            {
+                <li>@Html.ActionLink(list, "Index", "TodoList")</li>
+            }
+        </ul>
+
+        <p><a class="btn btn-default" href="@Url.Action("Index", "TodoList")">Display more &raquo;</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Create a new Todo List</h2>
+        <div>
+            @using (var form = Html.CommandForm<CreateTodoListCommand>(true))
+            {
+                @form.Property(command => command.Name)
+                @form.Submit("Create", "btn btn-primary")
+            }
+        </div>
+        <div>
+            @(Html.CommandButton<CreateTodoListCommand>("Create", command => command.Name = "Test", "btn btn-primary"))
+        </div>
+    </div>
+</div>
