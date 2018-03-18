@@ -12,7 +12,6 @@ using Teclyn.Core.Security.Context;
 using Teclyn.Core.Storage;
 using Teclyn.Mongodb;
 using Teclyn.SampleCore;
-using Teclyn.StructureMap;
 
 namespace Teclyn.SampleMvc
 {

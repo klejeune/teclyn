@@ -65,3 +65,15 @@
 /src/Teclyn/Teclyn.SampleMvc/obj/Debug
 /src/Teclyn/Teclyn.StructureMap/bin/Debug
 /src/Teclyn/Teclyn.StructureMap/obj/Debug
+/.vs
+/src/pcl/Teclyn/Teclyn.AspNetMvc/obj/Release
+/src/pcl/Teclyn/Teclyn.Core/obj/Release
+/src/pcl/Teclyn/Teclyn.StructureMap/obj/Release
+/src/pcl/Teclyn/Teclyn.SampleCore/obj/Release
+/src/pcl/Teclyn/Teclyn.SampleConsole/obj/Release
+/src/pcl/Teclyn/Teclyn.Mongodb/obj/Release
+/src/Teclyn/Teclyn.AspNetMvc/obj/Release
+/src/Teclyn/Teclyn.Mongodb/obj/Release
+/src/Teclyn/Teclyn.SampleConsole/obj/Release
+/src/Teclyn/Teclyn.SampleCore/obj/Release
+/src/Teclyn/Teclyn.SampleMvc/obj/Release

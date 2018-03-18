@@ -423,10 +423,6 @@
       <Project>{a77a5fdf-184e-49e8-a401-d787e36a6dd3}</Project>
       <Name>Teclyn.SampleCore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Teclyn.StructureMap\Teclyn.StructureMap.csproj">
-      <Project>{19E8BF13-8D55-4CA4-93B8-E4B10784925E}</Project>
-      <Name>Teclyn.StructureMap</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -442,7 +438,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53891</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

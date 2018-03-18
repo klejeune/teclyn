@@ -142,7 +142,8 @@ namespace Teclyn.AspNetCore.Swagger
         {
             { typeof(short), () => new Schema { Type = "integer", Format = "int32" } },
             { typeof(ushort), () => new Schema { Type = "integer", Format = "int32" } },
-            { typeof(int), () => new Schema { Type = "integer", Format = "int32" } },
+            { typeof(int), () => new Schema { Type = "integer", Format = "int32",  } },
+            { typeof(int?), () => new Schema { Type = "integer", Format = "int32", } },
             { typeof(uint), () => new Schema { Type = "integer", Format = "int32" } },
             { typeof(long), () => new Schema { Type = "integer", Format = "int64" } },
             { typeof(ulong), () => new Schema { Type = "integer", Format = "int64" } },

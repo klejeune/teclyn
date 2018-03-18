@@ -1,4 +1,5 @@
 ﻿using Teclyn.Core;
+using Teclyn.Core.Api;
 using Teclyn.SampleCore.Todos.Models;
 
 namespace Teclyn.SampleConsole
@@ -7,7 +8,7 @@ namespace Teclyn.SampleConsole
     {
         static void Main(string[] args)
         {
-            var teclyn = new TeclynApi(typeof(ITodo).Assembly);
+            var teclyn = new TeclynApi(null);
         }
     }
 }
