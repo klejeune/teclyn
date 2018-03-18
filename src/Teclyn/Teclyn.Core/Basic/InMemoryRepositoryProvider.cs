@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Teclyn.Core.Commands;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Storage;
+using Teclyn.Core.Tools;
 
 namespace Teclyn.Core.Basic
 {

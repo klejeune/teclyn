@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using Teclyn.AspNetMvc.ModelBinders;
 using Teclyn.Core.Commands;
 using Teclyn.Core.Errors.Models;
 using Teclyn.Core.Events;

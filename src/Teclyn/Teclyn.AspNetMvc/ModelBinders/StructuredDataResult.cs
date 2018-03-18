@@ -2,7 +2,6 @@
 using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
-using Teclyn.AspNetMvc.ModelBinders;
 
 namespace Teclyn.AspNetMvc.ModelBinders
 {
@@ -26,13 +25,5 @@ namespace Teclyn.AspNetMvc.ModelBinders
                 ContentEncoding = Encoding.Default,
             }.ExecuteResult(context);
         }
-    }
-}
-
-public static class ActionResultExtensions
-{
-    public static ActionResult Structured<T>(this Controller controller, T data)
-    {
-        return new StructuredDataResult<T>(data, false);
     }
 }

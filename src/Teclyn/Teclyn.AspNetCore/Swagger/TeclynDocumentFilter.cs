@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Teclyn.Core.Api;
+using Teclyn.Core.Tools;
 
 namespace Teclyn.AspNetCore.Swagger
 {
@@ -120,7 +121,7 @@ namespace Teclyn.AspNetCore.Swagger
 
         private IParameter BuildParameter(string name, Type type)
         {
-            var schemaBuilder = PrimitiveTypeMap.GetValueOrDefault(type);
+            var schemaBuilder = EnumerableExtensions.GetValueOrDefault(PrimitiveTypeMap, type);
 
             if (schemaBuilder == null)
             {

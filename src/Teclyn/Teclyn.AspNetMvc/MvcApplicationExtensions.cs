@@ -1,18 +1,20 @@
 ﻿using System.Web;
-using Teclyn.Core;
 using Teclyn.Core.Api;
 
-public static class MvcApplicationExtensions
+namespace Teclyn.AspNetMvc
 {
-    private static readonly string teclynApplicationKey = "teclyn";
-
-    public static TeclynApi GetTeclyn(this HttpApplicationState application)
+    public static class MvcApplicationExtensions
     {
-        return (TeclynApi)HttpContext.Current.Application[teclynApplicationKey];
-    }
+        private static readonly string teclynApplicationKey = "teclyn";
 
-    public static void SetTeclyn(TeclynApi teclyn)
-    {
-        HttpContext.Current.Application[teclynApplicationKey] = teclyn;
+        public static TeclynApi GetTeclyn(this HttpApplicationState application)
+        {
+            return (TeclynApi)HttpContext.Current.Application[teclynApplicationKey];
+        }
+
+        public static void SetTeclyn(TeclynApi teclyn)
+        {
+            HttpContext.Current.Application[teclynApplicationKey] = teclyn;
+        }
     }
 }

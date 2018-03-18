@@ -8,6 +8,7 @@ using MongoDB.Driver;
 using Teclyn.Core.Commands;
 using Teclyn.Core.Domains;
 using Teclyn.Core.Storage;
+using Teclyn.Core.Tools;
 
 namespace Teclyn.Mongodb
 {

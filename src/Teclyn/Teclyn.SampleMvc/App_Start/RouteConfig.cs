@@ -8,7 +8,7 @@ using Teclyn.SampleMvc.Controllers;
 
 namespace Teclyn.SampleMvc
 {
-    public class RouteConfig
+    public static class RouteConfig
     {
         public static void RegisterRoutes(RouteCollection routes)
         {

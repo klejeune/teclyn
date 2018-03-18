@@ -6,13 +6,13 @@ using Teclyn.Core.Commands;
 
 namespace Teclyn.AspNetMvc.Commands
 {
-    public class CommandButton : IDisposable
+    public sealed class CommandButton : IDisposable
     {
-        private TextWriter writer;
+        private readonly TextWriter _writer;
 
         public CommandButton(TextWriter writer, string serializedCommand, bool reload = false, string @class = "", object htmlAttributes = null)
         {
-            this.writer = writer;
+            this._writer = writer;
             
             var classes = string.IsNullOrWhiteSpace(@class) ? "command-button" : "command-button " + @class;
 
@@ -22,7 +22,7 @@ namespace Teclyn.AspNetMvc.Commands
 
         public void Dispose()
         {
-            writer.Write("</button>");
+            _writer.Write("</button>");
         }
     }
 }

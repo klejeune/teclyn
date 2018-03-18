@@ -9,7 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Comments\" />
+    <Folder Include="Comments\Commands\" />
+    <Folder Include="Comments\Queries\" />
   </ItemGroup>
 
   <ItemGroup>

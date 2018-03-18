@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Teclyn.Core.Tools;
 using Xunit;
 
 namespace Teclyn.Core.Tests.Tools

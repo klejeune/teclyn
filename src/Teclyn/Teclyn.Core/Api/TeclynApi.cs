@@ -14,9 +14,9 @@ namespace Teclyn.Core.Api
         public ITeclynApiConfiguration Configuration { get; }
         private readonly List<DomainInfo> _domains = new List<DomainInfo>();
 
-        public TeclynApi(ITeclynApiConfiguration configuration)
+        public TeclynApi(ITeclynApiConfiguration _)
         {
-            this.Configuration = configuration;
+            this.Configuration = _;
         }
 
         public ITeclynApi AddDomain<TDomain>(Func<ITeclynDomainApi<TDomain>, ITeclynDomainApi<TDomain>> configure) where TDomain : IDomain
@@ -68,12 +68,12 @@ namespace Teclyn.Core.Api
                 .SingleOrDefault(c => c.Id.ToLowerInvariant() == lowerCase);
         }
 
-        public QueryInfo GetQuery(string domain, string queryId)
+        public QueryInfo GetQuery(string domainId, string queryId)
         {
             var lowerCase = queryId.ToLowerInvariant();
 
             return this._domains
-                .Where(d => d.Id == domain)
+                .Where(d => d.Id == domainId)
                 .SelectMany(d => d.Queries)
                 .SingleOrDefault(c => c.Id.ToLowerInvariant() == lowerCase);
         }

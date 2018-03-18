@@ -20,7 +20,7 @@ namespace Teclyn.SampleMvc
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        protected async void Application_Start()
+        protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

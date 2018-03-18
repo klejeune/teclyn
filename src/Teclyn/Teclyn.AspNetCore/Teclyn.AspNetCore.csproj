@@ -5,16 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Routing\**" />
+    <EmbeddedResource Remove="Routing\**" />
+    <None Remove="Routing\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="1.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Teclyn.Core\Teclyn.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Routing\" />
   </ItemGroup>
 
 </Project>

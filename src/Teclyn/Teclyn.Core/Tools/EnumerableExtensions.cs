@@ -1,72 +1,72 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
 
-public static class EnumerableExtensions
+namespace Teclyn.Core.Tools
 {
-    public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default(TValue))
+    public static class EnumerableExtensions
     {
-        TValue value;
-
-        if (!dictionary.TryGetValue(key, out value))
+        public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue = default(TValue))
         {
-            value = defaultValue;
+            TValue value;
+
+            if (!dictionary.TryGetValue(key, out value))
+            {
+                value = defaultValue;
+            }
+
+            return value;
         }
 
-        return value;
-    }
-
-    public static T[] AsArray<T>(this T item)
-    {
-        return new T[] { item };
-    }
-
-    public static T SafeCast<T>(this T item)
-    {
-        return item;
-    }
-
-    /// <summary>
-    /// For more information on implementation to interface casting:
-    /// https://stackoverflow.com/questions/40954155/how-to-cast-a-generic-t-in-repositoryt-to-an-interface-to-access-an-interface
-    /// </summary>
-    public static IEnumerator<TInterface> Cast<TInterface, TClass>(this IEnumerator<TClass> baseEnumerator)
-        where TClass : TInterface
-    {
-        return new ImplementationEnumerator<TInterface, TClass>(baseEnumerator);
-    }
-
-    private class ImplementationEnumerator<TInterface, TClass> : IEnumerator<TInterface>
-        where TClass : TInterface
-    {
-        private IEnumerator<TClass> baseEnumerator;
-
-        public ImplementationEnumerator(IEnumerator<TClass> baseEnumerator)
+        public static T[] AsArray<T>(this T item)
         {
-            this.baseEnumerator = baseEnumerator;
+            return new T[] { item };
         }
 
-        public void Dispose()
+        public static T SafeCast<T>(this T item)
         {
-            this.baseEnumerator.Dispose();
+            return item;
         }
 
-        public bool MoveNext()
+        /// <summary>
+        /// For more information on implementation to interface casting:
+        /// https://stackoverflow.com/questions/40954155/how-to-cast-a-generic-t-in-repositoryt-to-an-interface-to-access-an-interface
+        /// </summary>
+        public static IEnumerator<TInterface> Cast<TInterface, TClass>(this IEnumerator<TClass> baseEnumerator)
+            where TClass : TInterface
         {
-            return this.baseEnumerator.MoveNext();
+            return new ImplementationEnumerator<TInterface, TClass>(baseEnumerator);
         }
 
-        public void Reset()
+        private class ImplementationEnumerator<TInterface, TClass> : IEnumerator<TInterface>
+            where TClass : TInterface
         {
-            this.baseEnumerator.Reset();
+            private readonly IEnumerator<TClass> _baseEnumerator;
+
+            public ImplementationEnumerator(IEnumerator<TClass> baseEnumerator)
+            {
+                this._baseEnumerator = baseEnumerator;
+            }
+
+            public void Dispose()
+            {
+                this._baseEnumerator.Dispose();
+            }
+
+            public bool MoveNext()
+            {
+                return this._baseEnumerator.MoveNext();
+            }
+
+            public void Reset()
+            {
+                this._baseEnumerator.Reset();
+            }
+
+            public TInterface Current => this._baseEnumerator.Current;
+
+            object IEnumerator.Current => this.Current;
         }
 
-        public TInterface Current => this.baseEnumerator.Current;
 
-        object IEnumerator.Current => this.Current;
     }
-
-
 }

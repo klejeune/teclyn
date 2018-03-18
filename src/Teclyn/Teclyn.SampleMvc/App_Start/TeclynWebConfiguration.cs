@@ -48,13 +48,6 @@ namespace Teclyn.SampleMvc
             return this;
         }
 
-        public TeclynWebConfiguration UseStructureMap(IContainer structureMapContainer)
-        {
-            //this.DependencyResolver = new StructureMapContainer(structureMapContainer);
-
-            return this;
-        }
-
         public void DropDatabase()
         {
             if (this.mongoDatabase != null)

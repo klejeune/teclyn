@@ -3,24 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-public static class TypeTools
+namespace Teclyn.Core.Tools
 {
-    public static IEnumerable<Type> GetAllAncestors(this Type type)
+    public static class TypeTools
     {
-        var typeInfo = type.GetTypeInfo();
-
-        if (typeInfo.BaseType == typeof(object) || typeInfo.BaseType == null)
+        public static IEnumerable<Type> GetAllAncestors(this Type type)
         {
-            return type.AsArray();
-        }
-        else
-        {
-            return type.AsArray().Union(GetAllAncestors(typeInfo.BaseType));
-        }
-    }
+            var typeInfo = type.GetTypeInfo();
 
-    public static IEnumerable<Type> GetAllAncestorsAndInterfaces(this Type type)
-    {
-        return type.GetTypeInfo().ImplementedInterfaces.Union(GetAllAncestors(type)).ToList();
+            if (typeInfo.BaseType == typeof(object) || typeInfo.BaseType == null)
+            {
+                return type.AsArray();
+            }
+            else
+            {
+                return type.AsArray().Union(GetAllAncestors(typeInfo.BaseType));
+            }
+        }
+
+        public static IEnumerable<Type> GetAllAncestorsAndInterfaces(this Type type)
+        {
+            return type.GetTypeInfo().ImplementedInterfaces.Union(GetAllAncestors(type)).ToList();
+        }
     }
 }

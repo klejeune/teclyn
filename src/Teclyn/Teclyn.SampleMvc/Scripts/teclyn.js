@@ -63,7 +63,7 @@ var teclyn = {
 };
 
 function dump(data) {
-    alert(dumpInner(data, 0));
+    dumpInner(data, 0);
 }
 
 function dumpInner(data, level) {

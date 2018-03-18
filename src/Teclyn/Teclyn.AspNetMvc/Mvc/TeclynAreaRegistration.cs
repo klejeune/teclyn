@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Web.Mvc;
 using Teclyn.AspNetMvc.Mvc.Controllers;
+using Teclyn.Core.Tools;
 
 namespace Teclyn.AspNetMvc.Mvc
 {

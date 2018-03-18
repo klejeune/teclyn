@@ -27,7 +27,7 @@ namespace Teclyn.Sample.Blog.Web
 
             services.AddBlog(new TeclynApiConfiguration
             {
-                CommandEndpointPrefix = "command",
+                CommandEndpointPrefix = "teclyn",
             });
 
             services.AddSwaggerGen(c =>
